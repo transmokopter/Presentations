@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SqlSat851">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="TRANSMOKOPTER:TRANSMOKOPTER\Magnus">
+          <Created>2019-05-02T22:43:27.1343201+02:00</Created>
+          <Type>SQL</Type>
+          <Server>TRANSMOKOPTER</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB>master</InitialDB>
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="EAV.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TRANSMOKOPTER:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TRANSMOKOPTER</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>EAV.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Fragmentation spinning.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TRANSMOKOPTER:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TRANSMOKOPTER</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Fragmentation spinning.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Fragmentation SSD.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TRANSMOKOPTER:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TRANSMOKOPTER</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Fragmentation SSD.sql</FullPath>
+        </FileNode>
+        <FileNode Name="FragmentationResults.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TRANSMOKOPTER:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TRANSMOKOPTER</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>FragmentationResults.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Statistics.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TRANSMOKOPTER:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TRANSMOKOPTER</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Statistics.sql</FullPath>
+        </FileNode>
+        <FileNode Name="TypesOfFragmentation.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TRANSMOKOPTER:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TRANSMOKOPTER</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>TypesOfFragmentation.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>
