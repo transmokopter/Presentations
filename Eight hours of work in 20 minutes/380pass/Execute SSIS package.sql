@@ -13,7 +13,7 @@ GO
 
 
 --Import stuff v2
-DECLARE @dt DATE='2019-05-01';
+DECLARE @dt DATE='2019-07-01';
 DECLARE @filename VARCHAR(100)=CONCAT(DATENAME(MONTH,@dt),YEAR(@dt),'.txt');
 Declare @execution_id bigint
 EXEC [SSISDB].[catalog].[create_execution] @package_name=N'ImportV2.dtsx', @execution_id=@execution_id OUTPUT, @folder_name=N'GroupByDemo', @project_name=N'GroupByDemo', @use32bitruntime=False, @reference_id=Null, @runinscaleout=False
@@ -42,7 +42,7 @@ GO
 
 
 --Export some stuff
-DECLARE @dt DATE='2019-12-01';
+DECLARE @dt DATE='2019-02-01';
 DECLARE @filename VARCHAR(100)=CONCAT(DATENAME(MONTH,@dt),YEAR(@dt),'.txt');
 Declare @execution_id bigint
 EXEC [SSISDB].[catalog].[create_execution] @package_name=N'CreateData.dtsx', @execution_id=@execution_id OUTPUT, @folder_name=N'GroupByDemo', @project_name=N'GroupByDemo', @use32bitruntime=False, @reference_id=Null, @runinscaleout=False
