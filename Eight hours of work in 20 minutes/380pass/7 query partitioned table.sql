@@ -8,7 +8,6 @@ WHERE
 	ReferenceDate ='2019-03-01' option(recompile)
 
 
-
 --Max(ProductCompanyIdentifier)
 SET STATISTICS IO ON
 SELECT 

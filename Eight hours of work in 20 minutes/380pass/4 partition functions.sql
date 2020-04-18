@@ -1,6 +1,7 @@
 --Create partition function for four partitions.
 --Use range right
-CREATE PARTITION FUNCTION ForIntegersRight(int) AS RANGE RIGHT FOR VALUES
+CREATE PARTITION FUNCTION ForIntegersRight(int) AS RANGE RIGHT 
+FOR VALUES
 (0,10,100);
 
 --Same range values, but range left

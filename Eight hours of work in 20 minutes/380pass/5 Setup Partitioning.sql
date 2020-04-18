@@ -33,7 +33,7 @@ CREATE PARTITION FUNCTION [pf_DEMO](date) AS RANGE RIGHT FOR VALUES
 		N'2019-01-01', N'2019-02-01',N'2019-03-01',N'2019-04-01',N'2019-05-01',N'2019-06-01');
 GO
 
-CREATE PARTITION SCHEME PS_DEMO AS PARTITION pf_DEMO ALL TO ('PRIMARY');
+CREATE PARTITION SCHEME PS_DEMO AS PARTITION pf_DEMO  ALL TO ('PRIMARY');
 GO
 
 
@@ -193,6 +193,15 @@ ALTER TABLE DEMO.ProductionSales
 		ProductionCompanyIdentifier ASC
 	) WITH( DATA_COMPRESSION=PAGE) ON PS_DEMO(ReferenceDate);
 
+
+SELECT * FROM sys.partitions WHERE object_id=OBJECT_ID('demo.productionsales')
+  ORDER BY index_id, Partition_number;
+
+SELECT SUM(rows) FROM sys.partitions WHERE object_id=OBJECT_ID('demo.productionsales')
+AND index_id BETWEEN 0 AND 1;
+SELECT COUNT(*) from demo.productionsales;
+
+
 --Now, we have a partitioned table!
 --Next up: Create a staging table
 
@@ -321,3 +330,8 @@ CREATE INDEX ix_SalesCurrency
 	ON  [PRIMARY];
 
 --Partitioning is done!
+
+
+
+SELECT COUNT(*) FROM demo.productionsales WHERE referencedate='2019-01-01'
+
