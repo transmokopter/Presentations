@@ -19,7 +19,7 @@ Get-DbaService -Server localhost -Type Engine;
 #Explore members of the returned object
 Get-DbaService -Server localhost -Type Engine | Get-Member;
 #Customize result set
-Get-DbaService -Server sql1 -Type Engine | Select-Object -Property ComputerName, ServiceType, ServiceName, Description, @{N='ServiceStatus';E={$_.State}};
+Get-DbaService -Server localhost -Type Engine | Select-Object -Property ComputerName, ServiceType, ServiceName, Description, @{N='ServiceStatus';E={$_.State}};
 #Get output as table 
 Get-DbaService -Server localhost -Type Engine | Select-Object -Property ComputerName, ServiceType, ServiceName, Description, @{N='ServiceStatus';E={$_.State}} | Format-Table;
 
@@ -36,3 +36,13 @@ Install-DbaWhoIsActive -SqlInstance sql1 -SqlCredential $cred -Database $dbname
 $DBALoginpwd=ConvertTo-SecureString -AsPlaintext "Pa55w.rd" -Force
 New-DbaLogin -SqlInstance sql1 -SqlCredential $cred -Login DBALogin -Password $DBALoginpwd -PasswordPolicyEnforced:$false
 
+#And with some fancier PS-stuff, a Splat for parameters
+$LoginSplat = @{
+    SqlInstance             = "sql1"
+    SqlCredential           = $cred
+    Login                   = "MySecondLogin"
+    Password                = $DBALoginpwd
+    PasswordPolicyEnforced  = $false 
+    EnableException         = $true
+}
+New-DbaLogin @LoginSplat

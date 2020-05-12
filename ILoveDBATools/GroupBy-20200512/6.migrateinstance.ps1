@@ -18,7 +18,7 @@ Invoke-DbaQuery -SqlInstance sql2 -SqlCredential $cred -database LogShippingMeta
 # Find last full backup. Get-DbaBackupHistory fullname property is a string array. We will be using single backup files, 
 #so first item is ours to get 
 $backuppath=(Get-DbaDbBackupHistory -SqlInstance sql1 -SqlCredential $cred -Database DBA -LastFull).FullName[0]
-Restore-DbaDatabase -SqlInstance sql2 -SqlCredential $cred -Path $backuppath -WithReplace -NoRecovery
+Restore-DbaDatabase -SqlInstance sql2 -SqlCredential $cred -Path $backuppath -WithReplace -NoRecovery 
 
 Invoke-DbaQuery -SqlInstance sql2 -SqlCredential $cred -database LogShippingMetadata -query "UPDATE LogShippingWatermarks SET LastFull = @LastFull,lastlsn=0 WHERE databasename = @DBName" -SqlParameters @{ DBName="DBA"; LastFull = $backuppath}
 
