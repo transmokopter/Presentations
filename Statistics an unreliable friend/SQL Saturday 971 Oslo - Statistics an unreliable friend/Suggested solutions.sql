@@ -84,12 +84,13 @@ DBCC SHOW_STATISTICS('Sales.OrderHeader','ix_OrderDate') ;
 --Let's insert a higher OrderDate
 EXEC Demo.CreateOrdersForDay @orderdate = '2016-08-30';
 --Look at statistics
+
 DBCC SHOW_STATISTICS('Sales.OrderHeader','ix_OrderDate') WITH HISTOGRAM;
 --Let's query the data again
 
 DECLARE @dt DATE = '2016-08-30';
 DECLARE @s NVARCHAR(MAX) = N'
---with traceflags 2388,2389
+--with traceflags 2388 and 2389
 SELECT
 	AVG(wc.DistanceKM),
 	wc.WarehouseID
@@ -121,7 +122,7 @@ GO
 
 DECLARE @dt DATE = '2016-08-30';
 DECLARE @s NVARCHAR(MAX) = N'
---sql2014
+--with sql2014
 SELECT
 	AVG(wc.DistanceKM),
 	wc.WarehouseID
@@ -132,10 +133,26 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID 
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate=@dt
+WHERE oh.OrderDate = @dt
 GROUP BY wc.WarehouseID
 '
 EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
+
+
+--Addition AFTER Sql Saturday Oslo, just as comment, will create demos to "prove" this odd behaviour
+--Now where did THAT estimate come from?
+--It _seems_ like the logic is this:
+--The lesser values of:
+--Density*TotalRowcount and SQRT(TotalRowcount)
+--Density*TotalRowcount is about 12500 rows
+--
+--SQRT(TotalRowcount) is about 1700 rows, so that value is chosen
+
+
+GO
+DECLARE @dt DATE='2016-08-30';
+DECLARE @s NVARCHAR(MAX)=N'SELECT COUNT(*) FROM sales.OrderHeader AS OH WHERE orderdate=@dt option(recompile)';
+EXEC sys.sp_executesql @statement = @s, @params = N'@dt date', @dt = @dt;
 
 
 --UPGRADE to SQL 2016
@@ -209,7 +226,7 @@ GROUP BY wc.WarehouseID
 EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
 
 
-;
+
 
 SELECT * FROM sys.stats WHERE object_id=OBJECT_ID('sales.orderheader')
 SELECT * FROM sys.dm_db_stats_properties(OBJECT_ID('sales.orderheader'),2) AS DDSP

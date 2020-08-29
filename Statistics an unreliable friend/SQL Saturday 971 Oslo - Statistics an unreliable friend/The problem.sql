@@ -1,3 +1,5 @@
+USE StatsDemo
+
 --This is what Ola Hallengrens solution will do on a nightly basis
 UPDATE STATISTICS Sales.OrderHeader WITH FULLSCAN;
 SET STATISTICS IO, TIME ON;
@@ -16,10 +18,10 @@ FROM
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
 	WHERE oh.OrderDate=''2016-08-24''
 GROUP BY wc.WarehouseID;'
-EXEC sp_executesql @s;
+EXEC sp_executesql @statement = @s;
 
-
---EXEC Demo.CreateOrdersForDay @Orderdate='2016-08-25'
+GO
+EXEC Demo.CreateOrdersForDay @Orderdate='2016-08-25',@numOrders = 5000
 GO
 DECLARE @s NVARCHAR(MAX)=N'
 SELECT
@@ -35,7 +37,6 @@ FROM
 	WHERE oh.OrderDate=''2016-08-25''
 GROUP BY wc.WarehouseID;'
 EXEC sp_executesql @s;
-
 
 
 GO

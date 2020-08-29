@@ -159,7 +159,7 @@ GO
 CREATE OR ALTER PROC Demo.CreateOrdersForDay
 (
  @orderdate DATE,
- @numOrders INT = 50000
+ @numOrders INT = 12500
 )
 AS
 BEGIN;
@@ -184,10 +184,10 @@ WITH CTE_Numbers AS(
 	CROSS JOIN CTE_Numbers n2
 	CROSS JOIN CTE_Numbers n3
 ),CTE_Dates AS(
-	SELECT TOP(100) DATEADD(DAY,-1*n,cast('2016-08-25' AS date)) as OrderDate
+	SELECT TOP(250) DATEADD(DAY,-1*n,cast('2016-08-25' AS date)) as OrderDate
 	FROM CTE_Numbers2 ORDER BY n 
 ),CTE_Customers AS(
-		SELECT TOP(50000) c.CustomerID FROM Sales.Customer c 
+		SELECT TOP(12500) c.CustomerID FROM Sales.Customer c 
 		CROSS JOIN Sales.Customer c2
 		ORDER BY NEWID()
 	)INSERT Sales.OrderHeader (OrderDate,CustomerID,CustomerAddressID,IsorderShipped,OrderHeaderDiscount)
