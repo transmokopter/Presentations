@@ -1,4 +1,5 @@
 --First let's create some data
+USE StatsDemo
 
 CREATE TABLE dbo.Cars (
 	CarID INT IDENTITY(1,1) CONSTRAINT PK_Cars PRIMARY KEY CLUSTERED,
@@ -20,16 +21,17 @@ INSERT dbo.Cars(BrandName, ModelName, Color)
 	SELECT 'SAAB','93','Red' FROM CTE2 WHERE n % 37 = 0
 
 --Now use SQL 2012
-ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL = 100
+ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL = 110
 
 SELECT * FROM dbo.cars WHERE brandname='Volvo'
 SELECT * FROM dbo.cars WHERE modelname='v70'
 SELECT * FROM dbo.cars WHERE color='red'
 
 EXEC sp_helpstats 'dbo.Cars'
-DBCC SHOW_STATISTICS('dbo.cars',_WA_Sys_00000002_3C69FB99) WITH HISTOGRAM
-DBCC SHOW_STATISTICS('dbo.cars',_WA_Sys_00000003_3C69FB99) WITH HISTOGRAM
-DBCC SHOW_STATISTICS('dbo.cars',_WA_Sys_00000004_3C69FB99) WITH HISTOGRAM
+--Replace these
+DBCC SHOW_STATISTICS('dbo.cars',_WA_Sys_00000002_3A81B327) WITH HISTOGRAM
+DBCC SHOW_STATISTICS('dbo.cars',_WA_Sys_00000003_3A81B327) WITH HISTOGRAM
+DBCC SHOW_STATISTICS('dbo.cars',_WA_Sys_00000004_3A81B327) WITH HISTOGRAM
 --How many Volvos do we have? Probably around 7000
 --How many Red cars do we have? Probably around 2270
 --How many V70 do we have? Probably around 5000
@@ -63,7 +65,7 @@ SELECT (7000.0 * 5000 / 7796) * 2270 / 7796
 
 --Now let's upgrade to SQL 2014 (or later, it's the same CE in this respect)
 ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL = 120
-DBCC FREEPROCCACHE
+
 SELECT COUNT(*) FROM dbo.Cars AS C WHERE c.BrandName='Volvo' AND ModelName = 'V70' AND C.Color='Red'
 --1769. That's another number. 
 

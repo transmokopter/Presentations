@@ -30,8 +30,23 @@ GO
 CREATE SCHEMA Shipping;
 GO
 CREATE SCHEMA Demo;
+
+GO
+CREATE FUNCTION Demo.GetSameDate(@dt date)
+RETURNS TABLE
+AS RETURN SELECT @dt as dt;
+
+
 GO
 
+
+CREATE FUNCTION Demo.GetSameDateScalar(@dt DATE)
+RETURNS DATE
+AS
+BEGIN
+	RETURN @dt;
+END;
+GO
 CREATE TABLE Shipping.Locations(
 	LocationID int identity(1,1) CONSTRAINT PK_Shipping_Locations PRIMARY KEY CLUSTERED,
 	LocationName varchar(100),
@@ -140,71 +155,45 @@ AS
 GO
 --Create orders
 
-WITH CTE_Customers AS(
-	SELECT TOP(100000) c.CustomerID FROM Sales.Customer c 
-	CROSS JOIN Sales.Customer c2
-	ORDER BY NEWID()
-),CTE_Numbers AS(
-SELECT 1 as n
-UNION ALL
-SELECT 1
-UNION ALL
-SELECT 1
-UNION ALL
-SELECT 1
-UNION ALL
-SELECT 1
-UNION ALL
-SELECT 1
-UNION ALL
-SELECT 1
-UNION ALL
-SELECT 1
-UNION ALL
-SELECT 1
-UNION ALL
-SELECT 1
-),CTE_Numbers2 AS(
-	SELECT ROW_NUMBER() OVER(ORDER BY n.n) as n
-	FROM CTE_Numbers n
-	CROSS JOIN CTE_Numbers n2
-	CROSS JOIN CTE_Numbers n3
-),CTE_Dates AS(
-	SELECT TOP(50) DATEADD(DAY,-1*n,cast('2016-08-25' AS date)) as OrderDate
-	FROM CTE_Numbers2 ORDER BY n 
-)INSERT Sales.OrderHeader (OrderDate,CustomerID,CustomerAddressID,IsorderShipped,OrderHeaderDiscount)
-SELECT d.OrderDate,c.CustomerID,ca.CustomerAddressID,0,RAND(DATEPART(second,CURRENT_TIMESTAMP)*DATEPART(DAY,d.OrderDate))
-FROM CTE_Dates d CROSS JOIN CTE_Customers c
-INNER JOIN Sales.CustomerAddress ca ON c.CustomerID = ca.CustomerID;
 
-GO
-CREATE FUNCTION Demo.GetSameDate(@dt date)
-RETURNS TABLE
-AS RETURN SELECT @dt as dt;
-
-
-GO
-
-CREATE PROC Demo.CreateOrdersForDay
+CREATE OR ALTER PROC Demo.CreateOrdersForDay
 (
-@orderdate DATE
+ @orderdate DATE,
+ @numOrders INT = 50000
 )
 AS
 BEGIN;
 	WITH CTE_Customers AS(
-		SELECT TOP(100000) c.CustomerID FROM Sales.Customer c 
+		SELECT TOP(@numOrders) c.CustomerID FROM Sales.Customer c 
 		CROSS JOIN Sales.Customer c2
 		ORDER BY NEWID()
 	)INSERT Sales.OrderHeader (OrderDate,CustomerID,CustomerAddressID,IsorderShipped,OrderHeaderDiscount)
 	SELECT @orderdate,c.CustomerID,ca.CustomerAddressID,0,RAND(DATEPART(second,CURRENT_TIMESTAMP)*DATEPART(DAY,@orderdate))
 	FROM CTE_Customers c
-	INNER JOIN Sales.CustomerAddress ca ON c.CustomerID = ca.CustomerID;
+	INNER JOIN Sales.CustomerAddress ca ON c.CustomerID = ca.CustomerID
+	OPTION(RECOMPILE)
+	;
 END
 GO
 
-CREATE FUNCTION Demo.GetSameDateScalar(@dt DATE)
-RETURNS DATE
-AS
-BEGIN
-	RETURN @dt;
-END;
+WITH CTE_Numbers AS(
+	SELECT n FROM (VALUES(1),(1),(1),(1),(1),(1),(1),(1),(1),(1)) t(n)
+),CTE_Numbers2 AS(
+	SELECT ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) as n
+	FROM CTE_Numbers n
+	CROSS JOIN CTE_Numbers n2
+	CROSS JOIN CTE_Numbers n3
+),CTE_Dates AS(
+	SELECT TOP(100) DATEADD(DAY,-1*n,cast('2016-08-25' AS date)) as OrderDate
+	FROM CTE_Numbers2 ORDER BY n 
+),CTE_Customers AS(
+		SELECT TOP(50000) c.CustomerID FROM Sales.Customer c 
+		CROSS JOIN Sales.Customer c2
+		ORDER BY NEWID()
+	)INSERT Sales.OrderHeader (OrderDate,CustomerID,CustomerAddressID,IsorderShipped,OrderHeaderDiscount)
+	SELECT OrderDate,c.CustomerID,ca.CustomerAddressID,0,RAND(DATEPART(second,CURRENT_TIMESTAMP)*DATEPART(DAY,OrderDate))
+	FROM CTE_Customers c
+	INNER JOIN Sales.CustomerAddress ca ON c.CustomerID = ca.CustomerID
+	CROSS JOIN CTE_Dates;
+
+GO

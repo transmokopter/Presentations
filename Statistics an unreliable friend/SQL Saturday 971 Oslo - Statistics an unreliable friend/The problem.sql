@@ -1,11 +1,9 @@
---DBCC FREEPROCCACHE will throw out cached plans from cache. Don't use in production, OK!
-DBCC FREEPROCCACHE;
 --This is what Ola Hallengrens solution will do on a nightly basis
 UPDATE STATISTICS Sales.OrderHeader WITH FULLSCAN;
-SET STATISTICS IO ON;
+SET STATISTICS IO, TIME ON;
 
 --Remember to enable actual execution plan!
-
+DECLARE @s NVARCHAR(MAX)=N'
 SELECT
 	AVG(wc.DistanceKM) AS DistanceAverageKM,
 	wc.WarehouseID
@@ -16,13 +14,16 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID 
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-	WHERE oh.OrderDate='2016-08-24'
-GROUP BY wc.WarehouseID;
+	WHERE oh.OrderDate=''2016-08-24''
+GROUP BY wc.WarehouseID;'
+EXEC sp_executesql @s;
+
 
 --EXEC Demo.CreateOrdersForDay @Orderdate='2016-08-25'
-
+GO
+DECLARE @s NVARCHAR(MAX)=N'
 SELECT
-	AVG(wc.DistanceKM),
+	AVG(wc.DistanceKM) AS DistanceAverageKM,
 	wc.WarehouseID
 FROM
 	Sales.OrderHeader oh
@@ -31,8 +32,10 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID 
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate='2016-08-25'
-GROUP BY wc.WarehouseID;
+	WHERE oh.OrderDate=''2016-08-25''
+GROUP BY wc.WarehouseID;'
+EXEC sp_executesql @s;
+
 
 
 GO

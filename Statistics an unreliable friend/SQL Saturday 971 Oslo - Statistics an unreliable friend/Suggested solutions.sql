@@ -1,9 +1,12 @@
-SET STATISTICS IO ON
+USE StatsDemo
+SET STATISTICS IO, TIME ON
 --Turn on actual plan
 
 --Parametrize
-
+--This is roughly what any sanely programmed application would send
 DECLARE @dt date='2016-08-25';
+DECLARE @s NVARCHAR(MAX)=N'
+--Parametrized query
 SELECT
 	AVG(wc.DistanceKM),
 	wc.WarehouseID
@@ -14,12 +17,17 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID 
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate=@dt 
-GROUP BY wc.WarehouseID;
---Unknown in this case
---In parametrized with eg sp_executesql or stored proc, sniffing will occur
+WHERE oh.OrderDate = @dt 
+GROUP BY wc.WarehouseID;'
+EXEC sp_executesql @statement = @s, @params = N'@dt date', @dt = @dt;
+
+
+
 GO
 --Get date from function
+DECLARE @dt DATE = '2016-08-25';
+DECLARE @s NVARCHAR(MAX) = N'
+--Get date from scalar function
 SELECT
 	AVG(wc.DistanceKM),
 	wc.WarehouseID
@@ -30,8 +38,10 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID 
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-	WHERE oh.OrderDate = Demo.GetSameDateScalar('2016-08-25')
-GROUP BY wc.WarehouseID;
+	WHERE oh.OrderDate = Demo.GetSameDateScalar(@dt) --look here
+GROUP BY wc.WarehouseID;'
+EXEC sys.sp_executesql @statement = @s, @params = N'@dt date', @dt = @dt;
+
 GO
 --TRACEFLAG 2389
 --Requires three consecutive statistics updates to find out about the ascending key
@@ -44,64 +54,42 @@ DBCC TRACEON(2388);
 GO
 UPDATE STATISTICS Sales.orderHeader WITH FULLSCAN;
 GO
-WITH CTE_Customers AS(
-	SELECT TOP(50) c.CustomerID FROM Sales.Customer c 
-	CROSS JOIN Sales.Customer c2
-	ORDER BY NEWID()
-)INSERT Sales.OrderHeader (OrderDate,CustomerID,CustomerAddressID,IsorderShipped,OrderHeaderDiscount)
-SELECT '2016-08-26',c.CustomerID,ca.CustomerAddressID,0,RAND(DATEPART(second,CURRENT_TIMESTAMP)*DATEPART(DAY,'2016-08-26'))
-FROM CTE_Customers c
-INNER JOIN Sales.CustomerAddress ca ON c.CustomerID = ca.CustomerID;
+
+EXEC demo.CreateOrdersForDay @orderdate = '2016-08-26',@numOrders = 50 -- date
 GO
 UPDATE STATISTICS Sales.orderHeader WITH FULLSCAN;
 GO
-WITH CTE_Customers AS(
-	SELECT TOP(50) c.CustomerID FROM Sales.Customer c 
-	CROSS JOIN Sales.Customer c2
-	ORDER BY NEWID()
-)INSERT Sales.OrderHeader (OrderDate,CustomerID,CustomerAddressID,IsorderShipped,OrderHeaderDiscount)
-SELECT '2016-08-27',c.CustomerID,ca.CustomerAddressID,0,RAND(DATEPART(second,CURRENT_TIMESTAMP)*DATEPART(DAY,'2016-08-27'))
-FROM CTE_Customers c
-INNER JOIN Sales.CustomerAddress ca ON c.CustomerID = ca.CustomerID;
+EXEC demo.CreateOrdersForDay @orderdate = '2016-08-27',@numOrders = 50 -- date
 GO
 UPDATE STATISTICS Sales.orderHeader WITH FULLSCAN;
 GO
-WITH CTE_Customers AS(
-	SELECT TOP(50) c.CustomerID FROM Sales.Customer c 
-	CROSS JOIN Sales.Customer c2
-	ORDER BY NEWID()
-)INSERT Sales.OrderHeader (OrderDate,CustomerID,CustomerAddressID,IsorderShipped,OrderHeaderDiscount)
-SELECT '2016-08-28',c.CustomerID,ca.CustomerAddressID,0,RAND(DATEPART(second,CURRENT_TIMESTAMP)*DATEPART(DAY,'2016-08-28'))
-FROM CTE_Customers c
-INNER JOIN Sales.CustomerAddress ca ON c.CustomerID = ca.CustomerID;
+EXEC demo.CreateOrdersForDay @orderdate = '2016-08-28',@numOrders = 50 -- date
 GO
-UPDATE STATISTICS Sales.OrderHeader WITH FULLSCAN;
+UPDATE STATISTICS Sales.orderHeader WITH FULLSCAN;
 GO
-WITH CTE_Customers AS(
-	SELECT TOP(50) c.CustomerID FROM Sales.Customer c 
-	CROSS JOIN Sales.Customer c2
-	ORDER BY NEWID()
-)INSERT Sales.OrderHeader (OrderDate,CustomerID,CustomerAddressID,IsorderShipped,OrderHeaderDiscount)
-SELECT '2016-08-29',c.CustomerID,ca.CustomerAddressID,0,RAND(DATEPART(second,CURRENT_TIMESTAMP)*DATEPART(DAY,'2016-08-29'))
-FROM CTE_Customers c
-INNER JOIN Sales.CustomerAddress ca ON c.CustomerID = ca.CustomerID;
+EXEC demo.CreateOrdersForDay @orderdate = '2016-08-29',@numOrders = 50 -- date
 GO
-UPDATE STATISTICS Sales.OrderHeader WITH FULLSCAN;
+UPDATE STATISTICS Sales.orderHeader WITH FULLSCAN;
+GO
+
 
 DBCC SHOW_STATISTICS("Sales.OrderHeader",'ix_OrderDate');
 --See, ascending
 GO
+DBCC SHOW_STATISTICS('Sales.OrderHeader','ix_OrderDate') WITH HISTOGRAM;
 --We already know it's ascending, now we want to see the histograms again with show_statistics
 DBCC TRACEOFF(2388);
-DBCC SHOW_STATISTICS('Sales.OrderHeader','ix_OrderDate') WITH HISTOGRAM;
+DBCC SHOW_STATISTICS('Sales.OrderHeader','ix_OrderDate') ;
 --Note the hightest RANGE_HI_KEY
 --Let's insert a higher OrderDate
 EXEC Demo.CreateOrdersForDay @orderdate = '2016-08-30';
 --Look at statistics
 DBCC SHOW_STATISTICS('Sales.OrderHeader','ix_OrderDate') WITH HISTOGRAM;
 --Let's query the data again
-DBCC FREEPROCCACHE;
 
+DECLARE @dt DATE = '2016-08-30';
+DECLARE @s NVARCHAR(MAX) = N'
+--with traceflags 2388,2389
 SELECT
 	AVG(wc.DistanceKM),
 	wc.WarehouseID
@@ -112,8 +100,10 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID 
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate='2016-08-30'
-GROUP BY wc.WarehouseID;
+WHERE oh.OrderDate=@dt
+GROUP BY wc.WarehouseID
+'
+EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
 GO
 --Voila!
 
@@ -126,8 +116,12 @@ DBCC TRACESTATUS(-1);
 
 --UPGRADE to SQL 2014
 ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL = 120;
+GO
 --Test
-DBCC FREEPROCCACHE
+
+DECLARE @dt DATE = '2016-08-30';
+DECLARE @s NVARCHAR(MAX) = N'
+--sql2014
 SELECT
 	AVG(wc.DistanceKM),
 	wc.WarehouseID
@@ -138,14 +132,19 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID 
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate='2016-08-30'
-GROUP BY wc.WarehouseID;
+WHERE oh.OrderDate=@dt
+GROUP BY wc.WarehouseID
+'
+EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
 
 
 --UPGRADE to SQL 2016
 ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL = 130;
 --Test
-DBCC FREEPROCCACHE
+GO
+DECLARE @dt DATE = '2016-08-30';
+DECLARE @s NVARCHAR(MAX) = N'
+--sql2016
 SELECT
 	AVG(wc.DistanceKM),
 	wc.WarehouseID
@@ -156,14 +155,19 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID 
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate='2016-08-30'
-GROUP BY wc.WarehouseID;
+WHERE oh.OrderDate=@dt
+GROUP BY wc.WarehouseID
+'
+EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
 
-
+DBCC SHOW_STATISTICS([sales.OrderHeader], ix_orderdate)
 --UPGRADE to SQL 2017
 ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL = 140;
 --Test
-DBCC FREEPROCCACHE
+GO
+DECLARE @dt DATE = '2016-08-30';
+DECLARE @s NVARCHAR(MAX) = N'
+--sql2017
 SELECT
 	AVG(wc.DistanceKM),
 	wc.WarehouseID
@@ -174,15 +178,21 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID 
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate='2016-08-30'
-GROUP BY wc.WarehouseID;
+WHERE oh.OrderDate=@dt
+GROUP BY wc.WarehouseID
+'
+EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
 
+DBCC SHOW_STATISTICS([sales.OrderHeader], ix_orderdate)
 
 
 --UPGRADE to SQL 2019
 ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL = 150;
 --Test
-DBCC FREEPROCCACHE
+GO
+DECLARE @dt DATE = '2016-08-30';
+DECLARE @s NVARCHAR(MAX) = N'
+--sql2019
 SELECT
 	AVG(wc.DistanceKM),
 	wc.WarehouseID
@@ -193,13 +203,43 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID 
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate='2016-08-30'
-GROUP BY wc.WarehouseID;
+WHERE oh.OrderDate=@dt
+GROUP BY wc.WarehouseID
+'
+EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
+
+
+;
+
+SELECT * FROM sys.stats WHERE object_id=OBJECT_ID('sales.orderheader')
+SELECT * FROM sys.dm_db_stats_properties(OBJECT_ID('sales.orderheader'),2) AS DDSP
+UPDATE sales.OrderHeader SET orderdate=orderdate WHERE orderdate='2016-08-30'
+
+SELECT * FROM sys.dm_db_stats_properties(OBJECT_ID('sales.orderheader'),2) AS DDSP
+GO
+DECLARE @dt DATE = '2016-08-30';
+DECLARE @s NVARCHAR(MAX) = N'
+--sql2019, with more rows modified
+SELECT
+	AVG(wc.DistanceKM),
+	wc.WarehouseID
+FROM
+	Sales.OrderHeader oh
+	INNER JOIN Sales.CustomerAddress ca
+	ON oh.CustomerID = ca.CustomerID 
+	INNER JOIN Shipping.Locations l
+	ON ca.LocationID = l.LocationID 
+	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
+WHERE oh.OrderDate=@dt
+GROUP BY wc.WarehouseID
+'
+EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
+
+DBCC SHOW_STATISTICS([sales.OrderHeader], ix_orderdate)
+
 
 --But how about missing key, which is not ascending value?
---SQL Server 2016
-ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL = 130
-
+--Remember, we're still on SQL Server 2019
 EXEC demo.createordersforday @orderdate='2016-09-02';
 
 UPDATE STATISTICS Sales.OrderHeader WITH FULLSCAN;
@@ -209,8 +249,9 @@ EXEC demo.createordersforday @orderdate='2016-09-01';
 DBCC SHOW_STATISTICS("Sales.OrderHeader",'ix_OrderDate') WITH HISTOGRAM;
 GO
 
-
-DBCC FREEPROCCACHE;
+DECLARE @dt DATE = '2016-09-01'
+DECLARE @s NVARCHAR(MAX) = N'
+--SQL Server 2019, missing key in the middle
 SELECT
 	AVG(wc.DistanceKM),
 	wc.WarehouseID
@@ -221,16 +262,17 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID 
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate='2016-09-01'
-GROUP BY wc.WarehouseID;
+WHERE oh.OrderDate = @dt
+GROUP BY wc.WarehouseID;'
+EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
+
 GO
 
---Threshold for auto update stats
 
-
---Optimize for unknown. Requires parameter.
+--Parametrized with optimize for unknown. 
 ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=100
 DECLARE @dt date='2016-09-01';
+DECLARE @s NVARCHAR(MAX)='
 SELECT
 	AVG(wc.DistanceKM),
 	wc.WarehouseID
@@ -243,7 +285,9 @@ FROM
 	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
 WHERE oh.OrderDate=@dt 
 GROUP BY wc.WarehouseID
-OPTION(OPTIMIZE FOR(@dt UNKNOWN));
+OPTION(OPTIMIZE FOR(@dt UNKNOWN));'
+EXEC sp_executesql @statement = @s, @params = N'@dt date', @dt = @dt;
+
 
 
 --Silver bullet? It depends :)
