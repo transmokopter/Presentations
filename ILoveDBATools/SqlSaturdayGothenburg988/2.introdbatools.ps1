@@ -1,5 +1,5 @@
 #To install - use Install-Module
-Install-Module DBATOOLS -Repository PSGALLERY -Scope AllUsers;
+Install-Module dbatools -Repository PSGALLERY -Scope AllUsers;
 
 #To update, use built in command Update-DbaTools
 Update-DbaTools;
@@ -15,7 +15,7 @@ $cred = New-Object pscredential("sa",$secpwd)
 
 Get-DbaService -Server localhost;
 #Filter for Engine servie only
-Get-DbaService -Server localhost -Type Engine;
+Get-DbaService -Server localhost -Type Engine
 #Explore members of the returned object
 Get-DbaService -Server localhost -Type Engine | Get-Member;
 #Customize result set
