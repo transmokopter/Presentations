@@ -20,7 +20,7 @@ docker create -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Pa55w.rd" -e "MSSQL_AGENT_ENABL
 # Start containers
 docker start sql1
 docker start sql2
-
+docker cp D:\sqldata\localhost\backup\AdventureWorks2014.bak sql1:/var/opt/mssql/data
 docker logs sql1 
 
 

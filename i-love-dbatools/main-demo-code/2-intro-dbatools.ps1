@@ -13,18 +13,18 @@ $cred = New-Object pscredential("sa",$secpwd)
 # I like putting them in their own database instead of master
 
 $dbname = "DBA"
-New-DbaDatabase -SqlInstance sql1 -SqlCredential $cred -name $dbname -owner sa
+New-DbaDatabase -SqlInstance "localhost,1401" -SqlCredential $cred -name $dbname -owner sa
 
-Install-DbaMaintenanceSolution -sqlinstance sql1 -SqlCredential $cred -Database $dbname -ReplaceExisting
-Install-DbaFirstResponderKit -SqlInstance sql1 -SqlCredential $cred -Database $dbname 
-Install-DbaWhoIsActive -SqlInstance sql1 -SqlCredential $cred -Database $dbname 
+Install-DbaMaintenanceSolution -sqlinstance "localhost,1401" -SqlCredential $cred -Database $dbname -ReplaceExisting
+Install-DbaFirstResponderKit -SqlInstance "localhost,1401" -SqlCredential $cred -Database $dbname 
+Install-DbaWhoIsActive -SqlInstance "localhost,1401" -SqlCredential $cred -Database $dbname 
 
 $DBALoginpwd = ConvertTo-SecureString -AsPlaintext "Pa55w.rd" -Force
-New-DbaLogin -SqlInstance sql1 -SqlCredential $cred -Login DBALogin -Password $DBALoginpwd -PasswordPolicyEnforced:$false
+New-DbaLogin -SqlInstance "localhost,1401" -SqlCredential $cred -Login DBALogin -Password $DBALoginpwd -PasswordPolicyEnforced:$false
 
 #And with some fancier PS-stuff, a Splat for parameters
-$LoginSplat = @{
-    SqlInstance             = "sql1"
+$loginSplat = @{
+    SqlInstance             = "localhost,1401"
     SqlCredential           = $cred
     Login                   = "MySecondLogin"
     Password                = $DBALoginpwd
@@ -33,3 +33,11 @@ $LoginSplat = @{
 }
 
 New-DbaLogin @LoginSplat 
+
+$restoreSplat = @{
+    SqlInstance            = "localhost,1401"
+    SqlCredential          = $cred
+    Path                   = "/var/opt/mssql/data/AdventureWorks2014.bak"
+}
+
+Restore-DbaDatabase @restoreSplat 
