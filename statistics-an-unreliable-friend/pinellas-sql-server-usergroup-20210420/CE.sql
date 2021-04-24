@@ -48,7 +48,7 @@ SELECT COUNT(*) FROM dbo.Cars AS C WHERE C.ModelName='V70'
 SELECT COUNT(*) FROM dbo.Cars AS C WHERE c.BrandName='SAAB' AND ModelName = 'V70'
 --Wut? Where did SQL Server come up with that number?
 
-SELECT COUNT(*) FROM dbo.Cars AS C WHERE c.BrandName='Volvo' AND ModelName = 'V70'
+SELECT COUNT(*) FROM dbo.Cars AS C WHERE c.BrandName='Volvo' AND ModelName = 'V70' OPTION(RECOMPILE)
 --And this? It's higher, but where does it come from?
 
 SELECT COUNT(*) FROM dbo.Cars AS C WHERE c.BrandName='Volvo' AND ModelName = 'V70' AND C.Color='Red'

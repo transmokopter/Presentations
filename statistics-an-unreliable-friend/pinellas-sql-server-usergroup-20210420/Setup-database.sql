@@ -1,5 +1,10 @@
 USE master;
 GO
+IF DB_ID('AdventureWorks2014') IS NULL
+BEGIN 
+	RESTORE DATABASE AdventureWorks2014 FROM DISK='/var/opt/mssql/data/AdventureWorks2014.bak' WITH MOVE 'AdventureWorks2014_Data' TO '/var/opt/mssql/data/AdventureWorks2014_Data.mdf', MOVE 'AdventureWorks2014_Log' TO '/var/opt/mssql/data/AdventureWorks2014_Log.ldf'
+END
+
 IF DB_ID('StatsDemo') IS NOT null
 	ALTER DATABASE StatsDemo SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
 GO
@@ -204,3 +209,11 @@ WITH CTE_Numbers AS(
 	CROSS JOIN CTE_Dates;
 
 GO
+
+
+SELECT FORMAT(COUNT(*) ,'#,#','en-us') AS CountOfRows, 'Sales.SalesOrderHeader' AS TableName FROM Sales.OrderHeader
+UNION ALL
+SELECT FORMAT(COUNT(*) ,'#,#','en-us'), 'Sales.Customer' FROM Sales.Customer
+UNION ALL
+SELECT FORMAT(COUNT(*) ,'#,#','en-us'), 'Shipping.Locations' FROM Shipping.Locations
+

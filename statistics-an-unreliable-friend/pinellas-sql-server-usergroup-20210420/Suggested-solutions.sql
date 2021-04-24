@@ -103,7 +103,7 @@ DBCC SHOW_STATISTICS('Sales.OrderHeader','ix_OrderDate') WITH HISTOGRAM;
 
 DECLARE @dt DATE = '2016-08-30';
 DECLARE @s NVARCHAR(MAX) = N'
---with traceflags 2388 and 2389
+--with traceflag 2389
 SELECT
 	AVG(OrderHeaderDiscount) As DiscountAverage,
 	l.CountryRegionCode
@@ -229,7 +229,7 @@ ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=140
 DECLARE @dt date='2016-08-30';
 DECLARE @s NVARCHAR(MAX)='
 SELECT
-	--low
+	--high
 	AVG(OrderHeaderDiscount) As DiscountAverage,
 	l.CountryRegionCode
 FROM
@@ -240,7 +240,7 @@ FROM
 	ON ca.LocationID = l.LocationID
 	WHERE oh.OrderDate=@dt
 GROUP BY l.CountryRegionCode
-OPTION(OPTIMIZE FOR(@dt UNKNOWN));'
+OPTION(OPTIMIZE FOR(@dt unknown));'
 EXEC sp_executesql @statement = @s, @params = N'@dt date', @dt = @dt;
 
 
