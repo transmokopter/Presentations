@@ -85,12 +85,6 @@ SELECT
 --Actual number of rows = 0
 SELECT COUNT(*) FROM dbo.Cars AS C WHERE c.BrandName='Volvo' AND ModelName = 'V70' AND C.Color='Red'
 
-
-
---Back to orders database...
-
-
-
 --Addition AFTER Sql Saturday Oslo, just as comment, will create demos to "prove" this odd behaviour
 --Now where did THAT estimate come from?
 --It _seems_ like the logic is this:
@@ -99,3 +93,23 @@ SELECT COUNT(*) FROM dbo.Cars AS C WHERE c.BrandName='Volvo' AND ModelName = 'V7
 --Density*TotalRowcount is about 12500 rows
 --
 --SQRT(TotalRowcount) is about 1700 rows, so that value is chosen
+--Back to orders database...
+
+DECLARE @dt DATE = '2016-08-30';
+DECLARE @s NVARCHAR(MAX) = N'
+--with sql2014
+SELECT
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
+FROM
+	Sales.OrderHeader oh
+	INNER JOIN Sales.CustomerAddress ca
+	ON oh.CustomerID = ca.CustomerID 
+	INNER JOIN Shipping.Locations l
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate=@dt
+GROUP BY l.CountryRegionCode;'
+EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
+
+
+SELECT SQRT(COUNT(*)) FROM Sales.OrderHeader oh;
