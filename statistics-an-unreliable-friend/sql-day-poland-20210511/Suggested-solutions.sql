@@ -4,42 +4,55 @@ SET STATISTICS IO, TIME ON
 
 --Parametrize
 --This is roughly what any sanely programmed application would send
+DECLARE @dt date='2016-08-25';
+DECLARE @s NVARCHAR(MAX)=N'
+--Parametrized query
+SELECT
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
+FROM
+	Sales.OrderHeader oh
+	INNER JOIN Sales.CustomerAddress ca
+	ON oh.CustomerID = ca.CustomerID 
+	INNER JOIN Shipping.Locations l
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate=@dt
+GROUP BY l.CountryRegionCode;'
+EXEC sp_executesql @statement = @s, @params = N'@dt date', @dt = @dt;
+GO
 DECLARE @dt date='2016-08-24';
 DECLARE @s NVARCHAR(MAX)=N'
 --Parametrized query
 SELECT
-	AVG(wc.DistanceKM),
-	wc.WarehouseID
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
 FROM
 	Sales.OrderHeader oh
 	INNER JOIN Sales.CustomerAddress ca
 	ON oh.CustomerID = ca.CustomerID 
 	INNER JOIN Shipping.Locations l
-	ON ca.LocationID = l.LocationID 
-	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate = @dt 
-GROUP BY wc.WarehouseID;'
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate=@dt
+GROUP BY l.CountryRegionCode;'
 EXEC sp_executesql @statement = @s, @params = N'@dt date', @dt = @dt;
-
 
 
 GO
 --Get date from function
-DECLARE @dt DATE = '2016-08-24';
+DECLARE @dt DATE = '2016-08-25';
 DECLARE @s NVARCHAR(MAX) = N'
 --Get date from scalar function
 SELECT
-	AVG(wc.DistanceKM),
-	wc.WarehouseID
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
 FROM
 	Sales.OrderHeader oh
 	INNER JOIN Sales.CustomerAddress ca
 	ON oh.CustomerID = ca.CustomerID 
 	INNER JOIN Shipping.Locations l
-	ON ca.LocationID = l.LocationID 
-	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-	WHERE oh.OrderDate = @dt --look here
-GROUP BY wc.WarehouseID;'
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate=Demo.GetSameDateScalar(@dt) --look here
+GROUP BY l.CountryRegionCode;'
 EXEC sys.sp_executesql @statement = @s, @params = N'@dt date', @dt = @dt;
 
 GO
@@ -92,24 +105,22 @@ DECLARE @dt DATE = '2016-08-30';
 DECLARE @s NVARCHAR(MAX) = N'
 --with traceflags 2388 and 2389
 SELECT
-	AVG(wc.DistanceKM),
-	wc.WarehouseID
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
 FROM
 	Sales.OrderHeader oh
 	INNER JOIN Sales.CustomerAddress ca
 	ON oh.CustomerID = ca.CustomerID 
 	INNER JOIN Shipping.Locations l
-	ON ca.LocationID = l.LocationID 
-	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate=@dt
-GROUP BY wc.WarehouseID
-'
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate=@dt
+GROUP BY l.CountryRegionCode;'
 EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
 GO
---Voila!
 
-DBCC TRACEOFF(2389);
-DBCC TRACESTATUS(-1);
+
+--DBCC TRACEOFF(2389);
+--DBCC TRACESTATUS(-1);
 
 --the Voldemort solution, not gonna show you..
 
@@ -124,30 +135,20 @@ DECLARE @dt DATE = '2016-08-30';
 DECLARE @s NVARCHAR(MAX) = N'
 --with sql2014
 SELECT
-	AVG(wc.DistanceKM),
-	wc.WarehouseID
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
 FROM
 	Sales.OrderHeader oh
 	INNER JOIN Sales.CustomerAddress ca
 	ON oh.CustomerID = ca.CustomerID 
 	INNER JOIN Shipping.Locations l
-	ON ca.LocationID = l.LocationID 
-	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate = @dt
-GROUP BY wc.WarehouseID
-'
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate=@dt
+GROUP BY l.CountryRegionCode;'
 EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
 
 
---Addition AFTER Sql Saturday Oslo, just as comment, will create demos to "prove" this odd behaviour
---Now where did THAT estimate come from?
---It _seems_ like the logic is this:
---The lesser values of:
---Density*TotalRowcount and SQRT(TotalRowcount)
---Density*TotalRowcount is about 12500 rows
---
---SQRT(TotalRowcount) is about 1700 rows, so that value is chosen
-
+--More on that estimate in the CE-demo...
 
 GO
 DECLARE @dt DATE='2016-08-30';
@@ -163,18 +164,16 @@ DECLARE @dt DATE = '2016-08-30';
 DECLARE @s NVARCHAR(MAX) = N'
 --sql2016
 SELECT
-	AVG(wc.DistanceKM),
-	wc.WarehouseID
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
 FROM
 	Sales.OrderHeader oh
 	INNER JOIN Sales.CustomerAddress ca
 	ON oh.CustomerID = ca.CustomerID 
 	INNER JOIN Shipping.Locations l
-	ON ca.LocationID = l.LocationID 
-	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate=@dt
-GROUP BY wc.WarehouseID
-'
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate=@dt
+GROUP BY l.CountryRegionCode;'
 EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
 
 DBCC SHOW_STATISTICS([sales.OrderHeader], ix_orderdate)
@@ -186,18 +185,16 @@ DECLARE @dt DATE = '2016-08-30';
 DECLARE @s NVARCHAR(MAX) = N'
 --sql2017
 SELECT
-	AVG(wc.DistanceKM),
-	wc.WarehouseID
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
 FROM
 	Sales.OrderHeader oh
 	INNER JOIN Sales.CustomerAddress ca
 	ON oh.CustomerID = ca.CustomerID 
 	INNER JOIN Shipping.Locations l
-	ON ca.LocationID = l.LocationID 
-	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate=@dt
-GROUP BY wc.WarehouseID
-'
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate=@dt
+GROUP BY l.CountryRegionCode;'
 EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
 
 DBCC SHOW_STATISTICS([sales.OrderHeader], ix_orderdate)
@@ -211,97 +208,38 @@ DECLARE @dt DATE = '2016-08-30';
 DECLARE @s NVARCHAR(MAX) = N'
 --sql2019
 SELECT
-	AVG(wc.DistanceKM),
-	wc.WarehouseID
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
 FROM
 	Sales.OrderHeader oh
 	INNER JOIN Sales.CustomerAddress ca
 	ON oh.CustomerID = ca.CustomerID 
 	INNER JOIN Shipping.Locations l
-	ON ca.LocationID = l.LocationID 
-	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate=@dt
-GROUP BY wc.WarehouseID
-'
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate=@dt
+GROUP BY l.CountryRegionCode;'
 EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
 
-
-
-
-SELECT * FROM sys.stats WHERE object_id=OBJECT_ID('sales.orderheader')
-SELECT * FROM sys.dm_db_stats_properties(OBJECT_ID('sales.orderheader'),2) AS DDSP
-UPDATE sales.OrderHeader SET orderdate=orderdate WHERE orderdate='2016-08-30'
-
-SELECT * FROM sys.dm_db_stats_properties(OBJECT_ID('sales.orderheader'),2) AS DDSP
-GO
-DECLARE @dt DATE = '2016-08-30';
-DECLARE @s NVARCHAR(MAX) = N'
---sql2019, with more rows modified
-SELECT
-	AVG(wc.DistanceKM),
-	wc.WarehouseID
-FROM
-	Sales.OrderHeader oh
-	INNER JOIN Sales.CustomerAddress ca
-	ON oh.CustomerID = ca.CustomerID 
-	INNER JOIN Shipping.Locations l
-	ON ca.LocationID = l.LocationID 
-	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate=@dt
-GROUP BY wc.WarehouseID
-'
-EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
-
-DBCC SHOW_STATISTICS([sales.OrderHeader], ix_orderdate)
-
-
---But how about missing key, which is not ascending value?
---Remember, we're still on SQL Server 2019
-EXEC demo.createordersforday @orderdate='2016-09-02';
-
-UPDATE STATISTICS Sales.OrderHeader WITH FULLSCAN;
-DBCC SHOW_STATISTICS("Sales.OrderHeader",'ix_OrderDate') WITH HISTOGRAM;
-
-EXEC demo.createordersforday @orderdate='2016-09-01';
-DBCC SHOW_STATISTICS("Sales.OrderHeader",'ix_OrderDate') WITH HISTOGRAM;
-GO
-
-DECLARE @dt DATE = '2016-09-01'
-DECLARE @s NVARCHAR(MAX) = N'
---SQL Server 2019, missing key in the middle
-SELECT
-	AVG(wc.DistanceKM),
-	wc.WarehouseID
-FROM
-	Sales.OrderHeader oh
-	INNER JOIN Sales.CustomerAddress ca
-	ON oh.CustomerID = ca.CustomerID 
-	INNER JOIN Shipping.Locations l
-	ON ca.LocationID = l.LocationID 
-	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate = @dt
-GROUP BY wc.WarehouseID;'
-EXEC sys.sp_executesql @statement = @s, @params=N'@dt date', @dt = @dt;
 
 GO
 
 
 --Parametrized with optimize for unknown. 
-ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=100
+ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=140
 DECLARE @dt date='2016-08-30';
 DECLARE @s NVARCHAR(MAX)='
 SELECT
-	AVG(wc.DistanceKM),
-	wc.WarehouseID
+	--low
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
 FROM
 	Sales.OrderHeader oh
 	INNER JOIN Sales.CustomerAddress ca
 	ON oh.CustomerID = ca.CustomerID 
 	INNER JOIN Shipping.Locations l
-	ON ca.LocationID = l.LocationID 
-	CROSS APPLY Shipping.ClosestWarehouse(l.PhysicalLocation) wc
-WHERE oh.OrderDate=@dt 
-GROUP BY wc.WarehouseID
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate=@dt
+GROUP BY l.CountryRegionCode
 OPTION(OPTIMIZE FOR(@dt UNKNOWN));'
 EXEC sp_executesql @statement = @s, @params = N'@dt date', @dt = @dt;
 
