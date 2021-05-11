@@ -1,5 +1,5 @@
 USE StatsDemo
-SET STATISTICS IO, TIME ON
+SET STATISTICS IO ON; SET STATISTICS TIME OFF;
 --Turn on actual plan
 
 --Parametrize
@@ -229,7 +229,7 @@ ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=140
 DECLARE @dt date='2016-08-30';
 DECLARE @s NVARCHAR(MAX)='
 SELECT
-	--low
+	--high
 	AVG(OrderHeaderDiscount) As DiscountAverage,
 	l.CountryRegionCode
 FROM
@@ -239,8 +239,7 @@ FROM
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID
 	WHERE oh.OrderDate=@dt
-GROUP BY l.CountryRegionCode
-OPTION(OPTIMIZE FOR(@dt UNKNOWN));'
+GROUP BY l.CountryRegionCode'
 EXEC sp_executesql @statement = @s, @params = N'@dt date', @dt = @dt;
 
 

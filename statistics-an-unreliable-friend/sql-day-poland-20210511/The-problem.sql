@@ -1,7 +1,7 @@
 USE StatsDemo
 --This is what Ola Hallengrens solution will do on a nightly basis
 UPDATE STATISTICS Sales.OrderHeader WITH FULLSCAN;
-SET STATISTICS IO, TIME ON;
+SET STATISTICS IO ON;SET STATISTICS TIME OFF;
 --Remember to enable actual execution plan!
 DECLARE @s NVARCHAR(MAX)=N'
 SELECT

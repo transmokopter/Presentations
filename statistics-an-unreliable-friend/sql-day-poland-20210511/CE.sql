@@ -94,10 +94,10 @@ SELECT COUNT(*) FROM dbo.Cars AS C WHERE c.BrandName='Volvo' AND ModelName = 'V7
 --
 --SQRT(TotalRowcount) is about 1700 rows, so that value is chosen
 --Back to orders database...
-
+ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=140
 DECLARE @dt DATE = '2016-08-30';
 DECLARE @s NVARCHAR(MAX) = N'
---with sql2014
+--Cardinality Estimation is fun
 SELECT
 	AVG(OrderHeaderDiscount) As DiscountAverage,
 	l.CountryRegionCode
