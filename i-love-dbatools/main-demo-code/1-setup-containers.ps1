@@ -1,13 +1,13 @@
-docker pull mcr.microsoft.com/mssql/server:latest
+docker pull mcr.microsoft.com/mssql/rhel:latest
 
 
 # Cleanup from previous lab
-#docker stop sql1 
-#docker stop sql2 
-#docker rm sql1 
-#docker rm sql2 
-#docker volume rm sqlvolume1
-#docker volume rm sqlvolume2
+# docker stop sql1 
+# docker stop sql2 
+# docker rm sql1 
+# docker rm sql2 
+# docker volume rm sqlvolume1
+# docker volume rm sqlvolume2
 
 # Create volumes for persisting data
 docker volume create sqlvolume1
@@ -24,7 +24,7 @@ docker start sql2
 # Copy AdventureWorks database backup to the container.
 docker cp D:\sqldata\localhost\backup\AdventureWorks2014.bak sql1:/var/opt/mssql/data
 
-docker logs sql1 
+docker logs sql2
 
 
 #Setup aliases, requires elevated prompt
