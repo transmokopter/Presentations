@@ -1,4 +1,4 @@
-docker pull mcr.microsoft.com/mssql/rhel:latest
+docker pull mcr.microsoft.com/mssql/server:latest
 
 
 # Cleanup from previous lab

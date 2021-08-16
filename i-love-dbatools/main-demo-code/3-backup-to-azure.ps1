@@ -18,12 +18,12 @@ $credentialSplat = @{
     SecurePassword          = $blobStoragePassword 
     Force                   = $true 
 }
-New-DbaCredential @credentialSplat -SqlInstance "localhost,1401" 
+New-DbaCredential @credentialSplat -SqlInstance "localhost,1401"
 New-DbaCredential @credentialSplat -SqlInstance "localhost,1402" 
 
 
 # two instances at once
-"localhost,1401","localhost,1402" | ForeEach-Object {
+"localhost,1401","localhost,1402" | ForEach-Object {
     New-DbaCredential @credentialSplat -SqlInstance $PSItem 
 }
 

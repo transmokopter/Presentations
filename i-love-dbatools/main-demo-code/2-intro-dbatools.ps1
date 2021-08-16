@@ -32,7 +32,7 @@ $loginSplat = @{
     PasswordPolicyEnforced  = $false 
 }
 
-New-DbaLogin @loginSplat -Login DBALogin
+New-DbaLogin @loginSplat -Login DBALogin -Force
 New-DbaLogin @LoginSplat -Login SecondLogin 
 
 # Restore AdventureWorks to the sql1 container
@@ -41,5 +41,6 @@ $restoreSplat = @{
     SqlCredential          = $cred
     Path                   = "/var/opt/mssql/data/AdventureWorks2014.bak"
 }
-Restore-DbaDatabase @restoreSplat 
+Restore-DbaDatabase @restoreSplat  
+
 

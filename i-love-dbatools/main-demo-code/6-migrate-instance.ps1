@@ -55,7 +55,7 @@ foreach( $logbackup in Get-DbaDbBackupHistory -SqlInstance "localhost,1401" -Sql
     Invoke-DbaQuery -SqlInstance "localhost,1402" -SqlCredential $cred -Database LogShippingMetadata -Query $updateLastLsnSql -SqlParameters @{LastLsn=$lsn;DBName="DBA"}
 }
 
-Invoke-DbaQuery -SqlInstance "localhost,1402" -SqlCredential $cred -Database LogShippingMetadata -Query "SELECT * FROM LogShippingWaterMarks"
+(Invoke-DbaQuery -SqlInstance "localhost,1402" -SqlCredential $cred -Database LogShippingMetadata -Query "SELECT * FROM LogShippingWaterMarks").lastlsn
 
 #Have a look at storage container
 #Have a look at SSMS
