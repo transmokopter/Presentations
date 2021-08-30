@@ -12,12 +12,12 @@ namespace tdd_intro.Tests
     public class ProgramTests
     {
         [TestMethod()]
-        public void IsValidDateTest_PositiveTest_StringFormat()
+        public void IsValidDateTest_PositiveTest_EuropeanDateFormat()
         {
             Assert.IsTrue(tdd_intro.Program.IsValidDate("2021-08-30"));
         }
         [TestMethod()]
-        public void IsValidDateTest_NegativeTest_StringFormat()
+        public void IsValidDateTest_NegativeTest_AmericanDateFormat()
         {
             Assert.IsFalse(tdd_intro.Program.IsValidDate("08/30/2021"));
         }
