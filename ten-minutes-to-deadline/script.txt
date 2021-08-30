@@ -1,0 +1,39 @@
+docker create --name sqltest -p1402:1433 -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Pa55w.rd" -vsqlvolume2:/var/opt/mssql mcr.microsoft.com/mssql/server:latest
+docker start sqltest
+docker logs sqltest
+
+$cred = New-Object pscredential("sa",(ConvertTo-SecureString -AsPlainText Pa55w.rd -force))
+
+New-DbaCredential -SqlInstance "localhost,1402" -SqlCredential $cred -Name "https://transmokopterpsdemo.blob.core.windows.net/backups" -Identity "shared access signature" -Password (ConvertTo-SecureString -AsPlainText "sv=2020-02-10&ss=bfqt&srt=sco&sp=rwdlacuptfx&se=2021-08-11T06:52:37Z&st=2021-06-10T22:52:37Z&spr=https&sig=pzBxNC1JJtJXvILB2UrysqH9hjgjUklHlCHWge0qFdA%3D" -Force)
+
+#explore backups
+Get-DbaDbBackupHistory -SqlInstance "localhost,1401" -SqlCredential $cred -Database AdventureWorks2014 -LastFull | ForEach-Object {
+	$psitem | Select-Object *
+}
+
+###
+Start-Transcript -Path c:\users\magnusa\test-database-backup.log -Append
+$cred = New-Object pscredential("sa",(ConvertTo-SecureString -AsPlainText Pa55w.rd -force))
+Get-DbaDbBackupHistory -SqlInstance "localhost,1401" -SqlCredential $cred -Database AdventureWorks2014 -LastFull | ForEach-Object {
+
+	$db = $PSItem.Database
+	if( $PSItem.start -lt (get-date).AddHours(-24)) {
+		Write-Warning "Backup date for database $db is older than 24 hours"
+	}
+	$psitem | Restore-DbaDatabase -SqlInstance "localhost,1402" -SqlCredential $cred -WithReplace 
+
+}
+Stop-Transcript
+###
+
+
+#copy above statement 
+notepad c:\users\magnusa\test-backup.ps1
+
+$action = New-ScheduledTaskAction -Execute 'pwsh.exe' -Argument '-NonInteractive -NoLogo -NoProfile -File c:\users\magnusa\test-backup.ps1'
+$trigger = New-ScheduledTaskTrigger -Daily -At 9am
+$settings = New-ScheduledTaskSettingsSet
+$task = New-ScheduledTask -Action $action -Trigger $trigger -Settings $settings
+Register-ScheduledTask -TaskName 'Test Database Backups For AdventureWorks2014' -InputObject $task 
+
+Start-ScheduledTask -TaskPath \ -TaskName "Test Database Backups For AdventureWorks2014"
