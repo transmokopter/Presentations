@@ -1,0 +1,15 @@
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\bin\Debug\net5.0\tdd-intro.exe
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\bin\Debug\net5.0\tdd-intro.deps.json
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\bin\Debug\net5.0\tdd-intro.runtimeconfig.json
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\bin\Debug\net5.0\tdd-intro.runtimeconfig.dev.json
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\bin\Debug\net5.0\tdd-intro.dll
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\bin\Debug\net5.0\ref\tdd-intro.dll
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\bin\Debug\net5.0\tdd-intro.pdb
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\tdd-intro.GeneratedMSBuildEditorConfig.editorconfig
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\tdd-intro.AssemblyInfoInputs.cache
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\tdd-intro.AssemblyInfo.cs
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\tdd-intro.csproj.CoreCompileInputs.cache
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\tdd-intro.dll
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\ref\tdd-intro.dll
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\tdd-intro.pdb
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\tdd-intro.genruntimeconfig.cache
