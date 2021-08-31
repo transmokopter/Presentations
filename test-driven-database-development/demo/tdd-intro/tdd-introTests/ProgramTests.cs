@@ -11,15 +11,15 @@ namespace tdd_intro.Tests
     [TestClass()]
     public class ProgramTests
     {
-        [TestMethod()]
-        public void IsValidDateTest_PositiveTest_EuropeanDateFormat()
+        [TestMethod("European Date Format is OK")]
+        public void IsValidDateTestPositiveEuropeanDateFormat()
         {
             Assert.IsTrue(tdd_intro.Program.IsValidDate("2021-08-30"));
         }
-        [TestMethod()]
-        public void IsValidDateTest_NegativeTest_AmericanDateFormat()
+        [TestMethod("American Date Format is OK")]
+        public void IsValidDateTestNegativeAmericanDateFormat()
         {
-            Assert.IsFalse(tdd_intro.Program.IsValidDate("08/30/2021"));
+            Assert.IsTrue(tdd_intro.Program.IsValidDate("08/30/2021"));
         }
     }
 }

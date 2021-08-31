@@ -12,13 +12,13 @@ namespace tdd_intro
         public static bool IsValidDate(string inDate)
         {
             var r = new Regex("\\d\\d\\d\\d-\\d\\d-\\d\\d");
+            // 2021-01-01
             var m = r.Match(inDate);
             // New requirement. American date format also valid
-            // var rAmerican = new Regex("\\d\\d/\\d\\d/\\d\\d\\d\\d");
-            // var mAmerican = rAmerican.Match(inDate);
-            // return m.Success || mAmerican.Success
-            return m.Success;
-
+            var rAmerican = new Regex("\\d\\d/\\d\\d/\\d\\d\\d\\d");
+            var mAmerican = rAmerican.Match(inDate);
+            return m.Success || mAmerican.Success;
+            
         }
     }
 }

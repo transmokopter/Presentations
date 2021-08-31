@@ -1,0 +1,87 @@
+2021-08-30 13:08:45	This log contains information about the import schema operation into project 'adventureworks2014-db' on computer 'TSQLWS2' by user 'magnu'.
+2021-08-30 13:08:45	Import of database schema has started.
+2021-08-30 13:08:49	Gathering database credentials
+2021-08-30 13:08:49	Gathering database options
+2021-08-30 13:08:49	Gathering generic database scoped configuration option
+2021-08-30 13:08:49	Gathering users
+2021-08-30 13:08:49	Gathering roles
+2021-08-30 13:08:49	Gathering application roles
+2021-08-30 13:08:49	Gathering role memberships
+2021-08-30 13:08:49	Gathering filegroups
+2021-08-30 13:08:49	Gathering full-text catalogs
+2021-08-30 13:08:49	Gathering assemblies
+2021-08-30 13:08:49	Gathering certificates
+2021-08-30 13:08:49	Gathering asymmetric keys
+2021-08-30 13:08:49	Gathering symmetric keys
+2021-08-30 13:08:49	Gathering encrypted symmetric keys
+2021-08-30 13:08:49	Gathering schemas
+2021-08-30 13:08:49	Gathering XML schema collections
+2021-08-30 13:08:49	Gathering user-defined data types
+2021-08-30 13:08:49	Gathering user-defined types
+2021-08-30 13:08:49	Gathering table types
+2021-08-30 13:08:49	Gathering unique keys for table types
+2021-08-30 13:08:49	Gathering primary keys for table types
+2021-08-30 13:08:49	Gathering indexes for table types
+2021-08-30 13:08:49	Gathering check constraints for table types
+2021-08-30 13:08:49	Gathering default constraints for table types
+2021-08-30 13:08:49	Gathering partition functions
+2021-08-30 13:08:49	Gathering partition schemes
+2021-08-30 13:08:49	Gathering functions
+2021-08-30 13:08:49	Gathering encrypted functions
+2021-08-30 13:08:49	Gathering aggregates
+2021-08-30 13:08:49	Gathering procedures
+2021-08-30 13:08:49	Gathering encrypted procedures
+2021-08-30 13:08:49	Gathering tables
+2021-08-30 13:08:49	Gathering primary keys
+2021-08-30 13:08:49	Gathering unique constraints
+2021-08-30 13:08:49	Gathering foreign keys
+2021-08-30 13:08:49	Gathering default constraints
+2021-08-30 13:08:49	Gathering check constraints
+2021-08-30 13:08:49	Gathering views
+2021-08-30 13:08:49	Gathering encrypted views
+2021-08-30 13:08:49	Gathering indexes
+2021-08-30 13:08:49	Gathering statistics
+2021-08-30 13:08:49	Gathering full-text index stoplists
+2021-08-30 13:08:49	Gathering search property lists
+2021-08-30 13:08:49	Gathering search properties
+2021-08-30 13:08:49	Gathering full-text indexes
+2021-08-30 13:08:49	Gathering column store indexes
+2021-08-30 13:08:49	Gathering spatial indexes
+2021-08-30 13:08:49	Gathering XML indexes
+2021-08-30 13:08:49	Gathering Selective XML indexes
+2021-08-30 13:08:49	Gathering encrypted triggers
+2021-08-30 13:08:49	Gathering triggers
+2021-08-30 13:08:49	Gathering encrypted and clr ddl triggers
+2021-08-30 13:08:49	Gathering ddl triggers
+2021-08-30 13:08:49	Creating edge constraints
+2021-08-30 13:08:49	Gathering synonyms
+2021-08-30 13:08:49	Gathering defaults
+2021-08-30 13:08:49	Gathering data constraint uddt bindings
+2021-08-30 13:08:49	Gathering rules
+2021-08-30 13:08:49	Gathering data constraint uddt bindings
+2021-08-30 13:08:49	Gathering message types
+2021-08-30 13:08:49	Gathering queues
+2021-08-30 13:08:49	Gathering contracts
+2021-08-30 13:08:49	Gathering services
+2021-08-30 13:08:49	Gathering event notifications
+2021-08-30 13:08:49	Gathering remote service bindings
+2021-08-30 13:08:49	Gathering broker priorities
+2021-08-30 13:08:49	Gathering signatures
+2021-08-30 13:08:49	Gathering data compression options
+2021-08-30 13:08:49	Gathering sequence types
+2021-08-30 13:08:49	Gathering security policies
+2021-08-30 13:08:49	Gather column encryption keys
+2021-08-30 13:08:49	Gathering column master keys
+2021-08-30 13:08:49	Gathering external data sources
+2021-08-30 13:08:49	Gathering external file formats
+2021-08-30 13:08:49	Gathering external tables
+2021-08-30 13:08:49	Gathering extended properties
+2021-08-30 13:08:50	Gathering credentials
+2021-08-30 13:08:50	Gathering logins
+2021-08-30 13:08:50	Gathering server audits
+2021-08-30 13:08:51	An exception was encountered while attempting to retrieve the default data path: ''.  As a result, absolute paths may appear in ADD FILE statements.
+2021-08-30 13:08:52	Scanning project for duplicate elements
+2021-08-30 13:08:52	Finished duplicate element processing
+2021-08-30 13:12:07	Finished importing database.
+2021-08-30 13:12:07	A summary of the import was saved to the following location: D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\Import Schema Logs\adventureworks2014-d_20210830110845.log
+2021-08-30 13:12:07	Click Finish to continue...

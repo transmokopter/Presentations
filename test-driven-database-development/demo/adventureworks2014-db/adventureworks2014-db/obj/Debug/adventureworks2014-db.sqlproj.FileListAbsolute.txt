@@ -1,0 +1,6 @@
+D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\bin\Debug\adventureworks2014-db.dacpac
+D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\bin\Debug\adventureworks2014_db.dll
+D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\bin\Debug\adventureworks2014_db.pdb
+D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014_db.dll
+D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014_db.pdb
+D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014-db.sqlprojAssemblyReference.cache
