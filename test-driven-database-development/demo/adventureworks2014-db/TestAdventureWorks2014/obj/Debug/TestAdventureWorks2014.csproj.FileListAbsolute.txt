@@ -40,3 +40,4 @@ D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db
 D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\TestAdventureWorks2014\obj\Debug\TestAdventureWorks2014.csproj.CopyComplete
 D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\TestAdventureWorks2014\obj\Debug\TestAdventureWorks2014.dll
 D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\TestAdventureWorks2014\obj\Debug\TestAdventureWorks2014.pdb
+D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\TestAdventureWorks2014\obj\Debug\TestAdventureWorks2014.csprojAssemblyReference.cache

@@ -14,6 +14,12 @@ while( $log.Length -eq 0 ) {
     $log = (docker logs tddsql) -like "*Service Broker manager has started*"
     if( $log.Length -gt 0 ){
         Write-Host "Instance ready." -ForegroundColor Green
+	Invoke-WebRequest https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2014.bak -OutFile .\AdventureWorks2014.bak
+	docker cp .\AdventureWorks2014.bak tddsql:/var/opt/mssql/data
+	$cred = New-Object System.Management.Automation.PSCredential("sa",(ConvertTo-SecureString -AsPlainText "Pa55w.rd" -Force))
+	Restore-DbaDatabase -SqlInstance "localhost,1405" -SqlCredential $cred -Path /var/opt/mssql/data/AdventureWorks2014.bak
+	Remove-Item .\AdventureWorks2014.bak
     }
 }
+
 

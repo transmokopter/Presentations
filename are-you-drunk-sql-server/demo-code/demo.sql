@@ -8,14 +8,11 @@ EXEC demo.CreateOrdersForDay
 	@orderdate = '2016-08-25' -- date
   , @numOrders = 12500 -- int;
 
---Examine the statistics
-DBCC SHOW_STATISTICS('sales.OrderHeader', 'ix_orderdate')
-SELECT * FROM sys.stats WHERE object_id=OBJECT_ID('sales.orderheader');
-SELECT * FROM sys.dm_db_stats_properties(OBJECT_ID('sales.OrderHeader'),2);
-SELECT * FROM sys.dm_db_stats_histogram(OBJECT_ID('sales.OrderHeader'),2);
-SELECT * FROM sys.dm_db_stats_properties_internal(OBJECT_ID('sales.OrderHeader'),2);
-
-
+--Examine the statistics and modifications
+DBCC SHOW_STATISTICS('Sales.OrderHeader', 'ix_orderdate')
+SELECT * FROM sys.stats WHERE object_id=OBJECT_ID('Sales.OrderHeader');
+SELECT * FROM sys.dm_db_stats_properties(OBJECT_ID('Sales.OrderHeader'),2);
+SELECT * FROM sys.dm_db_stats_histogram(OBJECT_ID('Sales.OrderHeader'),2);
 
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
@@ -52,7 +49,7 @@ OPTION(USE HINT('FORCE_LEGACY_CARDINALITY_ESTIMATION'), RECOMPILE);
 
 SELECT * FROM sys.dm_db_stats_properties(OBJECT_ID('sales.OrderHeader'),2);
 
-SELECT (modification_counter * 1.0) / steps + 12496 
+SELECT (modification_counter * 1.0) / steps + 12494
 FROM sys.dm_db_stats_properties(OBJECT_ID('sales.OrderHeader'),2);
 
 --Now let's examine values outside of histogram
@@ -118,7 +115,7 @@ DBCC SHOW_STATISTICS('sales.orderheader','ix_orderdate') WITH DENSITY_VECTOR;
 
 --Ah, covering index. So density for OrderDate combined with CustomerID:
 
-SELECT 1.994511E-06 * (rows)
+SELECT 1.994137E-06 * (rows)
 FROM sys.dm_db_stats_properties(OBJECT_ID('Sales.OrderHeader'),2);
 --This time, modification_counter is not considered.
 
@@ -170,7 +167,7 @@ GO
 
 SELECT COUNT(*)
 FROM Sales.OrderHeader
-WHERE OrderDate = '2016-08-24' AND CustomerAddressID = 5442 OPTION(RECOMPILE);
+WHERE OrderDate = '2016-08-25' AND CustomerAddressID = 5442 OPTION(RECOMPILE);
 
 SELECT 213.588 * (12621.0 / (rows + modification_counter))
 FROM sys.dm_db_stats_properties(OBJECT_ID('Sales.OrderHeader'),2);
@@ -251,7 +248,8 @@ FROM
 	WHERE oh.OrderDate='2016-08-24'
 GROUP BY l.CountryRegionCode
 OPTION(RECOMPILE);
-
+DECLARE @dt date = '2016-08-25';
+EXEC sp_executesql N'
 SELECT
 	AVG(OrderHeaderDiscount) As DiscountAverage,
 	l.CountryRegionCode
@@ -261,9 +259,9 @@ FROM
 	ON oh.CustomerID = ca.CustomerID 
 	INNER JOIN Shipping.Locations l
 	ON ca.LocationID = l.LocationID
-	WHERE oh.OrderDate='2016-08-25'
+	WHERE oh.OrderDate=@dt
 GROUP BY l.CountryRegionCode
-OPTION(RECOMPILE);
+OPTION(RECOMPILE, OPTIMIZE FOR(@dt UNKNOWN));',N'@dt date', @dt=@dt;
 
 --Look at the orderheader estimation!!
 
