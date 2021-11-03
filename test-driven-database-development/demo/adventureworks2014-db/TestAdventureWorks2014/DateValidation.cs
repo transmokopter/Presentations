@@ -28,28 +28,10 @@ namespace TestAdventureWorks2014
         {
             base.CleanupTest();
         }
-
         [TestMethod()]
-        public void TestIsLeapYearPositive2004()
+        public void TestIsLeapYearNegative2003()
         {
-            SqlDatabaseTestActions testActions = this.TestIsLeapYearPositive2004Data;
-            // Execute the pre-test script
-            // 
-            System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
-            SqlExecutionResult[] pretestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
-            // Execute the test script
-            // 
-            System.Diagnostics.Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
-            SqlExecutionResult[] testResults = TestService.Execute(this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
-            // Execute the post-test script
-            // 
-            System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
-            SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
-        }
-        [TestMethod()]
-        public void TestLeapYearNegative2003()
-        {
-            SqlDatabaseTestActions testActions = this.TestLeapYearNegative2003Data;
+            SqlDatabaseTestActions testActions = this.TestIsLeapYearNegative2003Data;
             // Execute the pre-test script
             // 
             System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
@@ -92,6 +74,31 @@ namespace TestAdventureWorks2014
                 SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
             }
         }
+        [TestMethod()]
+        public void TestIsLeapYearPositive1996()
+        {
+            SqlDatabaseTestActions testActions = this.TestIsLeapYearPositive1996Data;
+            // Execute the pre-test script
+            // 
+            System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
+            SqlExecutionResult[] pretestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+            try
+            {
+                // Execute the test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
+                SqlExecutionResult[] testResults = TestService.Execute(this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+            }
+            finally
+            {
+                // Execute the post-test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
+                SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+            }
+        }
+
+
 
 
 
@@ -105,42 +112,27 @@ namespace TestAdventureWorks2014
         /// </summary>
         private void InitializeComponent()
         {
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction TestIsLeapYearPositive2004_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction TestIsLeapYearNegative2003_TestAction;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DateValidation));
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition Test2004IsLeapYear;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction TestLeapYearNegative2003_TestAction;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition Test2003IsNotLeapYear;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction TestIsLeapYearNegative1900_TestAction;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition TestLeapYearNegative1900;
-            this.TestIsLeapYearPositive2004Data = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
-            this.TestLeapYearNegative2003Data = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction TestIsLeapYearPositive1996_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition TestIsLeapYearPositive1996;
+            this.TestIsLeapYearNegative2003Data = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.TestIsLeapYearNegative1900Data = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
-            TestIsLeapYearPositive2004_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
-            Test2004IsLeapYear = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition();
-            TestLeapYearNegative2003_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            this.TestIsLeapYearPositive1996Data = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
+            TestIsLeapYearNegative2003_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             Test2003IsNotLeapYear = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition();
             TestIsLeapYearNegative1900_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             TestLeapYearNegative1900 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition();
+            TestIsLeapYearPositive1996_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            TestIsLeapYearPositive1996 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition();
             // 
-            // TestIsLeapYearPositive2004_TestAction
+            // TestIsLeapYearNegative2003_TestAction
             // 
-            TestIsLeapYearPositive2004_TestAction.Conditions.Add(Test2004IsLeapYear);
-            resources.ApplyResources(TestIsLeapYearPositive2004_TestAction, "TestIsLeapYearPositive2004_TestAction");
-            // 
-            // Test2004IsLeapYear
-            // 
-            Test2004IsLeapYear.ColumnNumber = 1;
-            Test2004IsLeapYear.Enabled = true;
-            Test2004IsLeapYear.ExpectedValue = "1";
-            Test2004IsLeapYear.Name = "Test2004IsLeapYear";
-            Test2004IsLeapYear.NullExpected = false;
-            Test2004IsLeapYear.ResultSet = 1;
-            Test2004IsLeapYear.RowNumber = 1;
-            // 
-            // TestLeapYearNegative2003_TestAction
-            // 
-            TestLeapYearNegative2003_TestAction.Conditions.Add(Test2003IsNotLeapYear);
-            resources.ApplyResources(TestLeapYearNegative2003_TestAction, "TestLeapYearNegative2003_TestAction");
+            TestIsLeapYearNegative2003_TestAction.Conditions.Add(Test2003IsNotLeapYear);
+            resources.ApplyResources(TestIsLeapYearNegative2003_TestAction, "TestIsLeapYearNegative2003_TestAction");
             // 
             // Test2003IsNotLeapYear
             // 
@@ -151,24 +143,6 @@ namespace TestAdventureWorks2014
             Test2003IsNotLeapYear.NullExpected = false;
             Test2003IsNotLeapYear.ResultSet = 1;
             Test2003IsNotLeapYear.RowNumber = 1;
-            // 
-            // TestIsLeapYearPositive2004Data
-            // 
-            this.TestIsLeapYearPositive2004Data.PosttestAction = null;
-            this.TestIsLeapYearPositive2004Data.PretestAction = null;
-            this.TestIsLeapYearPositive2004Data.TestAction = TestIsLeapYearPositive2004_TestAction;
-            // 
-            // TestLeapYearNegative2003Data
-            // 
-            this.TestLeapYearNegative2003Data.PosttestAction = null;
-            this.TestLeapYearNegative2003Data.PretestAction = null;
-            this.TestLeapYearNegative2003Data.TestAction = TestLeapYearNegative2003_TestAction;
-            // 
-            // TestIsLeapYearNegative1900Data
-            // 
-            this.TestIsLeapYearNegative1900Data.PosttestAction = null;
-            this.TestIsLeapYearNegative1900Data.PretestAction = null;
-            this.TestIsLeapYearNegative1900Data.TestAction = TestIsLeapYearNegative1900_TestAction;
             // 
             // TestIsLeapYearNegative1900_TestAction
             // 
@@ -184,6 +158,39 @@ namespace TestAdventureWorks2014
             TestLeapYearNegative1900.NullExpected = false;
             TestLeapYearNegative1900.ResultSet = 1;
             TestLeapYearNegative1900.RowNumber = 1;
+            // 
+            // TestIsLeapYearNegative2003Data
+            // 
+            this.TestIsLeapYearNegative2003Data.PosttestAction = null;
+            this.TestIsLeapYearNegative2003Data.PretestAction = null;
+            this.TestIsLeapYearNegative2003Data.TestAction = TestIsLeapYearNegative2003_TestAction;
+            // 
+            // TestIsLeapYearNegative1900Data
+            // 
+            this.TestIsLeapYearNegative1900Data.PosttestAction = null;
+            this.TestIsLeapYearNegative1900Data.PretestAction = null;
+            this.TestIsLeapYearNegative1900Data.TestAction = TestIsLeapYearNegative1900_TestAction;
+            // 
+            // TestIsLeapYearPositive1996Data
+            // 
+            this.TestIsLeapYearPositive1996Data.PosttestAction = null;
+            this.TestIsLeapYearPositive1996Data.PretestAction = null;
+            this.TestIsLeapYearPositive1996Data.TestAction = TestIsLeapYearPositive1996_TestAction;
+            // 
+            // TestIsLeapYearPositive1996_TestAction
+            // 
+            TestIsLeapYearPositive1996_TestAction.Conditions.Add(TestIsLeapYearPositive1996);
+            resources.ApplyResources(TestIsLeapYearPositive1996_TestAction, "TestIsLeapYearPositive1996_TestAction");
+            // 
+            // TestIsLeapYearPositive1996
+            // 
+            TestIsLeapYearPositive1996.ColumnNumber = 1;
+            TestIsLeapYearPositive1996.Enabled = true;
+            TestIsLeapYearPositive1996.ExpectedValue = "1";
+            TestIsLeapYearPositive1996.Name = "TestIsLeapYearPositive1996";
+            TestIsLeapYearPositive1996.NullExpected = false;
+            TestIsLeapYearPositive1996.ResultSet = 1;
+            TestIsLeapYearPositive1996.RowNumber = 1;
         }
 
         #endregion
@@ -202,9 +209,8 @@ namespace TestAdventureWorks2014
         // public static void MyClassCleanup() { }
         //
         #endregion
-
-        private SqlDatabaseTestActions TestIsLeapYearPositive2004Data;
-        private SqlDatabaseTestActions TestLeapYearNegative2003Data;
+        private SqlDatabaseTestActions TestIsLeapYearNegative2003Data;
         private SqlDatabaseTestActions TestIsLeapYearNegative1900Data;
+        private SqlDatabaseTestActions TestIsLeapYearPositive1996Data;
     }
 }

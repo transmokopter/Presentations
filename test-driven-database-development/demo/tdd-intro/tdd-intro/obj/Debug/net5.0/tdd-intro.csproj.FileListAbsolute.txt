@@ -13,3 +13,4 @@ d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\o
 d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\ref\tdd-intro.dll
 d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\tdd-intro.pdb
 d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\tdd-intro.genruntimeconfig.cache
+d:\git\presentations\test-driven-database-development\demo\tdd-intro\tdd-intro\obj\Debug\net5.0\tdd-intro.csprojAssemblyReference.cache

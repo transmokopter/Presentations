@@ -49,12 +49,13 @@ OPTION(USE HINT('FORCE_LEGACY_CARDINALITY_ESTIMATION'), RECOMPILE);
 
 SELECT * FROM sys.dm_db_stats_properties(OBJECT_ID('sales.OrderHeader'),2);
 
-SELECT (modification_counter * 1.0) / steps + 12494
+SELECT (modification_counter * 1.0) / steps + 12497
 FROM sys.dm_db_stats_properties(OBJECT_ID('sales.OrderHeader'),2);
 
 --Now let's examine values outside of histogram
 --SQL Server 2012
 ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=110;
+GO
 SELECT COUNT(*) FROM Sales.OrderHeader 
 WHERE OrderDate = '2016-08-25'
 OPTION(RECOMPILE);
@@ -101,21 +102,21 @@ GO
 SELECT COUNT(*)
 FROM Sales.OrderHeader
 WHERE OrderDate = '2016-08-24' AND customerid = 3933 OPTION(RECOMPILE);
---2,49271. That's not a very even number, is it?
+--2,49345. That's not a very even number, is it?
 --Let's look at individual estimations
-SELECT COUNT(*) FROM sales.OrderHeader WHERE CustomerID = 3933; --213,929   <<<-----
-SELECT COUNT(*) FROM sales.OrderHeader WHERE OrderDate = '2016-08-24' --12621;
+SELECT COUNT(*) FROM sales.OrderHeader WHERE CustomerID = 3933; --223,201   <<<-----
+SELECT COUNT(*) FROM sales.OrderHeader WHERE OrderDate = '2016-08-24' --12622;
 
-SELECT 213.929 * (12622.0 / (rows + modification_counter))
+SELECT 223.201 * (12622.0 / (rows + modification_counter))
 FROM sys.dm_db_stats_properties(OBJECT_ID('sales.orderheader'),2)
---No, that's 2.139...
+--No, that's 2.231...
 
 --Let's look at density vector
 DBCC SHOW_STATISTICS('sales.orderheader','ix_orderdate') WITH DENSITY_VECTOR;
 
 --Ah, covering index. So density for OrderDate combined with CustomerID:
 
-SELECT 1.994137E-06 * (rows)
+SELECT 1.995064E-06 * (rows)
 FROM sys.dm_db_stats_properties(OBJECT_ID('Sales.OrderHeader'),2);
 --This time, modification_counter is not considered.
 
@@ -126,7 +127,7 @@ SELECT COUNT(*)
 FROM Sales.OrderHeader
 WHERE OrderDate = '2016-08-24' AND customerid = 3933 OPTION(RECOMPILE);
 
-SELECT 1.994511E-06 * (rows + modification_counter)
+SELECT 1.995064E-06 * (rows + modification_counter)
 FROM sys.dm_db_stats_properties(OBJECT_ID('Sales.OrderHeader'),2);
 
 -----------------------------------------------------------------------------------------
@@ -146,10 +147,10 @@ SELECT COUNT(*)
 FROM Sales.OrderHeader
 WHERE OrderDate = '2016-08-24' AND CustomerAddressID = 5442 OPTION(RECOMPILE);
 
---211.474 estimated rows for customeraddressid=5442
---12621 estimated rows for orderdate='2016-08-24'
---2.11442 rows estimated to come out from the Hash Match operator
-SELECT 211.474 * (12621.0 / (rows + modification_counter))
+--218.079 estimated rows for customeraddressid=5442
+--12622 estimated rows for orderdate='2016-08-24'
+--2.1806 rows estimated to come out from the Hash Match operator
+SELECT 218.079 * (12622.0 / (rows + modification_counter))
 FROM sys.dm_db_stats_properties(OBJECT_ID('Sales.OrderHeader'),2)
 
 --When date is outside the histogram
@@ -167,9 +168,9 @@ GO
 
 SELECT COUNT(*)
 FROM Sales.OrderHeader
-WHERE OrderDate = '2016-08-25' AND CustomerAddressID = 5442 OPTION(RECOMPILE);
+WHERE OrderDate = '2016-08-24' AND CustomerAddressID = 5442 OPTION(RECOMPILE);
 
-SELECT 213.588 * (12621.0 / (rows + modification_counter))
+SELECT 220.26 * (12622.0 / (rows + modification_counter))
 FROM sys.dm_db_stats_properties(OBJECT_ID('Sales.OrderHeader'),2);
 --No, that's not it anymore.
 
@@ -182,10 +183,10 @@ SELECT COUNT(*)
 FROM Sales.OrderHeader
 WHERE OrderDate = '2016-08-24' AND CustomerAddressID = 5442 OPTION(RECOMPILE, QUERYTRACEON 3604, QUERYTRACEON 2363);
 
---213.588 estimated rows for customeraddressid=5442  <<-- This is different from SQL 2012
---12621 estimated rows for orderdate='2016-08-24'
---2.24029 rows estimated to come out from the Hash Match operator <<-- This is different from SQL 2012
-SELECT 213.588 * 12621 * 8.08138e-07 --  <<<--- density vector for PK
+--220.26 estimated rows for customeraddressid=5442  <<-- This is different from SQL 2012
+--12622 estimated rows for orderdate='2016-08-24'
+--2.24667 rows estimated to come out from the Hash Match operator <<-- This is different from SQL 2012
+SELECT 220.26 * 12622 * 8.08122e-07 --  <<<--- density vector for PK
 FROM sys.dm_db_stats_properties(OBJECT_ID('Sales.OrderHeader'),2);
 
 --Here's another fun one with new CE
@@ -248,9 +249,22 @@ FROM
 	WHERE oh.OrderDate='2016-08-24'
 GROUP BY l.CountryRegionCode
 OPTION(RECOMPILE);
-DECLARE @dt date = '2016-08-25';
-EXEC sp_executesql N'
+
 SELECT
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
+FROM
+	Sales.OrderHeader oh
+	INNER JOIN Sales.CustomerAddress ca
+	ON oh.CustomerID = ca.CustomerID 
+	INNER JOIN Shipping.Locations l
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate='2016-08-25'
+GROUP BY l.CountryRegionCode
+OPTION(RECOMPILE);
+
+DECLARE @dt DATE='2016-08-25';
+EXEC sp_executesql @sql = N'SELECT
 	AVG(OrderHeaderDiscount) As DiscountAverage,
 	l.CountryRegionCode
 FROM
@@ -261,7 +275,24 @@ FROM
 	ON ca.LocationID = l.LocationID
 	WHERE oh.OrderDate=@dt
 GROUP BY l.CountryRegionCode
-OPTION(RECOMPILE, OPTIMIZE FOR(@dt UNKNOWN));',N'@dt date', @dt=@dt;
+OPTION(RECOMPILE);
+', @params=N'@dt date', @dt=@dt;
+
+GO
+DECLARE @dt DATE='2016-08-25';
+EXEC sp_executesql @sql = N'SELECT
+	AVG(OrderHeaderDiscount) As DiscountAverage,
+	l.CountryRegionCode
+FROM
+	Sales.OrderHeader oh
+	INNER JOIN Sales.CustomerAddress ca
+	ON oh.CustomerID = ca.CustomerID 
+	INNER JOIN Shipping.Locations l
+	ON ca.LocationID = l.LocationID
+	WHERE oh.OrderDate=@dt
+GROUP BY l.CountryRegionCode
+OPTION(RECOMPILE, OPTIMIZE FOR(@dt UNKNOWN));
+', @params=N'@dt date', @dt=@dt;
 
 --Look at the orderheader estimation!!
 

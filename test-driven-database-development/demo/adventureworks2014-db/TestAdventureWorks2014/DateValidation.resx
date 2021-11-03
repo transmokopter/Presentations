@@ -117,12 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TestIsLeapYearPositive2004_TestAction.SqlScript" xml:space="preserve">
-    <value>DECLARE @InYear smallint = 2004;
-SELECT * FROM dbo.IsLeapYear(@InYear);
-</value>
-  </data>
-  <data name="TestLeapYearNegative2003_TestAction.SqlScript" xml:space="preserve">
+  <data name="TestIsLeapYearNegative2003_TestAction.SqlScript" xml:space="preserve">
     <value>DECLARE @InYear smallint = 2003;
 SELECT * FROM dbo.IsLeapYear(@InYear);
 </value>
@@ -130,6 +125,11 @@ SELECT * FROM dbo.IsLeapYear(@InYear);
   <data name="TestIsLeapYearNegative1900_TestAction.SqlScript" xml:space="preserve">
     <value>DECLARE @InYear smallint = 1900;
 
+SELECT * FROM dbo.IsLeapYear(@InYear);</value>
+  </data>
+  <data name="TestIsLeapYearPositive1996_TestAction.SqlScript" xml:space="preserve">
+    <value>
+DECLARE @InYear smallint = 1996;
 SELECT * FROM dbo.IsLeapYear(@InYear);</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
