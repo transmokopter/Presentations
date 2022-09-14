@@ -4,3 +4,13 @@ D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db
 D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014_db.dll
 D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014_db.pdb
 D:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014-db.sqlprojAssemblyReference.cache
+C:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\bin\Debug\adventureworks2014-db.dacpac
+C:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\bin\Debug\adventureworks2014_db.dll
+C:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\bin\Debug\adventureworks2014_db.pdb
+C:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014-db.sqlproj.AssemblyReference.cache
+C:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014_db.dll
+C:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014_db.pdb
+C:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\Model.xml
+C:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\refactor.xml
+C:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\postdeploy.sql
+C:\git\Presentations\test-driven-database-development\demo\adventureworks2014-db\adventureworks2014-db\obj\Debug\predeploy.sql

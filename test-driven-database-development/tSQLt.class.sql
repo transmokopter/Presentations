@@ -1,3 +1,5 @@
+USE adventureworks2014
+go
 /*
    Copyright 2011 tSQLt
 

@@ -120,9 +120,10 @@
   <data name="TestIsLeapYearNegative2003_TestAction.SqlScript" xml:space="preserve">
     <value>DECLARE @InYear smallint = 2003;
 SELECT * FROM dbo.IsLeapYear(@InYear);
+
 </value>
   </data>
-  <data name="TestIsLeapYearNegative1900_TestAction.SqlScript" xml:space="preserve">
+  <data name="TestIsLeapYearPositive1900_TestAction.SqlScript" xml:space="preserve">
     <value>DECLARE @InYear smallint = 1900;
 
 SELECT * FROM dbo.IsLeapYear(@InYear);</value>

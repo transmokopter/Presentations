@@ -1,20 +1,20 @@
 {
   "version": 2,
-  "dgSpecHash": "OrOk9L/JVkwX00AzV2eL87n+m1bonN6ynN3IzcEO6AKisuS1SBmzVFX+l7DqmH20WoEIjHV25sieskUFyiz2Tg==",
+  "dgSpecHash": "BPhBpUNe6NzwB9kUbGd5iU4oji3WIBPn+SRl3gMD0GW7vg46xPpGk/hRfpusjgWYx4jB9CHrE/B8AZ4bILs8FA==",
   "success": true,
-  "projectFilePath": "d:\\git\\presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-introTests\\tdd-introTests.csproj",
+  "projectFilePath": "C:\\git\\Presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-introTests\\tdd-introTests.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\magnu\\.nuget\\packages\\coverlet.collector\\1.2.0\\coverlet.collector.1.2.0.nupkg.sha512",
-    "C:\\Users\\magnu\\.nuget\\packages\\microsoft.codecoverage\\16.5.0\\microsoft.codecoverage.16.5.0.nupkg.sha512",
+    "C:\\Users\\magnu\\.nuget\\packages\\coverlet.collector\\3.0.2\\coverlet.collector.3.0.2.nupkg.sha512",
+    "C:\\Users\\magnu\\.nuget\\packages\\microsoft.codecoverage\\16.9.4\\microsoft.codecoverage.16.9.4.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",
-    "C:\\Users\\magnu\\.nuget\\packages\\microsoft.net.test.sdk\\16.5.0\\microsoft.net.test.sdk.16.5.0.nupkg.sha512",
+    "C:\\Users\\magnu\\.nuget\\packages\\microsoft.net.test.sdk\\16.9.4\\microsoft.net.test.sdk.16.9.4.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
-    "C:\\Users\\magnu\\.nuget\\packages\\microsoft.testplatform.objectmodel\\16.5.0\\microsoft.testplatform.objectmodel.16.5.0.nupkg.sha512",
-    "C:\\Users\\magnu\\.nuget\\packages\\microsoft.testplatform.testhost\\16.5.0\\microsoft.testplatform.testhost.16.5.0.nupkg.sha512",
+    "C:\\Users\\magnu\\.nuget\\packages\\microsoft.testplatform.objectmodel\\16.9.4\\microsoft.testplatform.objectmodel.16.9.4.nupkg.sha512",
+    "C:\\Users\\magnu\\.nuget\\packages\\microsoft.testplatform.testhost\\16.9.4\\microsoft.testplatform.testhost.16.9.4.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
-    "C:\\Users\\magnu\\.nuget\\packages\\mstest.testadapter\\2.1.0\\mstest.testadapter.2.1.0.nupkg.sha512",
-    "C:\\Users\\magnu\\.nuget\\packages\\mstest.testframework\\2.1.0\\mstest.testframework.2.1.0.nupkg.sha512",
+    "C:\\Users\\magnu\\.nuget\\packages\\mstest.testadapter\\2.2.3\\mstest.testadapter.2.2.3.nupkg.sha512",
+    "C:\\Users\\magnu\\.nuget\\packages\\mstest.testframework\\2.2.3\\mstest.testframework.2.2.3.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\newtonsoft.json\\9.0.1\\newtonsoft.json.9.0.1.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\nuget.frameworks\\5.0.0\\nuget.frameworks.5.0.0.nupkg.sha512",
@@ -65,6 +65,7 @@
     "C:\\Users\\magnu\\.nuget\\packages\\system.reflection.emit.ilgeneration\\4.3.0\\system.reflection.emit.ilgeneration.4.3.0.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\system.reflection.emit.lightweight\\4.3.0\\system.reflection.emit.lightweight.4.3.0.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\system.reflection.extensions\\4.3.0\\system.reflection.extensions.4.3.0.nupkg.sha512",
+    "C:\\Users\\magnu\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\system.reflection.primitives\\4.3.0\\system.reflection.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\system.reflection.typeextensions\\4.3.0\\system.reflection.typeextensions.4.3.0.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\system.resources.resourcemanager\\4.3.0\\system.resources.resourcemanager.4.3.0.nupkg.sha512",
@@ -92,5 +93,46 @@
     "C:\\Users\\magnu\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "tdd-introTests depends on coverlet.collector (>= 1.2.0) but coverlet.collector 1.2.0 was not found. An approximate best match of coverlet.collector 3.0.2 was resolved.",
+      "libraryId": "coverlet.collector",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    },
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "tdd-introTests depends on Microsoft.NET.Test.Sdk (>= 16.5.0) but Microsoft.NET.Test.Sdk 16.5.0 was not found. An approximate best match of Microsoft.NET.Test.Sdk 16.9.4 was resolved.",
+      "libraryId": "Microsoft.NET.Test.Sdk",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    },
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "tdd-introTests depends on MSTest.TestAdapter (>= 2.1.0) but MSTest.TestAdapter 2.1.0 was not found. An approximate best match of MSTest.TestAdapter 2.2.3 was resolved.",
+      "libraryId": "MSTest.TestAdapter",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    },
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "tdd-introTests depends on MSTest.TestFramework (>= 2.1.0) but MSTest.TestFramework 2.1.0 was not found. An approximate best match of MSTest.TestFramework 2.2.3 was resolved.",
+      "libraryId": "MSTest.TestFramework",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    }
+  ]
 }
