@@ -63,12 +63,12 @@ FROM sys.index_columns AS IC
 WHERE i.object_id = OBJECT_ID(N'Person.Person') AND i.name = N'IX_Person_LastName_FirstName_MiddleName'
 ORDER BY ic.index_column_id;
 
---Covering index query
+--Query using index that covers the predicate
 SELECT * FROM Person.Person
 	WHERE FirstName = N'Ken' AND LastName = N'Sánchez';
 --Notice the key lookup
 
---Key column with high selectivity
+--Key column with low selectivity
 SET STATISTICS IO ON;
 SELECT * FROM Person.Person 
 	WHERE LastName = 'diaz';
@@ -79,6 +79,7 @@ SELECT * FROM Person.Person;
 UPDATE STATISTICS Person.Person WITH FULLSCAN;
 SELECT * FROM Person.Person 
 	WHERE LastName = 'diaz';
+
 --How about a filtered index for Diaz?
 CREATE INDEX ix_Person_LastName_FirstName_MiddleName_FILTER_LastNameISDiaz
 ON Person.Person (LastName, FirstName,MiddleName) WHERE LastName=N'Diaz';
@@ -86,9 +87,10 @@ SELECT * FROM Person.Person
 	WHERE LastName = 'diaz';
 
 --No, the key lookup is still necessary.
---Let's only include index columns
+--Let's only include index columns in query
 SELECT Lastname, FirstName, Middlename FROM Person.Person 
 	WHERE LastName = 'diaz';
+
 --Oh, clustering key is in leaf level of non-clustered index, so even with that included it should be a covering index
 SELECT Lastname, FirstName, Middlename, BusinessEntityID
 FROM Person.Person 
@@ -115,7 +117,7 @@ SELECT lastname,firstname,middlename,P.BusinessEntityID
 FROM Person.Person AS P WHERE PersonType=N'EM' AND LastName = 'Diaz';
 
 CREATE INDEX ix_Person_LastName_FirstName_MiddleName ON Person.Person
-(LastName, FirstName, MiddleName, PersonType)
+(LastName, FirstName, MiddleName)
 WITH DROP_EXISTING;
 
 SELECT lastname,firstname,middlename,P.BusinessEntityID 
@@ -137,6 +139,7 @@ CREATE NONCLUSTERED COLUMNSTORE INDEX ncci_Person ON Person.Person(
 )
 SELECT lastname,firstname,middlename,P.BusinessEntityID 
 FROM Person.Person AS P WHERE PersonType=N'EM' AND LastName = 'Sánchez';
+--Notice the execution mode
 
 DROP INDEX ncci_person ON Person.Person;
 
