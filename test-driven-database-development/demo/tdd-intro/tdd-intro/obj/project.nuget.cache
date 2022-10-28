@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "r0cmbB7AAbKzqzlp/iwR4FV0GSrFh/DTQqfBHsAPUrxW3aBwWvUNRofumEpmKtHhICipYd6xQhXNDsbYz/97oQ==",
+  "dgSpecHash": "gQ+bnthzisAOeFG/8Y8hwOreW/qaU+5Q6pEdtbkDZoah9SFU5Be9tDuUDZdcW6wmkkllNG+lSH4lFHXb5R1Jkg==",
   "success": true,
-  "projectFilePath": "d:\\git\\presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-intro\\tdd-intro.csproj",
+  "projectFilePath": "C:\\git\\Presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-intro\\tdd-intro.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

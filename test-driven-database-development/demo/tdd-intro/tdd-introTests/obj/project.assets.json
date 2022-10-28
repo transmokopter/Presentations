@@ -2,13 +2,13 @@
   "version": 3,
   "targets": {
     "net5.0": {
-      "coverlet.collector/1.2.0": {
+      "coverlet.collector/3.0.2": {
         "type": "package",
         "build": {
           "build/netstandard1.0/coverlet.collector.targets": {}
         }
       },
-      "Microsoft.CodeCoverage/16.5.0": {
+      "Microsoft.CodeCoverage/16.9.4": {
         "type": "package",
         "compile": {
           "lib/netcoreapp1.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll": {}
@@ -48,11 +48,17 @@
           "lib/netstandard1.3/Microsoft.CSharp.dll": {}
         }
       },
-      "Microsoft.NET.Test.Sdk/16.5.0": {
+      "Microsoft.NET.Test.Sdk/16.9.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeCoverage": "16.5.0",
-          "Microsoft.TestPlatform.TestHost": "16.5.0"
+          "Microsoft.CodeCoverage": "16.9.4",
+          "Microsoft.TestPlatform.TestHost": "16.9.4"
+        },
+        "compile": {
+          "lib/netcoreapp2.1/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/_._": {}
         },
         "build": {
           "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.props": {},
@@ -80,10 +86,11 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "Microsoft.TestPlatform.ObjectModel/16.5.0": {
+      "Microsoft.TestPlatform.ObjectModel/16.9.4": {
         "type": "package",
         "dependencies": {
-          "NuGet.Frameworks": "5.0.0"
+          "NuGet.Frameworks": "5.0.0",
+          "System.Reflection.Metadata": "1.6.0"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.TestPlatform.CoreUtilities.dll": {},
@@ -176,24 +183,30 @@
           }
         }
       },
-      "Microsoft.TestPlatform.TestHost/16.5.0": {
+      "Microsoft.TestPlatform.TestHost/16.9.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.TestPlatform.ObjectModel": "16.5.0",
+          "Microsoft.TestPlatform.ObjectModel": "16.9.4",
           "Newtonsoft.Json": "9.0.1"
         },
         "compile": {
           "lib/netcoreapp2.1/Microsoft.TestPlatform.CommunicationUtilities.dll": {},
+          "lib/netcoreapp2.1/Microsoft.TestPlatform.CoreUtilities.dll": {},
           "lib/netcoreapp2.1/Microsoft.TestPlatform.CrossPlatEngine.dll": {},
+          "lib/netcoreapp2.1/Microsoft.TestPlatform.PlatformAbstractions.dll": {},
           "lib/netcoreapp2.1/Microsoft.TestPlatform.Utilities.dll": {},
           "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.Common.dll": {},
+          "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll": {},
           "lib/netcoreapp2.1/testhost.dll": {}
         },
         "runtime": {
           "lib/netcoreapp2.1/Microsoft.TestPlatform.CommunicationUtilities.dll": {},
+          "lib/netcoreapp2.1/Microsoft.TestPlatform.CoreUtilities.dll": {},
           "lib/netcoreapp2.1/Microsoft.TestPlatform.CrossPlatEngine.dll": {},
+          "lib/netcoreapp2.1/Microsoft.TestPlatform.PlatformAbstractions.dll": {},
           "lib/netcoreapp2.1/Microsoft.TestPlatform.Utilities.dll": {},
           "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.Common.dll": {},
+          "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll": {},
           "lib/netcoreapp2.1/testhost.dll": {}
         },
         "resource": {
@@ -330,7 +343,7 @@
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MSTest.TestAdapter/2.1.0": {
+      "MSTest.TestAdapter/2.2.3": {
         "type": "package",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
@@ -340,8 +353,12 @@
           "build/netcoreapp1.0/MSTest.TestAdapter.props": {}
         }
       },
-      "MSTest.TestFramework/2.1.0": {
+      "MSTest.TestFramework/2.2.3": {
         "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "System.Diagnostics.TextWriterTraceListener": "4.3.0"
+        },
         "compile": {
           "lib/netstandard1.0/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll": {},
           "lib/netstandard1.0/Microsoft.VisualStudio.TestPlatform.TestFramework.dll": {}
@@ -1146,6 +1163,15 @@
           "ref/netstandard1.0/System.Reflection.Extensions.dll": {}
         }
       },
+      "System.Reflection.Metadata/1.6.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/System.Reflection.Metadata.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Reflection.Metadata.dll": {}
+        }
+      },
       "System.Reflection.Primitives/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1648,13 +1674,14 @@
     }
   },
   "libraries": {
-    "coverlet.collector/1.2.0": {
-      "sha512": "ZB+EGXsVBIn8cew7D3S2c+rgIlokKv1dSwsXEoiFQaNXF/BSxp9Rlfz/jV1ehSWH5XpLitfRxFNW3ok7uPDOXA==",
+    "coverlet.collector/3.0.2": {
+      "sha512": "iBvPAIDaI7j/iMx/DzCGCJ3rdiOmel9VINEfaTiBv/NKIGHOP4X3hqc6Q1wgMtArEshlhXexQknP17SK4vXb1w==",
       "type": "package",
-      "path": "coverlet.collector/1.2.0",
+      "path": "coverlet.collector/3.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "build/netstandard1.0/Microsoft.CSharp.dll",
         "build/netstandard1.0/Microsoft.DotNet.PlatformAbstractions.dll",
         "build/netstandard1.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "build/netstandard1.0/Microsoft.Extensions.DependencyInjection.dll",
@@ -1668,50 +1695,101 @@
         "build/netstandard1.0/Mono.Cecil.Rocks.dll",
         "build/netstandard1.0/Mono.Cecil.dll",
         "build/netstandard1.0/Newtonsoft.Json.dll",
-        "build/netstandard1.0/System.Xml.XPath.XmlDocument.dll",
+        "build/netstandard1.0/NuGet.Frameworks.dll",
+        "build/netstandard1.0/System.AppContext.dll",
+        "build/netstandard1.0/System.Collections.Immutable.dll",
+        "build/netstandard1.0/System.Dynamic.Runtime.dll",
+        "build/netstandard1.0/System.IO.FileSystem.Primitives.dll",
+        "build/netstandard1.0/System.Linq.Expressions.dll",
+        "build/netstandard1.0/System.Linq.dll",
+        "build/netstandard1.0/System.ObjectModel.dll",
+        "build/netstandard1.0/System.Reflection.Emit.ILGeneration.dll",
+        "build/netstandard1.0/System.Reflection.Emit.Lightweight.dll",
+        "build/netstandard1.0/System.Reflection.Emit.dll",
+        "build/netstandard1.0/System.Reflection.Metadata.dll",
+        "build/netstandard1.0/System.Reflection.TypeExtensions.dll",
+        "build/netstandard1.0/System.Runtime.Serialization.Primitives.dll",
+        "build/netstandard1.0/System.Text.RegularExpressions.dll",
+        "build/netstandard1.0/System.Threading.Tasks.Extensions.dll",
+        "build/netstandard1.0/System.Threading.dll",
+        "build/netstandard1.0/System.Xml.ReaderWriter.dll",
+        "build/netstandard1.0/System.Xml.XDocument.dll",
         "build/netstandard1.0/coverlet.collector.deps.json",
         "build/netstandard1.0/coverlet.collector.dll",
         "build/netstandard1.0/coverlet.collector.pdb",
         "build/netstandard1.0/coverlet.collector.targets",
         "build/netstandard1.0/coverlet.core.dll",
         "build/netstandard1.0/coverlet.core.pdb",
-        "coverlet.collector.1.2.0.nupkg.sha512",
+        "coverlet-icon.png",
+        "coverlet.collector.3.0.2.nupkg.sha512",
         "coverlet.collector.nuspec"
       ]
     },
-    "Microsoft.CodeCoverage/16.5.0": {
-      "sha512": "PM5YLtyN45EyUGePJpaNogndlaQPrMgQQXHKMhMESC6KfSVvt+j7+dxBi8NYC6X6dZVysf7ngwhSW3wwvPJRSQ==",
+    "Microsoft.CodeCoverage/16.9.4": {
+      "sha512": "N/RYB07gJkPZ1nJiq0QGxFIL+X5vVl4GI99PiTYXpbfI30NTZMRJgZ+4jYLFYLDQqj9o1Juhv+3iiymd7lozrA==",
       "type": "package",
-      "path": "microsoft.codecoverage/16.5.0",
+      "path": "microsoft.codecoverage/16.9.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
+        "LICENSE_NET.txt",
         "build/netstandard1.0/CodeCoverage/CodeCoverage.config",
         "build/netstandard1.0/CodeCoverage/CodeCoverage.exe",
+        "build/netstandard1.0/CodeCoverage/VanguardInstrumentationProfiler_x86.config",
+        "build/netstandard1.0/CodeCoverage/amd64/CodeCoverage.exe",
+        "build/netstandard1.0/CodeCoverage/amd64/VanguardInstrumentationProfiler_x64.config",
         "build/netstandard1.0/CodeCoverage/amd64/covrun64.dll",
         "build/netstandard1.0/CodeCoverage/amd64/msdia140.dll",
+        "build/netstandard1.0/CodeCoverage/amd64/msvcdis140.dll",
+        "build/netstandard1.0/CodeCoverage/amd64/msvcp140.dll",
+        "build/netstandard1.0/CodeCoverage/amd64/msvcp140_atomic_wait.dll",
+        "build/netstandard1.0/CodeCoverage/amd64/vcruntime140.dll",
+        "build/netstandard1.0/CodeCoverage/amd64/vcruntime140_1.dll",
         "build/netstandard1.0/CodeCoverage/codecoveragemessages.dll",
+        "build/netstandard1.0/CodeCoverage/coreclr/Microsoft.VisualStudio.CodeCoverage.Shim.dll",
         "build/netstandard1.0/CodeCoverage/covrun32.dll",
         "build/netstandard1.0/CodeCoverage/msdia140.dll",
+        "build/netstandard1.0/CodeCoverage/msvcdis140.dll",
+        "build/netstandard1.0/CodeCoverage/msvcp140.dll",
+        "build/netstandard1.0/CodeCoverage/msvcp140_atomic_wait.dll",
+        "build/netstandard1.0/CodeCoverage/vcruntime140.dll",
+        "build/netstandard1.0/InstrumentationEngine/x64/MicrosoftInstrumentationEngine_x64.dll",
+        "build/netstandard1.0/InstrumentationEngine/x86/MicrosoftInstrumentationEngine_x86.dll",
         "build/netstandard1.0/Microsoft.CodeCoverage.props",
         "build/netstandard1.0/Microsoft.CodeCoverage.targets",
+        "build/netstandard1.0/Microsoft.VisualStudio.Coverage.CoreLib.Net.dll",
+        "build/netstandard1.0/Microsoft.VisualStudio.Coverage.Interprocess.dll",
         "build/netstandard1.0/Microsoft.VisualStudio.TraceDataCollector.dll",
+        "build/netstandard1.0/cs/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/cs/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/de/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/de/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/es/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/es/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/fr/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/fr/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/it/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/it/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/ja/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/ja/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/ko/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/ko/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/pl/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/pl/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/pt-BR/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/pt-BR/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/ru/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/ru/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/tr/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/tr/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/zh-Hans/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/zh-Hans/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
+        "build/netstandard1.0/zh-Hant/Microsoft.VisualStudio.Coverage.CoreLib.Net.resources.dll",
         "build/netstandard1.0/zh-Hant/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
         "lib/net45/Microsoft.VisualStudio.CodeCoverage.Shim.dll",
         "lib/netcoreapp1.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll",
-        "microsoft.codecoverage.16.5.0.nupkg.sha512",
+        "microsoft.codecoverage.16.9.4.nupkg.sha512",
         "microsoft.codecoverage.nuspec"
       ]
     },
@@ -1774,15 +1852,24 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Microsoft.NET.Test.Sdk/16.5.0": {
-      "sha512": "yHZOhVSPuGqgHi+KhHiAZqNY08avkQraXKvgKgDU8c/ztmGzw7gmukkv49EaTq6T3xmp4XroWk3gAlbJHMxl8w==",
+    "Microsoft.NET.Test.Sdk/16.9.4": {
+      "sha512": "M/k16vmS7Hz/+Kuy3p6XE743XPjYYMzfN5ZvpSLY44Ngh5IBMk0Je5Qed8oq6/kvzJA2DTrXa7YrfceHhbQKeQ==",
       "type": "package",
-      "path": "microsoft.net.test.sdk/16.5.0",
+      "path": "microsoft.net.test.sdk/16.9.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
+        "LICENSE_NET.txt",
         "build/net40/Microsoft.NET.Test.Sdk.props",
         "build/net40/Microsoft.NET.Test.Sdk.targets",
+        "build/net45/Microsoft.NET.Test.Sdk.props",
+        "build/net45/Microsoft.NET.Test.Sdk.targets",
+        "build/netcoreapp1.0/Microsoft.NET.Test.Sdk.Program.cs",
+        "build/netcoreapp1.0/Microsoft.NET.Test.Sdk.Program.fs",
+        "build/netcoreapp1.0/Microsoft.NET.Test.Sdk.Program.vb",
+        "build/netcoreapp1.0/Microsoft.NET.Test.Sdk.props",
+        "build/netcoreapp1.0/Microsoft.NET.Test.Sdk.targets",
         "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.Program.cs",
         "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.Program.fs",
         "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.Program.vb",
@@ -1790,7 +1877,12 @@
         "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.targets",
         "build/uap10.0/Microsoft.NET.Test.Sdk.props",
         "buildMultiTargeting/Microsoft.NET.Test.Sdk.props",
-        "microsoft.net.test.sdk.16.5.0.nupkg.sha512",
+        "lib/net40/_._",
+        "lib/net45/_._",
+        "lib/netcoreapp1.0/_._",
+        "lib/netcoreapp2.1/_._",
+        "lib/uap10.0/_._",
+        "microsoft.net.test.sdk.16.9.4.nupkg.sha512",
         "microsoft.net.test.sdk.nuspec"
       ]
     },
@@ -1824,13 +1916,44 @@
         "runtime.json"
       ]
     },
-    "Microsoft.TestPlatform.ObjectModel/16.5.0": {
-      "sha512": "NnLFxmFBCAS6kye2JFszD5WKgj4Zve5KX/R0mhYwh6BVnSeybI2unRnjEPtLyY3CAVhwrY4bh/8LNFtslAcGZg==",
+    "Microsoft.TestPlatform.ObjectModel/16.9.4": {
+      "sha512": "t43y1MZYshZFfc/g8nzy4o86PW2WfFcoQ+MjgYUlfj1pptKHc7Xr+R6sFBODA+y1I+Mc+Ujzme/c2cGX2AuOwQ==",
       "type": "package",
-      "path": "microsoft.testplatform.objectmodel/16.5.0",
+      "path": "microsoft.testplatform.objectmodel/16.9.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
+        "LICENSE_NET.txt",
+        "lib/net45/Microsoft.TestPlatform.CoreUtilities.dll",
+        "lib/net45/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "lib/net45/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+        "lib/net45/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/de/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/es/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/it/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/net45/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/net45/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "lib/net451/Microsoft.TestPlatform.CoreUtilities.dll",
         "lib/net451/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "lib/net451/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
@@ -1860,6 +1983,64 @@
         "lib/net451/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "lib/net451/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "lib/net451/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/Microsoft.TestPlatform.CoreUtilities.dll",
+        "lib/netstandard1.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "lib/netstandard1.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+        "lib/netstandard1.0/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/de/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/es/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/it/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/Microsoft.TestPlatform.CoreUtilities.dll",
+        "lib/netstandard1.3/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "lib/netstandard1.3/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+        "lib/netstandard1.3/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/de/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/es/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/it/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/netstandard1.3/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/netstandard1.3/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "lib/netstandard2.0/Microsoft.TestPlatform.CoreUtilities.dll",
         "lib/netstandard2.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "lib/netstandard2.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
@@ -1889,21 +2070,63 @@
         "lib/netstandard2.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "lib/netstandard2.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "lib/netstandard2.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
-        "microsoft.testplatform.objectmodel.16.5.0.nupkg.sha512",
+        "lib/uap10.0/Microsoft.TestPlatform.CoreUtilities.dll",
+        "lib/uap10.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "lib/uap10.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+        "lib/uap10.0/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/de/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/es/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/it/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "lib/uap10.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "lib/uap10.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "microsoft.testplatform.objectmodel.16.9.4.nupkg.sha512",
         "microsoft.testplatform.objectmodel.nuspec"
       ]
     },
-    "Microsoft.TestPlatform.TestHost/16.5.0": {
-      "sha512": "ytGymboQIvjNX5pLC0yp/Bz9sGDHqSnLQgBRtd4VrqOUgKmmcfxMYZ6p0TBZgAT1oijdC6xqUZ7rl8mbaaXTJw==",
+    "Microsoft.TestPlatform.TestHost/16.9.4": {
+      "sha512": "3YuJ7OSb1YPk+OTZfpa8U7I+TUZRH/nCeOWcN+TERp1SUZrcGeG2IGBZvVZ9CbKuQ+7wLiwsfcIgKIu+kbvibg==",
       "type": "package",
-      "path": "microsoft.testplatform.testhost/16.5.0",
+      "path": "microsoft.testplatform.testhost/16.9.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
+        "LICENSE_NET.txt",
         "ThirdPartyNotices.txt",
+        "build/netcoreapp1.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "build/netcoreapp1.0/Microsoft.TestPlatform.TestHost.props",
+        "build/netcoreapp1.0/x64/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "build/netcoreapp1.0/x64/testhost.dll",
+        "build/netcoreapp1.0/x64/testhost.exe",
+        "build/netcoreapp1.0/x86/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "build/netcoreapp1.0/x86/testhost.x86.dll",
+        "build/netcoreapp1.0/x86/testhost.x86.exe",
+        "build/netcoreapp2.1/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "build/netcoreapp2.1/Microsoft.TestPlatform.TestHost.props",
+        "build/netcoreapp2.1/x64/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "build/netcoreapp2.1/x64/testhost.dll",
         "build/netcoreapp2.1/x64/testhost.exe",
+        "build/netcoreapp2.1/x86/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "build/netcoreapp2.1/x86/testhost.x86.dll",
         "build/netcoreapp2.1/x86/testhost.x86.exe",
         "build/uap10.0/Microsoft.TestPlatform.TestHost.props",
@@ -1989,10 +2212,63 @@
         "build/uap10.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
         "build/uap10.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "lib/net45/_._",
+        "lib/netcoreapp1.0/Microsoft.TestPlatform.CommunicationUtilities.dll",
+        "lib/netcoreapp1.0/Microsoft.TestPlatform.CoreUtilities.dll",
+        "lib/netcoreapp1.0/Microsoft.TestPlatform.CrossPlatEngine.dll",
+        "lib/netcoreapp1.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "lib/netcoreapp1.0/Microsoft.TestPlatform.Utilities.dll",
+        "lib/netcoreapp1.0/Microsoft.VisualStudio.TestPlatform.Common.dll",
+        "lib/netcoreapp1.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+        "lib/netcoreapp1.0/cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/cs/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/de/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/de/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/de/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/es/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/es/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/es/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/fr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/fr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/fr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/it/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/it/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/it/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/ja/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/ja/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/ja/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/ko/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/ko/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/ko/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/pl/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/pl/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/pl/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/pt-BR/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/pt-BR/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/pt-BR/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/ru/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/ru/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/ru/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/testhost.deps.json",
+        "lib/netcoreapp1.0/testhost.dll",
+        "lib/netcoreapp1.0/tr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/tr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/tr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/x64/msdia140.dll",
+        "lib/netcoreapp1.0/x86/msdia140.dll",
+        "lib/netcoreapp1.0/zh-Hans/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/zh-Hans/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+        "lib/netcoreapp1.0/zh-Hant/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+        "lib/netcoreapp1.0/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+        "lib/netcoreapp1.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
         "lib/netcoreapp2.1/Microsoft.TestPlatform.CommunicationUtilities.dll",
+        "lib/netcoreapp2.1/Microsoft.TestPlatform.CoreUtilities.dll",
         "lib/netcoreapp2.1/Microsoft.TestPlatform.CrossPlatEngine.dll",
+        "lib/netcoreapp2.1/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "lib/netcoreapp2.1/Microsoft.TestPlatform.Utilities.dll",
         "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.Common.dll",
+        "lib/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
         "lib/netcoreapp2.1/cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
         "lib/netcoreapp2.1/cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
         "lib/netcoreapp2.1/cs/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
@@ -2037,11 +2313,14 @@
         "lib/netcoreapp2.1/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
         "lib/netcoreapp2.1/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
         "lib/uap10.0/Microsoft.TestPlatform.CommunicationUtilities.dll",
+        "lib/uap10.0/Microsoft.TestPlatform.CoreUtilities.dll",
         "lib/uap10.0/Microsoft.TestPlatform.CrossPlatEngine.dll",
+        "lib/uap10.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
         "lib/uap10.0/Microsoft.TestPlatform.Utilities.dll",
         "lib/uap10.0/Microsoft.VisualStudio.TestPlatform.Common.dll",
+        "lib/uap10.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
         "lib/uap10.0/testhost.dll",
-        "microsoft.testplatform.testhost.16.5.0.nupkg.sha512",
+        "microsoft.testplatform.testhost.16.9.4.nupkg.sha512",
         "microsoft.testplatform.testhost.nuspec"
       ]
     },
@@ -2083,76 +2362,174 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "MSTest.TestAdapter/2.1.0": {
-      "sha512": "roxWjDyH5S+XlibaHM96VswxYq4vfbB53Ys9k3Qr2F1uNH+VpgIbygNQvtZUxSoAaI7aNSMMKA/HBfZPg5QDCA==",
+    "MSTest.TestAdapter/2.2.3": {
+      "sha512": "Xxc6+JyELKOmM46CYrHxL9f2LMZGnx1Neh0dr52THZbmVTwlJM1tj0U5RQ50G+wxsfsU8ZfR1HAUugc+64b6TA==",
       "type": "package",
-      "path": "mstest.testadapter/2.1.0",
+      "path": "mstest.testadapter/2.2.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.txt",
+        "LICENSE",
+        "build/_common/Microsoft.TestPlatform.AdapterUtilities.dll",
         "build/_common/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll",
         "build/_common/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll",
         "build/_common/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll",
         "build/_common/Microsoft.VisualStudio.TestPlatform.TestFramework.dll",
+        "build/_common/cs/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/cs/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/cs/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/cs/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/de/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/de/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/de/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/de/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/de/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/es/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/es/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/es/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/es/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/es/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/fr/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/fr/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/fr/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/fr/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/it/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/it/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/it/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/it/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/it/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/ja/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/ja/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/ja/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/ja/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/ko/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/ko/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/ko/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/ko/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/pl/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/pl/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/pl/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/pl/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
-        "build/_common/pt/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
-        "build/_common/pt/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
-        "build/_common/pt/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/pt-BR/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+        "build/_common/pt-BR/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/pt-BR/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+        "build/_common/pt-BR/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/ru/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/ru/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/ru/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/ru/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/tr/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/tr/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/tr/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/tr/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/zh-Hans/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/zh-Hans/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/zh-Hans/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/zh-Hans/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/zh-Hant/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/_common/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
         "build/_common/zh-Hant/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
         "build/_common/zh-Hant/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
         "build/_common/zh-Hant/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
         "build/net45/MSTest.TestAdapter.props",
         "build/net45/MSTest.TestAdapter.targets",
+        "build/net45/Microsoft.TestPlatform.AdapterUtilities.dll",
+        "build/net45/cs/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/de/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/es/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/fr/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/it/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/ja/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/ko/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/pl/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/pt-BR/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/ru/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/tr/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/zh-Hans/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/net45/zh-Hant/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
         "build/netcoreapp1.0/MSTest.TestAdapter.props",
+        "build/netcoreapp1.0/Microsoft.TestPlatform.AdapterUtilities.dll",
         "build/netcoreapp1.0/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll",
+        "build/netcoreapp1.0/cs/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/de/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/es/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/fr/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/it/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/ja/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/ko/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/pl/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/pt-BR/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/ru/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/tr/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/zh-Hans/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netcoreapp1.0/zh-Hant/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/MSTest.TestAdapter.props",
+        "build/netstandard1.5/Microsoft.TestPlatform.AdapterUtilities.dll",
+        "build/netstandard1.5/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll",
+        "build/netstandard1.5/cs/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/de/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/es/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/fr/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/it/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/ja/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/ko/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/pl/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/pt-BR/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/ru/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/tr/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/zh-Hans/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/netstandard1.5/zh-Hant/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
         "build/uap10.0/MSTest.TestAdapter.props",
         "build/uap10.0/MSTest.TestAdapter.targets",
+        "build/uap10.0/Microsoft.TestPlatform.AdapterUtilities.dll",
         "build/uap10.0/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll",
-        "mstest.testadapter.2.1.0.nupkg.sha512",
+        "build/uap10.0/cs/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/de/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/es/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/fr/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/it/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/ja/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/ko/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/pl/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/pt-BR/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/ru/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/tr/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/zh-Hans/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "build/uap10.0/zh-Hant/Microsoft.TestPlatform.AdapterUtilities.resources.dll",
+        "mstest.testadapter.2.2.3.nupkg.sha512",
         "mstest.testadapter.nuspec"
       ]
     },
-    "MSTest.TestFramework/2.1.0": {
-      "sha512": "FcW3sokxmi52e4gzBdv4bv59yQWJ0Lg2F579U82O4V9Pr7aNwTe7HxlHChzQqvcqgnH69XH8aDfMlfM3Y1wjAg==",
+    "MSTest.TestFramework/2.2.3": {
+      "sha512": "wqrF2D/uqhTCFJ4bQjhf5vLPXnsjbRZMncr2/+wnhy922YAqLGO2VOjQ6grxGqOWyVWFeIDnQFpLKFRNnrAd7w==",
       "type": "package",
-      "path": "mstest.testframework/2.1.0",
+      "path": "mstest.testframework/2.2.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.txt",
+        "LICENSE",
         "lib/net45/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.XML",
         "lib/net45/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll",
         "lib/net45/Microsoft.VisualStudio.TestPlatform.TestFramework.XML",
@@ -2173,8 +2550,8 @@
         "lib/net45/ko/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
         "lib/net45/pl/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
         "lib/net45/pl/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
-        "lib/net45/pt/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
-        "lib/net45/pt/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
+        "lib/net45/pt-BR/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
+        "lib/net45/pt-BR/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
         "lib/net45/ru/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
         "lib/net45/ru/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
         "lib/net45/tr/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
@@ -2203,8 +2580,8 @@
         "lib/netstandard1.0/ko/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
         "lib/netstandard1.0/pl/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
         "lib/netstandard1.0/pl/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
-        "lib/netstandard1.0/pt/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
-        "lib/netstandard1.0/pt/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
+        "lib/netstandard1.0/pt-BR/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
+        "lib/netstandard1.0/pt-BR/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
         "lib/netstandard1.0/ru/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
         "lib/netstandard1.0/ru/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
         "lib/netstandard1.0/tr/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
@@ -2233,8 +2610,8 @@
         "lib/uap10.0/ko/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
         "lib/uap10.0/pl/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
         "lib/uap10.0/pl/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
-        "lib/uap10.0/pt/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
-        "lib/uap10.0/pt/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
+        "lib/uap10.0/pt-BR/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
+        "lib/uap10.0/pt-BR/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
         "lib/uap10.0/ru/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
         "lib/uap10.0/ru/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
         "lib/uap10.0/tr/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
@@ -2243,7 +2620,7 @@
         "lib/uap10.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
         "lib/uap10.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml",
         "lib/uap10.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.TestFramework.xml",
-        "mstest.testframework.2.1.0.nupkg.sha512",
+        "mstest.testframework.2.2.3.nupkg.sha512",
         "mstest.testframework.nuspec"
       ]
     },
@@ -4263,6 +4640,27 @@
         "system.reflection.extensions.nuspec"
       ]
     },
+    "System.Reflection.Metadata/1.6.0": {
+      "sha512": "COC1aiAJjCoA5GBF+QKL2uLqEBew4JsCkQmoHKbN3TlOZKa2fKLz5CpiRQKDz0RsAOEGsVKqOD5bomsXq/4STQ==",
+      "type": "package",
+      "path": "system.reflection.metadata/1.6.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netstandard1.1/System.Reflection.Metadata.dll",
+        "lib/netstandard1.1/System.Reflection.Metadata.xml",
+        "lib/netstandard2.0/System.Reflection.Metadata.dll",
+        "lib/netstandard2.0/System.Reflection.Metadata.xml",
+        "lib/portable-net45+win8/System.Reflection.Metadata.dll",
+        "lib/portable-net45+win8/System.Reflection.Metadata.xml",
+        "system.reflection.metadata.1.6.0.nupkg.sha512",
+        "system.reflection.metadata.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Reflection.Primitives/4.3.0": {
       "sha512": "5RXItQz5As4xN2/YUDxdpsEkMhvw3e6aNveFXUn4Hl/udNTCNhnKp8lT9fnc3MhvGKh1baak5CovpuQUXHAlIA==",
       "type": "package",
@@ -5737,11 +6135,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\git\\presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-introTests\\tdd-introTests.csproj",
+      "projectUniqueName": "C:\\git\\Presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-introTests\\tdd-introTests.csproj",
       "projectName": "tdd-introTests",
-      "projectPath": "d:\\git\\presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-introTests\\tdd-introTests.csproj",
+      "projectPath": "C:\\git\\Presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-introTests\\tdd-introTests.csproj",
       "packagesPath": "C:\\Users\\magnu\\.nuget\\packages\\",
-      "outputPath": "d:\\git\\presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-introTests\\obj\\",
+      "outputPath": "C:\\git\\Presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-introTests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\magnu\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5751,15 +6149,14 @@
         "net5.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {}
       },
       "frameworks": {
         "net5.0": {
           "targetAlias": ".NETCoreApp,Version=v5.0",
           "projectReferences": {
-            "d:\\git\\presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-intro\\tdd-intro.csproj": {
-              "projectPath": "d:\\git\\presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-intro\\tdd-intro.csproj"
+            "C:\\git\\Presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-intro\\tdd-intro.csproj": {
+              "projectPath": "C:\\git\\Presentations\\test-driven-database-development\\demo\\tdd-intro\\tdd-intro\\tdd-intro.csproj"
             }
           }
         }
@@ -5806,8 +6203,50 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.208\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "tdd-introTests depends on coverlet.collector (>= 1.2.0) but coverlet.collector 1.2.0 was not found. An approximate best match of coverlet.collector 3.0.2 was resolved.",
+      "libraryId": "coverlet.collector",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    },
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "tdd-introTests depends on Microsoft.NET.Test.Sdk (>= 16.5.0) but Microsoft.NET.Test.Sdk 16.5.0 was not found. An approximate best match of Microsoft.NET.Test.Sdk 16.9.4 was resolved.",
+      "libraryId": "Microsoft.NET.Test.Sdk",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    },
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "tdd-introTests depends on MSTest.TestAdapter (>= 2.1.0) but MSTest.TestAdapter 2.1.0 was not found. An approximate best match of MSTest.TestAdapter 2.2.3 was resolved.",
+      "libraryId": "MSTest.TestAdapter",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    },
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "tdd-introTests depends on MSTest.TestFramework (>= 2.1.0) but MSTest.TestFramework 2.1.0 was not found. An approximate best match of MSTest.TestFramework 2.2.3 was resolved.",
+      "libraryId": "MSTest.TestFramework",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    }
+  ]
 }

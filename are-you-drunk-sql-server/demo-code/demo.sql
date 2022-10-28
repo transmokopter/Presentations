@@ -72,7 +72,7 @@ SELECT COUNT(*) FROM Sales.OrderHeader
 WHERE OrderDate = '2016-08-25'
 OPTION(RECOMPILE, USE HINT('FORCE_LEGACY_CARDINALITY_ESTIMATION'));
 
---1123,51???????????? 
+--WHERE DID THAT ESTIMATION COME FROM???????????????????? 
 
 SELECT SQRT(rows+modification_counter) FROM sys.dm_db_stats_properties(OBJECT_ID('sales.OrderHeader'),2);
 
@@ -104,7 +104,7 @@ FROM Sales.OrderHeader
 WHERE OrderDate = '2016-08-24' AND customerid = 3933 OPTION(RECOMPILE);
 --2,49345. That's not a very even number, is it?
 --Let's look at individual estimations
-SELECT COUNT(*) FROM sales.OrderHeader WHERE CustomerID = 3933; --223,201   <<<-----
+SELECT COUNT(*) FROM sales.OrderHeader WHERE CustomerID = 3933;  --<<<-----
 SELECT COUNT(*) FROM sales.OrderHeader WHERE OrderDate = '2016-08-24' --12622;
 
 SELECT 223.201 * (12622.0 / (rows + modification_counter))

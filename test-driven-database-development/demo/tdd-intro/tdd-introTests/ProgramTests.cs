@@ -16,10 +16,20 @@ namespace tdd_intro.Tests
         {
             Assert.IsTrue(tdd_intro.Program.IsValidDate("2021-08-30"));
         }
+
+
         [TestMethod("American Date Format is OK")]
         public void IsValidDateTestPositiveAmericanDateFormat()
         {
             Assert.IsTrue(tdd_intro.Program.IsValidDate("08/30/2021"));
         }
+
+        /*
+                [TestMethod("American Date Format is OK")]
+                public void IsValidDateTestPositiveAmericanDateFormat()
+                {
+                    Assert.IsTrue(tdd_intro.Program.IsValidDate("08/30/2021"));
+                }
+        */
     }
 }
