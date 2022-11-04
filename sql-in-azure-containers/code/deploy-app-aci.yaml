@@ -1,0 +1,38 @@
+apiVersion: 2019-12-01
+location: southcentralus
+name: stateprovinceapp
+properties:
+  containers:
+  - name: app
+    properties:
+      image: transmokopterpasssummit.azurecr.io/app/stateprovinceapp:1.0
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1.5
+      ports:
+      - port: 80
+      environmentVariables:
+        - name: ConnectionStrings__aw2014
+          value: "Data Source=localhost;Initial Catalog=AdventureWorks2014;Persist Security Info=True;User ID=sa;Password=Pa55w.rd;Encrypt=False"
+  - name: aw2014
+    properties:
+      image: transmokopterpasssummit.azurecr.io/db/aw2014:1.0
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 4
+      ports:
+      - port: 1433
+  osType: Linux
+  ipAddress:
+    type: Public
+    dnsNameLabel: transmokopterstateprovinceapp
+    ports:
+    - protocol: tcp
+      port: 80
+  imageRegistryCredentials:
+  - server: transmokopterpasssummit.azurecr.io
+    username: transmokopterpasssummit
+    password: JtV33GSfPrQidweQ0=LHIy3sMWgGNplq
+type: Microsoft.ContainerInstance/containerGroups

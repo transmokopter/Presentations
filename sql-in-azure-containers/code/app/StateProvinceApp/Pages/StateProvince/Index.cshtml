@@ -1,0 +1,27 @@
+﻿@page
+@model StateProvinceApp.Pages.StateProvince.IndexModel
+@{
+
+}
+<br />
+<h2>List of StateProvince</h2>
+<a class = 'btn btn-primary btn-sm' href='/StateProvince/Create'>New StateProvince</a>
+<table class='table'>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Code</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.countryRegionInfoList)
+        {
+            <tr>
+                <td>@item.CountryRegionCode</td>
+                <td>@item.Name</td>
+                <td>@item.ModifiedDate.ToString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

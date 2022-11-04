@@ -1,0 +1,51 @@
+FROM mcr.microsoft.com/mssql/server:2019-latest
+
+# Elevate to root to install required packages
+USER root
+
+
+RUN apt-get update \
+    && apt-get install unzip libunwind8 libicu66 libssl-dev -y 
+
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    rm -rf /var/lib/apt/lists/*
+RUN add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/20.04/mssql-server-2019.list)" && \
+    apt-get install -y mssql-server-fts
+
+
+# Install SQLPackage for Linux and make it executable
+RUN wget -progress=bar:force -q -O sqlpackage.zip https://aka.ms/sqlpackage-linux \
+    && unzip -qq sqlpackage.zip -d /opt/sqlpackage \
+    && chmod +x /opt/sqlpackage/sqlpackage \
+    && chown -R mssql /opt/sqlpackage \
+    && mkdir /tmp/db \
+    && chown -R mssql /tmp/db
+
+# Back to using mssql user
+# Important to do this before copying files and even more important to do it before starting SQL Server first time
+USER mssql
+
+# Configure external build arguments to allow configurability.
+ARG DBNAME=mydatabase
+ARG PASSWORD
+ARG DACPAC
+
+# Copy dacpac from computer to container
+COPY $DACPAC /tmp/db/db.dacpac
+
+
+# Accept license, set environment variable for SA account using the passed environment variables
+ENV ACCEPT_EULA=Y
+ENV SA_PASSWORD=$PASSWORD
+
+
+# Sleep 15 seconds is important. If we don't do it, the upgrade process for databases won't be done when sqlpackage tries to 
+# deploy the database, and therefore sqlpackage can't login
+RUN ( /opt/mssql/bin/sqlservr & ) | grep -q "Service Broker manager has started" \
+    && sleep 15;/opt/sqlpackage/sqlpackage /a:Publish /tsn:localhost /tdn:${DBNAME} /tu:sa /tp:$SA_PASSWORD /sf:/tmp/db/db.dacpac \
+    && rm -r /tmp/db \
+    && pkill sqlservr 
+
+# Optionally elevate to root, uninstall unnecessary packages and switch back to mssql user
+# Why? To keep the container tiny
