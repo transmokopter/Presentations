@@ -24,4 +24,10 @@ WITH CTE AS (
     (CountryRegionCode, Name)
     VALUES(s.CountryRegionCode, s.Name)
     WHEN NOT MATCHED BY SOURCE THEN DELETE;
+
+IF @@SERVERNAME=N'LAPTOP-10D82V44\SQL2022CTP2'
+BEGIN
+    INSERT INTO Person.CountryRegion (CountryRegionCode, Name)
+    VALUES('NA','Not Available');
+END
 GO

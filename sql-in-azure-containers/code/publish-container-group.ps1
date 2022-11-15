@@ -1,2 +1,2 @@
-docker login azure
-docker context create aci myacicontext
+az login 
+az container create --resource-group rg-pass-summit --file deploy-app-aci.yaml

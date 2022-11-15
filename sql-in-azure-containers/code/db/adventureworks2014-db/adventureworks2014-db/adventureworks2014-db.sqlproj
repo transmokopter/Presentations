@@ -191,7 +191,7 @@
     <Build Include="dbo\Functions\ufnGetAccountingEndDate.sql" />
     <Build Include="dbo\Functions\ufnGetContactInformation.sql" />
     <Build Include="dbo\Functions\IsLeapYear.sql" />
-    <Build Include="dbo\Stored Procedures\uspSearchCandidateResumes.sql" />
+    <None Include="dbo\Stored Procedures\uspSearchCandidateResumes.sql" />
     <Build Include="dbo\Stored Procedures\uspPrintError.sql" />
     <Build Include="dbo\Stored Procedures\uspLogError.sql" />
     <Build Include="dbo\Stored Procedures\uspGetWhereUsedProductID.sql" />

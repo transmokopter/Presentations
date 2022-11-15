@@ -1,7 +1,4 @@
 ﻿{
-  "ConnectionStrings": {
-    "aw2014": "Data Source=localhost,1450;Initial Catalog=AdventureWorks2014;Persist Security Info=True;User ID=sa;Password=Pa55w.rd;Encrypt=False"
-  },
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -15,7 +12,8 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__aw2014": "Data Source=LAPTOP-10D82V44\\SQL2022CTP2;Initial Catalog=AdventureWorks2014;Persist Security Info=True;Integrated Security=SSPI;Encrypt=False"
       }
     },
     "StateProvinceApp": {
