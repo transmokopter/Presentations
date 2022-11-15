@@ -49,3 +49,4 @@ RUN ( /opt/mssql/bin/sqlservr & ) | grep -q "Service Broker manager has started"
 
 # Optionally elevate to root, uninstall unnecessary packages and switch back to mssql user
 # Why? To keep the container tiny
+# OR BETTER: Multi stage build. Let's look at the app dockerfile

@@ -1,0 +1,22 @@
+version: '3'
+services:
+  app2:
+    image: transmokopterpasssummit.azurecr.io/app/stateprovinceapp:1.0
+    container_name: app2
+    environment:
+      ConnectionStrings__aw2014: "Data Source=aw20142;Initial Catalog=AdventureWorks2014;Persist Security Info=True;User ID=sa;Password=Pa55w.rd;Encrypt=False"
+    ports:
+        - "80:80"
+    networks:
+      - transmokopternet
+
+  aw20142:
+    image: transmokopterpasssummit.azurecr.io/db/aw2014:1.0
+    container_name: aw20142
+    ports:
+        - 1433
+    networks:
+      - transmokopternet
+networks:
+  transmokopternet:
+    driver: bridge
