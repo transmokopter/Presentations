@@ -1,11 +1,35 @@
+--Query store on secondary
+--Must enable traceflag 12606
+ALTER DATABASE sandbox FOR SECONDARY SET QUERY_STORE = ON (OPERATION_MODE = READ_WRITE );
+GO
+
+
 SELECT @@version
 
-USE sql2022
+USE sandbox
+drop table if exists dbo.instancespecs
+CREATE TABLE dbo.instanceSpecs (cpuCount tinyint, instanceName nvarchar(100) not null);
+insert dbo.instanceSpecs (cpuCount,instanceName)
+values
+(32,  N'ManyCPUs1'),
+(4   ,N'FewCPUs1'), 
+(32	 ,N'ManyCPUs2'),
+(4	 ,N'FewCPUs2'),
+(32	 ,N'ManyCPUs3'),
+(4	 ,N'FewCPUs3'),
+(32	 ,N'ManyCPUs4'),
+(4	 ,N'FewCPUs4'),
+(32	 ,N'ManyCPUs5'),
+(4	 ,N'FewCPUs5'),
+(NULL,N'NULLCPUs');
+
+
 SELECT * FROM dbo.instanceSpecs;
 
 ALTER TABLE dbo.instanceSpecs 
 ADD CONSTRAINT PK_instanceSpecs PRIMARY KEY CLUSTERED (instanceName) 
 WITH (RESUMABLE=ON,ONLINE=ON,MAX_DURATION=30);
+
 ALTER INDEX ALL ON dbo.instanceSpecs PAUSE;
 ALTER INDEX ALL ON dbo.instanceSpecs RESUME WITH (MAXDOP = 2, MAX_DURATION = 240 MINUTES,
       WAIT_AT_LOW_PRIORITY (MAX_DURATION = 10, ABORT_AFTER_WAIT = BLOCKERS)) ;
@@ -18,9 +42,11 @@ SELECT
 	COUNT(*) OVER SameCPUCountWindow AS CountWithSameCPUs,
 	*
 FROM dbo.instanceSpecs
-WINDOW SameCPUCountWindow AS 
-	(PARTITION BY cpuCount ORDER BY (SELECT NULL) ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING),
-AllRowsWindows AS ();
+WINDOW 
+	SameCPUCountWindow AS 
+		(PARTITION BY cpuCount ORDER BY (SELECT NULL) ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING),
+	AllRowsWindows AS 
+		();
 
 
 --DISTINCT FROM
