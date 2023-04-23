@@ -34,5 +34,5 @@ properties:
   imageRegistryCredentials:
   - server: transmokopterpasssummit.azurecr.io
     username: transmokopterpasssummit
-    password: JtV33GSfPrQidweQ0=LHIy3sMWgGNplq
+    password: Pfv4jJh9E/ke/TVC+lD/iXhWQmhtO2t5rmS0ZmTZ04+ACRA5PrwT
 type: Microsoft.ContainerInstance/containerGroups

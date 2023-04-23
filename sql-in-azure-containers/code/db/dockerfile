@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/mssql/server:2019-latest
+FROM mcr.microsoft.com/mssql/server:2019-latest as src
 
 # Elevate to root to install required packages
 USER root
@@ -43,10 +43,31 @@ ENV SA_PASSWORD=$PASSWORD
 # Sleep 15 seconds is important. If we don't do it, the upgrade process for databases won't be done when sqlpackage tries to 
 # deploy the database, and therefore sqlpackage can't login
 RUN ( /opt/mssql/bin/sqlservr & ) | grep -q "Service Broker manager has started" \
-    && sleep 15;/opt/sqlpackage/sqlpackage /a:Publish /tsn:localhost /tdn:${DBNAME} /tu:sa /tp:$SA_PASSWORD /sf:/tmp/db/db.dacpac \
+    && sleep 15;/opt/sqlpackage/sqlpackage /a:Publish /tsn:localhost /tdn:${DBNAME} /ttsc:True /tu:sa /tp:$SA_PASSWORD /sf:/tmp/db/db.dacpac \
     && rm -r /tmp/db \
     && pkill sqlservr 
 
-# Optionally elevate to root, uninstall unnecessary packages and switch back to mssql user
-# Why? To keep the container tiny
-# OR BETTER: Multi stage build. Let's look at the app dockerfile
+
+
+
+
+
+
+
+
+
+
+
+
+FROM mcr.microsoft.com/mssql/server:2019-latest as trg
+ARG PASSWORD
+ARG DBNAME=mydatabase
+
+ENV ACCEPT_EULA=y
+ENV SA_PASSWORD=$PASSWORD
+COPY --from=src --chown=mssql /var/opt/mssql/data/Adventureworks2014_Primary.mdf /var/opt/mssql/data/Adventureworks2014_Primary.mdf
+COPY --from=src --chown=mssql /var/opt/mssql/data/Adventureworks2014_Primary.ldf /var/opt/mssql/data/Adventureworks2014_Primary.ldf
+USER mssql
+RUN ( /opt/mssql/bin/sqlservr & ) | grep -q "Service Broker manager has started" \
+    && sleep 15;/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $PASSWORD -Q "EXEC sp_attach_db  @dbname=N'$DBNAME', @filename1='/var/opt/mssql/data/Adventureworks2014_Primary.mdf', @filename2='/var/opt/mssql/data/Adventureworks2014_Primary.ldf';" \
+    && pkill sqlservr 

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yTgSuBYuKpT3mjDrWz4ptXjqNnp6NM3aVPE5KgTd3SiIh18Q1LRcysJfST7c9lpCbu9k4LdTgRwRCMrUisG1Kg==",
+  "dgSpecHash": "AxFWWn2TUXlNLIuDtd9Gy05MNQXwNmbyfX0sdIGvmGo6Ftkb/0gbdmanpeItrdTXwtkTM0QqSYt8uUBCFn2vrQ==",
   "success": true,
-  "projectFilePath": "C:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\StateProvinceApp.csproj",
+  "projectFilePath": "D:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\StateProvinceApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\magnu\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
@@ -51,7 +51,8 @@
     "C:\\Users\\magnu\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\magnu\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "C:\\Users\\magnu\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512"
+    "C:\\Users\\magnu\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512",
+    "C:\\Users\\magnu\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.23\\microsoft.netcore.app.host.win-x64.3.1.23.nupkg.sha512"
   ],
   "logs": []
 }

@@ -1,7 +1,7 @@
 version: '3'
 services:
   app2:
-    image: transmokopterpasssummit.azurecr.io/app/stateprovinceapp:1.0
+    image: transmokopterpasssummit.azurecr.io/app/stateprovinceapp:1.1
     container_name: app2
     environment:
       ConnectionStrings__aw2014: "Data Source=aw20142;Initial Catalog=AdventureWorks2014;Persist Security Info=True;User ID=sa;Password=Pa55w.rd;Encrypt=False"
