@@ -1,10 +1,10 @@
 docker compose up -d
-Write-Host "Sleeping 15 seconds" -ForegroundColor Cyan
-Start-Sleep -Seconds 15
+Write-Host "Sleeping 5 seconds" -ForegroundColor Cyan
+Start-Sleep -Seconds 5
 
 Write-Host "Please key in sa credentials"
 $cred = Get-Credential -UserName sa
-Invoke-DbaQuery -SqlInstance "localhost,1498" -File $PSScriptRoot\ag_db1.sql -SqlCredential $cred
+Invoke-Sqlcmd -ServerInstance "localhost,1498" -InputFile $PSScriptRoot\ag_db1.sql -Credential $cred -TrustServerCertificate
 
 docker cp db1:/var/opt/mssql/data/db1cert.cer .
 docker cp db1:/var/opt/mssql/data/db1cert.pvk . 
@@ -14,5 +14,5 @@ docker cp .\db1cert.pvk db2:/var/opt/mssql/data
 
 Remove-Item db1cert.*
 
-Invoke-DbaQuery -SqlInstance "localhost,1499" -File $PSScriptRoot\ag_db2.sql -SqlCredential $cred
+Invoke-Sqlcmd -ServerInstance "localhost,1499" -InputFile $PSScriptRoot\ag_db2.sql -Credential $cred -TrustServerCertificate
 
