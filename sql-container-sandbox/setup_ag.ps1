@@ -1,6 +1,6 @@
 docker compose up -d
-Write-Host "Sleeping 5 seconds" -ForegroundColor Cyan
-Start-Sleep -Seconds 5
+Write-Host "Sleeping 15 seconds" -ForegroundColor Cyan
+Start-Sleep -Seconds 15
 
 Write-Host "Please key in sa credentials"
 $cred = Get-Credential -UserName sa
