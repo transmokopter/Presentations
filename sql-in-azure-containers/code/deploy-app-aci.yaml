@@ -5,7 +5,7 @@ properties:
   containers:
   - name: app
     properties:
-      image: transmokopterpasssummit.azurecr.io/app/stateprovinceapp:1.0
+      image: transmokopterdemos.azurecr.io/app/stateprovinceapp:1.0
       resources:
         requests:
           cpu: 1
@@ -17,7 +17,7 @@ properties:
           value: "Data Source=localhost;Initial Catalog=AdventureWorks2014;Persist Security Info=True;User ID=sa;Password=Pa55w.rd;Encrypt=False"
   - name: aw2014
     properties:
-      image: transmokopterpasssummit.azurecr.io/db/aw2014:1.0
+      image: transmokopterdemos.azurecr.io/db/aw2014:1.0
       resources:
         requests:
           cpu: 1
@@ -32,7 +32,7 @@ properties:
     - protocol: tcp
       port: 80
   imageRegistryCredentials:
-  - server: transmokopterpasssummit.azurecr.io
-    username: transmokopterpasssummit
-    password: Pfv4jJh9E/ke/TVC+lD/iXhWQmhtO2t5rmS0ZmTZ04+ACRA5PrwT
+  - server: transmokopterdemos.azurecr.io
+    username: transmokopterdemos
+    password: 293o4HdprgrDT3jV8DlMesYNpi9TNw0AWzgZ0VCqjr+ACRA576hW
 type: Microsoft.ContainerInstance/containerGroups

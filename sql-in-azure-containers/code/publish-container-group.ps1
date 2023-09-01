@@ -1,2 +1,2 @@
 az login 
-az container create --resource-group rg-pass-summit --file deploy-app-aci.yaml
+az container create --resource-group containerdemo --file deploy-app-aci.yaml
