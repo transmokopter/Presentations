@@ -1,0 +1,10 @@
+D:\git\database-data-saturday-oslo-2023\database-data-saturday-oslo-2023\bin\Debug\database-data-saturday-oslo-2023.dacpac
+D:\git\database-data-saturday-oslo-2023\database-data-saturday-oslo-2023\bin\Debug\database_data_saturday_oslo_2023.dll
+D:\git\database-data-saturday-oslo-2023\database-data-saturday-oslo-2023\bin\Debug\database_data_saturday_oslo_2023.pdb
+D:\git\database-data-saturday-oslo-2023\database-data-saturday-oslo-2023\obj\Debug\database-data-saturday-oslo-2023.sqlprojAssemblyReference.cache
+D:\git\database-data-saturday-oslo-2023\database-data-saturday-oslo-2023\obj\Debug\Model.xml
+D:\git\database-data-saturday-oslo-2023\database-data-saturday-oslo-2023\obj\Debug\refactor.xml
+D:\git\database-data-saturday-oslo-2023\database-data-saturday-oslo-2023\obj\Debug\postdeploy.sql
+D:\git\database-data-saturday-oslo-2023\database-data-saturday-oslo-2023\obj\Debug\predeploy.sql
+D:\git\database-data-saturday-oslo-2023\database-data-saturday-oslo-2023\obj\Debug\database_data_saturday_oslo_2023.dll
+D:\git\database-data-saturday-oslo-2023\database-data-saturday-oslo-2023\obj\Debug\database_data_saturday_oslo_2023.pdb

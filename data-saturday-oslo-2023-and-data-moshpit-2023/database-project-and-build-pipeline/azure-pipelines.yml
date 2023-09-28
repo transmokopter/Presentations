@@ -1,0 +1,43 @@
+trigger:
+- main
+
+pool: admin-pool
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: VSBuild@1
+  displayName: Build database project
+  inputs:
+    solution: '$(solution)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    clean: true
+
+- task: CopyFiles@2
+  displayName: Copy dacpac file
+  inputs:
+    SourceFolder: "$(Build.SourcesDirectory)/database-data-saturday-oslo-2023/bin/$(buildConfiguration)"
+    Contents: "*.dacpac"
+    TargetFolder: "$(Build.ArtifactStagingDirectory)/drop"
+
+- pwsh: |
+    cd $(Build.SourcesDirectory)
+    Get-ChildItem .
+    docker build . -t testdatasatoslo2023:0.1 --build-arg DBNAME=DataSatOslo2023 --build-arg PASSWORD="Pa55w.rd" --build-arg DACPAC="database-data-saturday-oslo-2023/bin/Debug/database-data-saturday-oslo-2023.dacpac"
+    docker create --name testdacpac --hostname testdacpac -e"ACCEPT_EULA=YES" -e"SA_PASSWORD=Pa55w.rd" -p1599:1433 testdatasatoslo2023:0.1
+    docker start testdacpac
+    start-sleep -Seconds 15
+    Get-DbaDbTable -SqlInstance "localhost,1599" -Database DataSatOslo2023 -SqlCredential (New-Object pscredential("sa",(ConvertTo-SecureString "Pa55w.rd" -AsPlainText -Force)))
+    docker stop testdacpac
+    docker rm testdacpac
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish dacpac
+  inputs:
+   ArtifactName: database-data-saturday-oslo-2023
+   PathtoPublish: "$(Build.ArtifactStagingDirectory)/drop"
+

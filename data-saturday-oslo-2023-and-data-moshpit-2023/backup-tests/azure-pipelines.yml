@@ -1,0 +1,44 @@
+trigger:
+- none
+
+pool: admin-pool
+
+variables:
+  sqlinstance: localhost
+
+steps:
+- pwsh: |
+      if((get-service mssqlserver).status -eq "Stopped")  { Start-Service mssqlserver }
+      $sqlInstance = "$(sqlinstance)"
+      $warnings = 0
+      $errors = 0
+      Test-DbaLastBackup -SqlInstance $sqlinstance -IgnoreLogBackup -IgnoreDiffBackup -ErrorAction Ignore | ForEach-Object {
+        $backup = $PSItem
+        Write-Output "*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*"
+        Write-Output "$($backup.database)"
+        Write-Output "*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*"
+        if($backup.backupdates -lt (Get-Date).AddHours(-25)){
+          if($backup.backupdates.count -eq 0){
+            Write-Output "No backups found for database $($backup.Database)"
+            $errors += 1
+          }else{
+            Write-Output "Full backup for database $($backup.Database) is older than 25 hours. Last backup date: $($backup.BackupDates[0])"
+            $warnings += 1
+          }
+          
+        }
+        # This might be a bug. Fix it in demo, because why not?
+        if($backup.RestoreResult -ne "Success"){
+          $errors += 1
+          Write-Output "Last backup for database $($backup.Database) ($($backup.BackupFiles)) failed!"
+        }else{
+          Write-Output "Last backup successfully restored."
+          if($backup.DbccResult -eq "Failure"){
+            $errors += 1
+            Write-Output "DBCC check for database $($backup.Database) failed!"
+          }
+        }
+      }
+      if( $errors -gt 0){
+        throw "$errors errors and $warnings warnings detected"
+      }
