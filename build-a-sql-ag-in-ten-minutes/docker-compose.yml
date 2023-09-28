@@ -1,0 +1,35 @@
+version: '3'
+services:
+  db1:
+    image: sql2022hadrenabled
+    container_name: db1
+    hostname: db1
+    environment:
+      ACCEPT_EULA: Yes
+      SA_PASSWORD: Pa55w.rd
+      MSSQL_AGENT_ENABLED: true
+    ports:
+        - "1498:1433"
+    domainname: db1
+    networks:
+      - dbnet
+    expose:
+      - 1433,5022
+  db2:
+    image: sql2022hadrenabled
+    container_name: db2
+    hostname: db2
+    environment:
+      ACCEPT_EULA: Yes
+      SA_PASSWORD: Pa55w.rd
+      MSSQL_AGENT_ENABLED: true
+    ports:
+        - "1499:1433"
+    domainname: db2
+    networks:
+      - dbnet
+    expose:
+      - 1433,5022
+networks:
+  dbnet:
+    driver: bridge

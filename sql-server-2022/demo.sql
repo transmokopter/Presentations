@@ -1,8 +1,8 @@
 --Query store on secondary
 --Must enable traceflag 12606
-ALTER DATABASE sandbox FOR SECONDARY SET QUERY_STORE = ON (OPERATION_MODE = READ_WRITE );
+IF DB_ID('sandbox') IS NULL
+	CREATE DATABASE sandbox;
 GO
-
 
 SELECT @@version
 
@@ -25,6 +25,38 @@ values
 
 
 SELECT * FROM dbo.instanceSpecs;
+--query store hint
+SELECT	query_hint_id,
+        query_id,
+        query_hint_text,
+        last_query_hint_failure_reason,
+        last_query_hint_failure_reason_desc,
+        query_hint_failure_count,
+        source,
+        source_desc
+FROM sys.query_store_query_hints;
+
+EXEC sp_query_store_set_hints @query_id=218, @value = N'OPTION(RECOMPILE)';
+SELECT	query_hint_id,
+        query_id,
+        query_hint_text,
+        last_query_hint_failure_reason,
+        last_query_hint_failure_reason_desc,
+        query_hint_failure_count,
+        source,
+        source_desc
+FROM sys.query_store_query_hints;
+
+EXEC sp_query_store_clear_hints @query_id = 218;
+SELECT	query_hint_id,
+        query_id,
+        query_hint_text,
+        last_query_hint_failure_reason,
+        last_query_hint_failure_reason_desc,
+        query_hint_failure_count,
+        source,
+        source_desc
+FROM sys.query_store_query_hints;
 
 ALTER TABLE dbo.instanceSpecs 
 ADD CONSTRAINT PK_instanceSpecs PRIMARY KEY CLUSTERED (instanceName) 
@@ -34,6 +66,7 @@ ALTER INDEX ALL ON dbo.instanceSpecs PAUSE;
 ALTER INDEX ALL ON dbo.instanceSpecs RESUME WITH (MAXDOP = 2, MAX_DURATION = 240 MINUTES,
       WAIT_AT_LOW_PRIORITY (MAX_DURATION = 10, ABORT_AFTER_WAIT = BLOCKERS)) ;
 	  
+SELECT * FROM dbo.instanceSpecs;
 
 
 --Named Windows
@@ -131,7 +164,7 @@ SELECT DATETRUNC(year,CURRENT_TIMESTAMP);
 SELECT DATETRUNC(month,CURRENT_TIMESTAMP) AS FOMONTH;
 
 --LTRIM, RTRIM, TRIM
-SELECT TRIM(LEADING 'abc' FROM 'abc123abc');
+SELECT TRIM(LEADING 'abc' FROM 'aaa123abc');
 SELECT TRIM(TRAILING 'abc' FROM 'abc123abc');
 SELECT TRIM(BOTH 'abc' FROM 'abc123abc');
 

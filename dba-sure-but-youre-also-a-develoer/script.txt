@@ -1,0 +1,47 @@
+I have been a DBA for a few years. Many years even. The color of my beard can is an indicator.
+I do the same things now as when I started. 
+- I install SQL Server. 
+- I backup SQL Server. 
+- I make sure the backups are stored as far away from my databases' storage. 
+- I test backups. 
+- I check databases to detect inconsistency.
+- I monitor SQL Server.
+- I yell at developers.
+- I detect missing indexes and assess new indexes.
+- I make suggestions about code changes for stored procedures and queries sent directly from applications. Sometimes I aven make the code changes myself.
+- I deploy code and schema changes to databases, in test and in production.
+
+Going back to when I started working with SQL Server, I realise I don't do things the same way anymore. I use other tools, but most of all I use completely different strategies.
+
+Most of the pointy-clickity-type tools I used when I started are replaced with scripts.
+Not so often anymore do I mount servers in racks.
+When I'm detecting CPU pressure, I don't need to actually install a new physsical CPU in a server. Heck, I don't even know what a CPU looks like these days.
+
+So. I have new tools. Physical server turned into VMs turned into managed services and containers.
+
+Most importantly: I am programming. In all fairness, I programmed before too. I had tons of SQL scripts, some written by myself, some written by someone else. But these days, I'm program every day. Mostly in PowerShell, sometimes I use Bicep. Sometimes I even write C#-code. It depends on the task. And a few years ago, I realised I had turned into a developer.
+
+NO. No, no, no, no, no. I'm not the kind of developer that I and other DBAs yell at. I don't "design" tables without indexes. But I'm still a developer. To create a test environment, I run code, code that I wrote. To test my backups, I run code. Code that I wrote. And I think that makes me a developer.
+
+Today, I will show you some of the tools I use daily to help me develop/program "stuff":
+
+- VSCode. This is THE programming tool for me.
+- Git. If you don't source control your code, you're not doing it right.
+- Git pull requests. If you don't peer review your teams code, you're either the only sysadmin-type person in the company, or you're doing it wrong. I'm gonna argue you're doing it wrong even if you're the only sysadmin-type person in your company. I'll tell you why in a minute or five.
+- Pipelines. Think of a pipeline as a run-book. Do A, then do B and finally do C. This can be described with a pipeline. It could be a yaml-pipeline or it could be one you created with a UI.
+- PowerShell and dbatools. Think of PowerShell as the programming language and dbatools as a class library.
+- Database projects. Maybe you're not going to create the database projects, but I do encourage you to understand how database projects work and how you can deploy them. It helps you help the application developers.
+- Metadata. If you're going to program your infrastructure, you need metadata that the scripts can use.
+
+
+
+So after that LOOOOOONG rant-of-an-intro, let's explore these tools now.
+
+DEMO VSCODE
+DEMO GIT
+DEMO GIT PULL REQUESTS
+DEMO PIPELINES
+DEMO POWERSHELL and DBATOOLS
+DEMO DATABASE PROJECTS
+DEMO RELEASE PIPELINES FOR DATABASE PROJECTS
+DEMO METADATA DRIVEN INFRASTRUCTURE

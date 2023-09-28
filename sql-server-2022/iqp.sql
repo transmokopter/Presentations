@@ -111,9 +111,19 @@ BEGIN
 SELECT * FROM Sales.Orders AS O WHERE O.CustomerID = @CustomerId;
 END;
 GO
+EXEC Sales.GetOrdersForCustomer @CustomerId = 1060;
+EXEC Sales.GetOrdersForCustomer @CustomerId = 1060;
+EXEC Sales.GetOrdersForCustomer @CustomerId = 1060;
+GO
+SET STATISTICS IO ON;
+EXEC Sales.GetOrdersForCustomer @CustomerId = 90;
+GO
+
+
 ALTER DATABASE SCOPED CONFIGURATION SET PARAMETER_SENSITIVE_PLAN_OPTIMIZATION = ON;
 DBCC FREEPROCCACHE;
 ALTER DATABASE WideWorldImporters SET QUERY_STORE CLEAR;
+
 GO
 EXEC Sales.GetOrdersForCustomer @CustomerId = 1060;
 EXEC Sales.GetOrdersForCustomer @CustomerId = 1060;
@@ -133,11 +143,8 @@ GO
 
 
 
-
-
-
 --Memory Grant Feedback
-CREATE PROC Sales.GetOrdersAndOrderlinesForCustomer(
+CREATE OR ALTER PROC Sales.GetOrdersAndOrderlinesForCustomer(
 	@CustomerId int
 )
 AS
@@ -145,6 +152,9 @@ SELECT * FROM Sales.Orders AS O INNER HASH JOIN Sales.OrderLines AS OL ON OL.Ord
 WHERE O.CustomerID = @CustomerId;
 GO
 --Execute a few times and observe memory grant
+EXEC Sales.GetOrdersAndOrderlinesForCustomer @CustomerId=1060;
+
+
 EXEC Sales.GetOrdersAndOrderlinesForCustomer @CustomerId=90;
 DBCC FREEPROCCACHE; -- This would evict memory grant information in previous versions of SQL Server
 EXEC Sales.GetOrdersAndOrderlinesForCustomer @CustomerId=90;
@@ -167,37 +177,6 @@ DBCC FREEPROCCACHE;
 GO
 EXEC Sales.GetOrdersAndOrderlinesForCustomer @CustomerId=90;
 GO
-
-
--- CE feedback
-GO
-USE AdventureWorks2014
-GO
-
-ALTER DATABASE SCOPED CONFIGURATION SET PARAMETER_SENSITIVE_PLAN_OPTIMIZATION = ON;
-GO
-ALTER DATABASE SCOPED CONFIGURATION SET BATCH_MODE_ON_ROWSTORE = ON;
-GO
-ALTER DATABASE SCOPED CONFIGURATION SET ROW_MODE_MEMORY_GRANT_FEEDBACK = ON;
-GO
-ALTER DATABASE SCOPED CONFIGURATION SET BATCH_MODE_MEMORY_GRANT_FEEDBACK = ON;
-GO
---As of this writing, documentation says to use MEMORY_GRANT_FEEDBACK_PERCENTILE which yields an "Incorrect syntax" error
---https://learn.microsoft.com/en-us/sql/relational-databases/performance/intelligent-query-processing-feedback?view=sql-server-ver16#cardinality-estimation-ce-feedback
-ALTER DATABASE SCOPED CONFIGURATION SET MEMORY_GRANT_FEEDBACK_PERCENTILE_GRANT = ON;
-GO
-ALTER DATABASE SCOPED CONFIGURATION SET MEMORY_GRANT_FEEDBACK_PERSISTENCE = ON;
-GO
-ALTER DATABASE SCOPED CONFIGURATION SET CE_FEEDBACK = ON;
-GO
-CREATE INDEX ix_Address_City ON AdventureWorks2014.Person.Address(City);
-
-DBCC FREEPROCCACHE
 ALTER DATABASE AdventureWorks2014 SET QUERY_STORE CLEAR;
-GO
-SELECT AddressID, AddressLine1, AddressLine2
-FROM AdventureWorks2014.Person.Address
-WHERE StateProvinceID = 79 AND City = N'Redmond';
-GO 16
-SELECT * FROM sys.query_store_plan_feedback AS QSPF;
+DBCC FREEPROCCACHE;
 

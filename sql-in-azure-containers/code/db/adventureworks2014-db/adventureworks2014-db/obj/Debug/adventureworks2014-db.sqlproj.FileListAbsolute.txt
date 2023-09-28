@@ -17,3 +17,4 @@ C:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adven
 C:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\refactor.xml
 C:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\postdeploy.sql
 C:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\predeploy.sql
+C:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014-db.sqlproj.AssemblyReference.cache
