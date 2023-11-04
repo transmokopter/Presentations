@@ -13,7 +13,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings__aw2014": "Data Source=localhost,1401;Initial Catalog=AdventureWorks2014;Persist Security Info=True;User id=sa;Password=Pa55w.rd;Encrypt=False"
+        "ConnectionStrings__aw2014": "Data Source=TSQLWS2;Initial Catalog=AdventureWorks2014;Persist Security Info=True;Integrated Security=True; Trust Server Certificate=True"
       }
     },
     "StateProvinceApp": {
