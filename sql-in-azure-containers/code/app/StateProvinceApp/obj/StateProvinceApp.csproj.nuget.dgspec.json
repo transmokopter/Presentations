@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\StateProvinceApp.csproj": {}
+    "D:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\StateProvinceApp.csproj": {}
   },
   "projects": {
-    "C:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\StateProvinceApp.csproj": {
+    "D:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\StateProvinceApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\StateProvinceApp.csproj",
+        "projectUniqueName": "D:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\StateProvinceApp.csproj",
         "projectName": "StateProvinceApp",
-        "projectPath": "C:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\StateProvinceApp.csproj",
+        "projectPath": "D:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\StateProvinceApp.csproj",
         "packagesPath": "C:\\Users\\magnu\\.nuget\\packages\\",
-        "outputPath": "C:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\obj\\",
+        "outputPath": "D:\\git\\Presentations\\sql-in-azure-containers\\code\\app\\StateProvinceApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\magnu\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -55,6 +55,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.1.23, 3.1.23]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -63,7 +69,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.212\\RuntimeIdentifierGraph.json"
         }
       }
     }

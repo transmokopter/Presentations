@@ -263,3 +263,4 @@ D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug
 D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.pdb
 D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.genruntimeconfig.cache
 C:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.csproj.AssemblyReference.cache
+D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.csprojAssemblyReference.cache

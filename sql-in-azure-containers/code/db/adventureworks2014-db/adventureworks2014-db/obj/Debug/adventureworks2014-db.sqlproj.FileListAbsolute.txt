@@ -18,3 +18,13 @@ C:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adven
 C:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\postdeploy.sql
 C:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\predeploy.sql
 C:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014-db.sqlproj.AssemblyReference.cache
+D:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\bin\Debug\adventureworks2014-db.dacpac
+D:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\bin\Debug\adventureworks2014_db.dll
+D:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\bin\Debug\adventureworks2014_db.pdb
+D:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014-db.sqlprojAssemblyReference.cache
+D:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014_db.dll
+D:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014_db.pdb
+D:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\Model.xml
+D:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\refactor.xml
+D:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\postdeploy.sql
+D:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\predeploy.sql

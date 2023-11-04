@@ -1,0 +1,20 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Drop
+       [MS_Description] (Extended Property)
+       Full-text Index on [HumanResources].[JobCandidate] (Full-text Index)
+       Full-text Index on [Production].[Document] (Full-text Index)
+       Full-text Index on [Production].[ProductReview] (Full-text Index)
+     Create
+       [dbo].[IsLeapYear] (Function)
+
+** Supporting actions
