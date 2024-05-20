@@ -12,7 +12,7 @@
 		</CustomData>
 		<CustomData Category="Reference" Type="Assembly">
 			<Metadata Name="LogicalName" Value="adventureworks2014_db.dll" />
-			<Metadata Name="FileName" Value="C:\GIT\PRESENTATIONS\SQL-IN-AZURE-CONTAINERS\CODE\DB\ADVENTUREWORKS2014-DB\ADVENTUREWORKS2014-DB\OBJ\DEBUG\ADVENTUREWORKS2014_DB.DLL" />
+			<Metadata Name="FileName" Value="D:\GIT\PRESENTATIONS\SQL-IN-AZURE-CONTAINERS\CODE\DB\ADVENTUREWORKS2014-DB\ADVENTUREWORKS2014-DB\OBJ\DEBUG\ADVENTUREWORKS2014_DB.DLL" />
 			<Metadata Name="AssemblyName" Value="adventureworks2014_db" />
 			<Metadata Name="PermissionSet" Value="SAFE" />
 			<Metadata Name="Owner" Value="" />
@@ -20,7 +20,7 @@
 			<Metadata Name="IsVisible" Value="True" />
 			<Metadata Name="IsModelAware" Value="True" />
 			<Metadata Name="SkipCreationIfEmpty" Value="True" />
-			<Metadata Name="AssemblySymbolsName" Value="C:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014_db.pdb" />
+			<Metadata Name="AssemblySymbolsName" Value="D:\git\Presentations\sql-in-azure-containers\code\db\adventureworks2014-db\adventureworks2014-db\obj\Debug\adventureworks2014_db.pdb" />
 		</CustomData>
 		<CustomData Category="SqlCmdVariables" Type="SqlCmdVariable" />
 	</Header>
