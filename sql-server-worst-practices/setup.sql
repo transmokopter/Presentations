@@ -5,6 +5,7 @@ GO
 CREATE DATABASE SqlServerWorstPractices;
 GO
 ALTER DATABASE SqlServerWorstPractices SET AUTO_SHRINK ON;
+ALTER DATABASE SqlServerWorstPractices SET RECOVERY SIMPLE;
 GO
 USE SqlServerWorstPractices
 GO

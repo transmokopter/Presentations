@@ -26,13 +26,12 @@ SET STATISTICS TIME,IO ON;
 SELECT SUM(dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue))
 FROM dbo.SalesOrder AS SO 
 WHERE SO.OrderCurrency='SEK' 
-OPTION(RECOMPILE, QUERYTRACEON 3604, QUERYTRACEON 2363);
+;
 GO
 SELECT SUM(dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue))
 FROM dbo.SalesOrder AS SO 
 WHERE SO.OrderCurrency='SEK' 
 	AND dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue)>1 
-	OPTION(RECOMPILE, QUERYTRACEON 3604, QUERYTRACEON 2363);
 ;
 SET STATISTICS IO,TIME OFF;
 
@@ -60,14 +59,18 @@ END
 GO
 
 SET STATISTICS TIME,IO ON;
-SELECT SUM(dbo.GetAmountInToCurrency('SEK','USD',DATEADD(DAY,-1*value,CAST('2024-04-18' AS DATE)),'100'))
-FROM generate_series(0,10000,1);
+SELECT SUM(dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue))
+FROM dbo.SalesOrder AS SO 
+WHERE SO.OrderCurrency='SEK';
 GO
-SELECT SUM(dbo.GetAmountInToCurrency('SEK','USD',DATEADD(DAY,-1*value,CAST('2024-04-18' AS DATE)),'100'))
-FROM generate_series(0,10000,1)
-WHERE dbo.GetAmountInToCurrency('SEK','USD',DATEADD(DAY,-1*value,CAST('2024-04-18' AS DATE)),'100')>10
+SELECT SUM(dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue))
+FROM dbo.SalesOrder AS SO 
+WHERE SO.OrderCurrency='SEK'
+	AND dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue)>1 
 ;
-
+--14617799,6679
+SET STATISTICS IO,TIME OFF;
+GO
 --How to do it better?
 CREATE OR ALTER FUNCTION dbo.GetAmountInToCurrency_TVF(
 	@FromCurrency CHAR(3),
@@ -79,7 +82,7 @@ RETURNS TABLE
 AS
 	RETURN 
 	(SELECT 
-		@FromAmount * FromCurrency.Rate / ToCurrency.Rate AS AmountInToCurrency
+		CAST(@FromAmount * FromCurrency.Rate / ToCurrency.Rate AS MONEY) AS AmountInToCurrency
 	FROM 
 	(SELECT TOP(1) Rate FROM dbo.CurrencyRate cr WHERE cr.CurrencyCode=@FromCurrency AND cr.CurrencyDate<=@ConversionDate ORDER BY cr.CurrencyDate DESC) AS FromCurrency
 	CROSS JOIN 
@@ -88,10 +91,21 @@ AS
 GO
 SET STATISTICS IO,TIME ON;
 SELECT SUM(GAITCT.AmountInToCurrency)
-FROM generate_series(0,100000,1) AS GS
-CROSS APPLY dbo.GetAmountInToCurrency_TVF('SEK','USD',DATEADD(DAY,-1*GS.value,CAST('2024-04-18' AS DATE)),'100') AS GAITCT
-WHERE GAITCT.AmountInToCurrency>10;
+FROM dbo.SalesOrder AS SO 
+CROSS APPLY dbo.GetAmountInToCurrency_TVF('SEK','USD',CAST(SO.OrderDate AS DATE),so.OrderValue) AS GAITCT
+WHERE SO.OrderCurrency='SEK'
+AND GAITCT.AmountInToCurrency>1;
 SET STATISTICS IO,TIME OFF;
 GO
 -- Or turn on UDF inlining
+
+ALTER DATABASE SCOPED CONFIGURATION SET TSQL_SCALAR_UDF_INLINING = ON;
+GO
+SET STATISTICS IO,TIME ON;
+SELECT SUM(dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue))
+FROM dbo.SalesOrder AS SO 
+WHERE SO.OrderCurrency='SEK'
+	AND dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue)>1
+;
+SET STATISTICS IO,TIME OFF;
 

@@ -26,6 +26,14 @@ FROM #t AS T;
 
 DROP TABLE #t;
 
+
+
+
+
+
+
+
+
 -- _some_ logic in the database is OK
 SELECT CurrencyCode,AVG(cr.Rate) FROM dbo.CurrencyRate AS CR GROUP BY CR.CurrencyCode;
 
