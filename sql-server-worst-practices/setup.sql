@@ -1,25 +1,5 @@
 USE master 
 GO
-CREATE TABLE #t(
-	SPID INT, 
-	Status VARCHAR(100),
-	login sysname,HostName VARCHAR(100),
-	BlkBy VARCHAR(100),
-	DBName VARCHAR(100),
-	Command VARCHAR(100),
-	cputime INT,
-	diskio INT,
-	lastbatch VARCHAR(100),
-	programname VARCHAR(100),
-	spid2 INT,
-	requestid INT)
-INSERT INTO #t
-EXEC sp_who2
-DECLARE @tsql NVARCHAR(MAX)='';
-SELECT @tsql = @tsql + CONCAT('KILL ',SPID,';') FROM #t WHERE dbname='SqlServerWorstPractices';
-PRINT @tsql;
-EXEC sys.sp_executesql @tsql;
-GO
 DROP DATABASE IF EXISTS SqlServerWorstPractices;
 GO
 CREATE DATABASE SqlServerWorstPractices;

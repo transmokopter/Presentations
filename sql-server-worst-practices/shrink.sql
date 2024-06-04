@@ -19,7 +19,6 @@ EXEC sp_spaceused
 
 TRUNCATE TABLE dbo.MyTransactionTable;
 CHECKPOINT;
-EXEC sp_spaceused
 --now we wait. Let's do something else in the meantime and then come back.
 
 
