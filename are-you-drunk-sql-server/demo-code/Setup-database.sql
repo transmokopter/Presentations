@@ -65,9 +65,25 @@ FROM dbo.CarAggregate AS CA
 CROSS APPLY GENERATE_SERIES(1,CA.CarCount,1) gs;
 
 CREATE NONCLUSTERED INDEX ix_Car_BrandName ON dbo.Car(BrandName) WITH(DATA_COMPRESSION=PAGE);
-CREATE NONCLUSTERED INDEX ix_Car_Color ON dbo.Car(Color) WITH(DATA_COMPRESSION=PAGE);
+
 
 GO
-ALTER DATABASE [StatsDemo] SET COMPATIBILITY_LEVEL = 160
+ALTER DATABASE [StatsDemo] SET COMPATIBILITY_LEVEL = 110
 GO
+
+ALTER DATABASE StatsDemo SET QUERY_STORE CLEAR;
+DBCC FREEPROCCACHE
+GO
+
+CREATE EVENT SESSION [query_optimizer_estimate_cardinality] ON SERVER
+ADD EVENT sqlserver.query_optimizer_estimate_cardinality
+ (  
+ ACTION (sqlserver.sql_text)  
+  WHERE (  
+  sql_text LIKE '%dbo.Car%'
+  )  
+ )
+ALTER EVENT SESSION [query_optimizer_estimate_cardinality] ON SERVER  STATE=START;
+
+
 
