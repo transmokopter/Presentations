@@ -66,6 +66,120 @@ CROSS APPLY GENERATE_SERIES(1,CA.CarCount,1) gs;
 
 CREATE NONCLUSTERED INDEX ix_Car_BrandName ON dbo.Car(BrandName) WITH(DATA_COMPRESSION=PAGE);
 
+CREATE TABLE dbo.AfterMarketStuff(
+	AfterMarketStuffId INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_AfterMarketStuff PRIMARY KEY CLUSTERED,
+	Thing VARCHAR(50) NOT NULL,
+	YearsBetweenShift NUMERIC(4,1) NOT NULL,
+	Price NUMERIC(16,2) NOT NULL,
+	BrandName VARCHAR(50) NULL,
+	Color VARCHAR(50) NULL
+);
+
+CREATE INDEX ix_AfterMarketStuff_BrandName ON dbo.AfterMarketStuff(BrandName) WITH(DATA_COMPRESSION=PAGE);
+CREATE INDEX ix_AfterMarketStuff_Color ON dbo.AfterMarketStuff(Color) WITH(DATA_COMPRESSION=PAGE);
+
+WITH things AS(
+	SELECT t.thing,t.yearsbetween,t.listprice FROM (
+		VALUES
+			('GearBoxOil',3,100),
+			('MotorOil',1,70),
+			('Paint',15,1000),
+			('BrakePads',3,200),
+			('WipersFront',0.5,50),
+			('WipersBack',0.5,50),
+			('WindShield',10,500),
+			('Headlights',2,100),
+			('RearLights',2,100),
+			('IndicatorLights',2,100),
+			('CoolingMedia',5,500)
+		) t(thing,yearsbetween,listprice)
+) 
+INSERT dbo.AfterMarketStuff
+(
+    Thing,
+    BrandName,
+    Color,
+    Price,
+    YearsBetweenShift
+)
+SELECT 
+	things.thing,
+	CA.BrandName,
+	CASE WHEN things.thing='Paint' THEN CHOOSE(t.value,'Red','Blue','Grey','Green') ELSE NULL END AS Color,
+	(CUME_DIST() OVER(ORDER BY CA.CarCount)+1) * things.listprice AS BrandPrice,
+	(CUME_DIST() OVER(ORDER BY CA.CarCount)+0.1)*things.yearsbetween AS YearsBetweenShift
+FROM things CROSS JOIN dbo.CarAggregate AS CA
+CROSS APPLY(SELECT value FROM generate_series(1,CASE WHEN things.thing='Paint' THEN 4 ELSE 1 END,1) t) t(value)
+;
+INSERT dbo.AfterMarketStuff
+(
+    Thing,
+    YearsBetweenShift,
+    Price,
+    BrandName,
+    Color
+)
+VALUES
+(   'WasherFluid',   -- Thing - varchar(50)
+    0.25,    -- YearsBetweenShift - numeric(4, 1)
+    10,    -- Price - numeric(16, 2)
+    NULL, -- BrandName - varchar(50)
+    NULL  -- Color - varchar(50)
+);
+
+CREATE TABLE dbo.AfterMarketCar(
+	AfterMarketCarId INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_AfterMarketCar PRIMARY KEY CLUSTERED,
+	AfterMarketStuffId INT NOT NULL,
+	CarId INT NOT NULL,
+	DateOfOccurance DATE NOT NULL
+);
+GO
+INSERT dbo.AfterMarketCar(
+	AfterMarketStuffId,
+	CarId,
+	DateOfOccurance
+)
+SELECT
+	AMS.AfterMarketStuffId,
+	C.CarId,
+	DATEADD(DAY,-1*(CarId%997),CURRENT_TIMESTAMP)
+FROM dbo.AfterMarketStuff AS AMS
+INNER JOIN dbo.Car AS C ON c.BrandName = AMS.BrandName AND c.Color = AMS.Color
+WHERE C.CarId%7=0
+;
+INSERT dbo.AfterMarketCar(
+	AfterMarketStuffId,
+	CarId,
+	DateOfOccurance
+)
+SELECT
+	AMS.AfterMarketStuffId,
+	C.CarId,
+	DATEADD(DAY,-1*(CarId%1009),CURRENT_TIMESTAMP)
+FROM dbo.AfterMarketStuff AS AMS
+INNER JOIN dbo.Car AS C ON c.BrandName = AMS.BrandName AND AMS.Color IS NULL
+WHERE C.CarId%5=0
+;
+INSERT dbo.AfterMarketCar(
+	AfterMarketStuffId,
+	CarId,
+	DateOfOccurance
+)
+SELECT
+	AMS.AfterMarketStuffId,
+	C.CarId,
+	DATEADD(DAY,-1*(CarId%1013),CURRENT_TIMESTAMP)
+FROM dbo.AfterMarketStuff AS AMS
+INNER JOIN dbo.Car AS C ON AMS.BrandName IS NULL
+WHERE C.CarId%3=0
+;
+
+CREATE INDEX ix_AfterMarketCar_CarId ON dbo.AfterMarketCar(CarId) WITH(DATA_COMPRESSION=PAGE);
+CREATE INDEX ix_AfterMarketCar_DateOfOccurance ON dbo.AfterMarketCar(DateOfOccurance) WITH(DATA_COMPRESSION=PAGE);
+CREATE INDEX ix_AfterMarketCar_AfterMarketStuffId ON dbo.AfterMarketCar(AfterMarketStuffId) WITH(DATA_COMPRESSION=PAGE);
+
+
+
 
 GO
 ALTER DATABASE [StatsDemo] SET COMPATIBILITY_LEVEL = 110
@@ -86,4 +200,6 @@ ADD EVENT sqlserver.query_optimizer_estimate_cardinality
 ALTER EVENT SESSION [query_optimizer_estimate_cardinality] ON SERVER  STATE=START;
 
 
+
+SELECT * FROM sys.dm_db_stats_histogram(981578535,7) AS DDSH
 
