@@ -175,6 +175,7 @@ C:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug
 C:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.dll
 C:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.pdb
 C:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.genruntimeconfig.cache
+C:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.csproj.AssemblyReference.cache
 D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\bin\Debug\netcoreapp3.1\appsettings.Development.json
 D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\bin\Debug\netcoreapp3.1\appsettings.json
 D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\bin\Debug\netcoreapp3.1\StateProvinceApp.exe
@@ -262,5 +263,4 @@ D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug
 D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.dll
 D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.pdb
 D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.genruntimeconfig.cache
-C:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.csproj.AssemblyReference.cache
 D:\git\Presentations\sql-in-azure-containers\code\app\StateProvinceApp\obj\Debug\netcoreapp3.1\StateProvinceApp.csprojAssemblyReference.cache

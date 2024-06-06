@@ -22,7 +22,7 @@ docker start sql1
 docker start sql2
 
 # Copy AdventureWorks database backup to the container.
-docker cp D:\sqldata\localhost\backup\AdventureWorks2014.bak sql1:/var/opt/mssql/data
+##docker cp D:\sqldata\localhost\backup\AdventureWorks2014.bak sql1:/var/opt/mssql/data
 
 docker logs sql2
 
