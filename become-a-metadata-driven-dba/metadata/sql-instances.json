@@ -1,0 +1,20 @@
+[
+    {
+        "ServerName": "tsqlab-se-db-1",
+        "SQLVersion": 16,
+        "InstanceName": "",
+        "InstanceRoot": "d:\\sqlinstance\\MSSQL",
+        "DataDir": "d:\\sqldata\\mssql",
+        "LogDir": "d:\\sqllog\\mssql",
+        "TempDBDir": "d:\\tempdb\\mssql"
+    },
+    {
+        "ServerName": "tsqlab-se-db-1",
+        "SQLVersion": 16,
+        "InstanceName": "prod",
+        "InstanceRoot": "d:\\sqlinstance\\prod",
+        "DataDir": "d:\\sqldata\\prod",
+        "LogDir": "d:\\sqllog\\prod",
+        "TempDBDir": "d:\\tempdb\\prod"
+    }
+]

@@ -23,15 +23,15 @@ BEGIN
 END
 GO
 SET STATISTICS TIME,IO ON;
-SELECT SUM(dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue))
+SELECT SUM(dbo.GetAmountInToCurrency(so.OrderCurrency,'USD',CAST(so.OrderDate AS DATE),so.OrderValue))
 FROM dbo.SalesOrder AS SO 
 WHERE SO.OrderCurrency='SEK' 
 ;
 GO
-SELECT SUM(dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue))
+SELECT SUM(dbo.GetAmountInToCurrency(SO.OrderCurrency,'USD',CAST(so.OrderDate AS DATE),so.OrderValue))
 FROM dbo.SalesOrder AS SO 
 WHERE SO.OrderCurrency='SEK' 
-	AND dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue)>1 
+	AND dbo.GetAmountInToCurrency(SO.OrderCurrency,'USD',CAST(so.OrderDate AS DATE),so.OrderValue)>1 
 ;
 SET STATISTICS IO,TIME OFF;
 
@@ -92,7 +92,7 @@ GO
 SET STATISTICS IO,TIME ON;
 SELECT SUM(GAITCT.AmountInToCurrency)
 FROM dbo.SalesOrder AS SO 
-CROSS APPLY dbo.GetAmountInToCurrency_TVF('SEK','USD',CAST(SO.OrderDate AS DATE),so.OrderValue) AS GAITCT
+CROSS APPLY dbo.GetAmountInToCurrency_TVF(SO.OrderCurrency,'USD',CAST(SO.OrderDate AS DATE),so.OrderValue) AS GAITCT
 WHERE SO.OrderCurrency='SEK'
 AND GAITCT.AmountInToCurrency>1;
 SET STATISTICS IO,TIME OFF;
@@ -102,10 +102,10 @@ GO
 ALTER DATABASE SCOPED CONFIGURATION SET TSQL_SCALAR_UDF_INLINING = ON;
 GO
 SET STATISTICS IO,TIME ON;
-SELECT SUM(dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue))
+SELECT SUM(dbo.GetAmountInToCurrency(SO.OrderCurrency,'USD',CAST(so.OrderDate AS DATE),so.OrderValue))
 FROM dbo.SalesOrder AS SO 
 WHERE SO.OrderCurrency='SEK'
-	AND dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue)>1
+	AND dbo.GetAmountInToCurrency(SO.OrderCurrency,'USD',CAST(so.OrderDate AS DATE),so.OrderValue)>1
 ;
 SET STATISTICS IO,TIME OFF;
 

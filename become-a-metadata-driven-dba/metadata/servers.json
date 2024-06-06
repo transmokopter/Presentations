@@ -1,0 +1,14 @@
+[
+    {
+        "ServerName": "tsqlab-se-db-1",
+        "OperatingSystem": "Windows"
+    },
+    {
+        "ServerName": "tsqlab-se-db-2",
+        "OperatingSystem": "Windows"
+    },
+    {
+        "ServerName": "tsqlab-se-db-3",
+        "OperatingSystem": "Windows"
+    }
+]

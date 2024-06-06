@@ -23,7 +23,7 @@ CLOSE cur;
 DEALLOCATE cur;
 SELECT CurrencyCode,sumofrates/ratecount 
 FROM #t AS T;
-
+GO
 DROP TABLE #t;
 
 

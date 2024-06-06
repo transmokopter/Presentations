@@ -1,0 +1,14 @@
+{
+  "main": "./server.ps1",
+  "scripts": {
+    "build": "psake",
+    "test": "invoke-pester ./tests/*.ps1",
+    "install": "yarn install --force --ignore-scripts --modules-folder pode_modules",
+    "start": "./server.ps1"
+  },
+  "license": "MIT",
+  "author": "",
+  "description": "",
+  "version": "1.0.0",
+  "name": "tsqlab-rest-api"
+}
