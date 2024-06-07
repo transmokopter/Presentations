@@ -181,9 +181,6 @@ CREATE INDEX ix_AfterMarketCar_AfterMarketStuffId ON dbo.AfterMarketCar(AfterMar
 
 
 
-GO
-ALTER DATABASE [StatsDemo] SET COMPATIBILITY_LEVEL = 110
-GO
 
 ALTER DATABASE StatsDemo SET QUERY_STORE CLEAR;
 DBCC FREEPROCCACHE
@@ -201,5 +198,6 @@ ALTER EVENT SESSION [query_optimizer_estimate_cardinality] ON SERVER  STATE=STAR
 
 
 
-SELECT * FROM sys.dm_db_stats_histogram(981578535,7) AS DDSH
-
+GO
+ALTER DATABASE [StatsDemo] SET COMPATIBILITY_LEVEL = 110
+GO

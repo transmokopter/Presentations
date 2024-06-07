@@ -41,6 +41,24 @@ SELECT 5049331 * 0.01754386
 DROP INDEX ix_Car_BrandName_Color ON dbo.Car
 
 
+-- Getting SQL Server to use density vector instead of histogram
+-- Optimize for Unknown
+DECLARE @BrandName VARCHAR(50)='Volvo'
+EXEC sp_executesql N'SELECT COUNT(*), Color
+FROM dbo.Car
+WHERE BrandName=@BrandName
+GROUP BY Color
+OPTION(OPTIMIZE FOR(@BrandName UNKNOWN));',N'@BrandName varchar(50)',@BrandName;
+GO
+-- Or introduce implicit conversion on the data side of things
+DECLARE @BrandName NVARCHAR(50)=N'Volvo'
+EXEC sp_executesql N'SELECT COUNT(*), Color
+FROM dbo.Car
+WHERE BrandName=@BrandName
+GROUP BY Color;',N'@BrandName nvarchar(50)',@BrandName;
+GO
+
+--Slides
 
 --Demo 2 - Parameter Sniffing
 
@@ -130,6 +148,8 @@ DBCC FREEPROCCACHE;
 GO
 
 
+-- Slides
+
 --Demo 3 - Combine predicates
 
 
@@ -207,6 +227,8 @@ WHERE BrandName=@BrandName AND Color=@Color;'
 EXEC sp_executesql @sql,N'@BrandName varchar(50),@Color varchar(50)',@BrandName,@Color;
 GO
 
+--Slides
+
 --Demo 4, more complexity: Joins
 SET STATISTICS IO ON;
 SELECT SUM(AMS.Price) AS TotalRevenue, C.BrandName, AMS.Thing, AMS.Color
@@ -242,25 +264,63 @@ AND AMS.Thing='Windshield'
 GROUP BY C.BrandName, AMS.Thing, AMS.Color;
 SET STATISTICS IO OFF;
 
--- Demo 5, get into the head of SQL Server!
+-- Demo 5, Missing statistics
+ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=160;
+GO
+DELETE car WHERE brandname='SAAB'
+UPDATE STATISTICS dbo.Car WITH FULLSCAN;
+
+INSERT INTO dbo.Car
+(
+    BrandName,
+    Color
+)
+SELECT 'SAAB', 'Pink'
+FROM generate_series(1,50000);
+ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=110;
+
+SELECT * FROM dbo.Car WHERE brandname='SAAB';
+
+
+DECLARE @BrandName VARCHAR(50)='SAAB';
+SET STATISTICS IO on
+EXEC sp_executesql N'SELECT * FROM dbo.Car WHERE BrandName = @BrandName',N'@BrandName varchar(50)',@BrandName;
+EXEC sp_executesql N'SELECT * FROM dbo.Car WHERE BrandName = @BrandName OPTION(OPTIMIZE FOR(@BrandName UNKNOWN))',N'@BrandName varchar(50)',@BrandName;
+SET STATISTICS IO off
+
+ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=150;
+GO
+SELECT * FROM dbo.Car WHERE brandname='SAAB';
+DECLARE @BrandName VARCHAR(50)='SAAB';
+SET STATISTICS IO on
+EXEC sp_executesql N'SELECT * FROM dbo.Car WHERE BrandName = @BrandName',N'@BrandName varchar(50)',@BrandName;
+EXEC sp_executesql N'SELECT * FROM dbo.Car WHERE BrandName = @BrandName OPTION(OPTIMIZE FOR(@BrandName UNKNOWN))',N'@BrandName varchar(50)',@BrandName;
+SET STATISTICS IO off
+GO
+
+-- Ascending key
+SELECT MAX(carid) FROM dbo.Car
+
+SELECT * FROM dbo.Car WHERE CarId>=5160398 AND CarId<=5161398;
+
+
+-- Demo 6, get into the head of SQL Server!
 -- We stay on SQL Server 2019 mode but we use OPTION(RECOMPILE)
 -- Open live output from XEvent session
-DECLARE @BrandName VARCHAR(50), @Color VARCHAR(50);
-SET @BrandName = 'Volvo';
-SET @Color = 'Blue';
-DECLARE @sql NVARCHAR(MAX)=N'SELECT BrandName, Color 
-FROM dbo.Car 
-WHERE BrandName=@BrandName AND Color=@Color OPTION(RECOMPILE);'
-EXEC sp_executesql @sql,N'@BrandName varchar(50),@Color varchar(50)',@BrandName,@Color;
+SELECT * FROM dbo.car C
+INNER JOIN dbo.AfterMarketCar AS AMC ON C.CarId = AMC.CarId
+WHERE AMC.AfterMarketStuffId=11 OPTION(RECOMPILE)
 
-GO
-DECLARE @BrandName VARCHAR(50), @Color VARCHAR(50);
-SET @BrandName = 'Ferrari';
-SET @Color = 'Blue';
-DECLARE @sql NVARCHAR(MAX)=N'SELECT BrandName, Color 
-FROM dbo.Car 
-WHERE BrandName=@BrandName AND Color=@Color OPTION(RECOMPILE);'
-EXEC sp_executesql @sql,N'@BrandName varchar(50),@Color varchar(50)',@BrandName,@Color;
-GO
+SELECT * FROM dbo.Car C WHERE BrandName='Ferrari' AND Color='Blue';
+
+SELECT SUM(AMS.Price) AS TotalRevenue, C.BrandName, AMS.Thing, AMS.Color
+FROM dbo.AfterMarketStuff AS AMS
+INNER JOIN dbo.AfterMarketCar AS AMC ON AMS.AfterMarketStuffId = AMC.AfterMarketStuffId
+INNER JOIN dbo.Car C ON AMC.CarId = C.CarId
+WHERE AMC.DateOfOccurance >='2024-01-03' AND AMC.DateOfOccurance<='2024-03-03'
+AND AMS.Thing='WasherFluid'
+GROUP BY C.BrandName, AMS.Thing, AMS.Color
+OPTION(RECOMPILE);
+
 
 
