@@ -1,17 +1,49 @@
 USE Statsdemo;
+SET NOCOUNT ON;
+SELECT D.name, D.compatibility_level FROM sys.databases AS D
+
+
+-- Let's start by examining our data:
+SELECT COUNT(*) AS CountCars, Color, BrandName FROM dbo.Car 
+GROUP BY Color, BrandName 
+ORDER BY BrandName, Color;
+
+SELECT * FROM dbo.AfterMarketStuff AS AMS
+ORDER BY Thing,BrandName, Color;
+
+SELECT 
+	COUNT(*) AS AfterMarketCount, C.BrandName, C.Color, AMS.Thing, SUM(AMS.Price) AS GrossSales
+FROM dbo.Car AS C
+	INNER JOIN dbo.AfterMarketStuff AS AMS ON (AMS.BrandName = C.BrandName OR AMS.BrandName IS NULL) AND (AMS.Color = C.Color OR AMS.Color IS NULL)
+	INNER JOIN dbo.AfterMarketCar AS AMC ON AMC.AfterMarketStuffId = AMS.AfterMarketStuffId AND AMC.CarId = C.CarId
+WHERE AMC.DateOfOccurance > DATEADD(YEAR,-1,CURRENT_TIMESTAMP)
+GROUP BY C.BrandName, C.Color, AMS.Thing
+ORDER BY C.BrandName, C.Color, AMS.Thing
+
+-- Clear Plan Cache
+DBCC FREEPROCCACHE;
+
 -- Let's start simple
-SELECT COUNT(*),Color 
+SET STATISTICS IO ON;
+SELECT COUNT(*) AS CarCount,Color 
 FROM dbo.Car 
 WHERE BrandName='Volvo'
 GROUP BY Color;
+SET STATISTICS IO OFF;
 
-SELECT COUNT(*),Color 
+SET STATISTICS IO ON;
+SELECT COUNT(*) AS CarCount,Color 
 FROM dbo.Car 
 WHERE BrandName='Ferrari'
 GROUP BY Color;
+SET STATISTICS IO OFF;
 
 -- SQL Server uses statistics
 SELECT name,stats_id FROM sys.stats AS S WHERE object_id=OBJECT_ID('dbo.Car');
+
+-- Stats ID 2 is an index, Stats ID 3 is Column Statistics, and I happen to know it's for the Color column.
+--Let's look into them
+
 SELECT 
 	DDSH.step_number,
 	DDSH.range_high_key,
@@ -21,8 +53,19 @@ SELECT
 	DDSH.average_range_rows
 FROM sys.dm_db_stats_histogram(OBJECT_ID('dbo.Car'),2) AS DDSH
 
+SELECT 
+	DDSH.step_number,
+	DDSH.range_high_key,
+	DDSH.range_rows,
+	DDSH.equal_rows,
+	DDSH.distinct_range_rows,
+	DDSH.average_range_rows
+FROM sys.dm_db_stats_histogram(OBJECT_ID('dbo.Car'),3) AS DDSH
+
+
 --Sometimes, histogram will not be used. Instead, SQL Server will look at density vector
-DBCC SHOW_STATISTICS(Car,ix_Car_BrandName)
+DBCC SHOW_STATISTICS(Car,ix_Car_BrandName) WITH DENSITY_VECTOR
+DBCC SHOW_STATISTICS(Car,_WA_Sys_00000003_36B12243) WITH DENSITY_VECTOR
 -- All density = Count of distinct values / total number of rows
 
 --Let's create a multi-column index
@@ -39,6 +82,18 @@ DBCC SHOW_STATISTICS(Car,ix_Car_BrandName_Color)
 SELECT 5049331 * 0.01754386
 
 DROP INDEX ix_Car_BrandName_Color ON dbo.Car
+
+--Let's dive into the Cars' per color query again:
+SET STATISTICS IO ON;
+SELECT COUNT(*) AS CarCount,Color 
+FROM dbo.Car 
+WHERE BrandName='Ferrari'
+GROUP BY Color;
+SET STATISTICS IO OFF;
+
+-- Why estimate four rows out of the aggreage, when there are only Red Ferraris?
+
+
 
 
 -- Getting SQL Server to use density vector instead of histogram
@@ -68,7 +123,9 @@ DECLARE @sql NVARCHAR(MAX)=N'SELECT COUNT(*),Color
 FROM dbo.Car 
 WHERE BrandName=@BrandName
 GROUP BY Color;';
+SET STATISTICS IO ON
 EXEC sp_executesql @sql,N'@BrandName varchar(50)',@BrandName;
+SET STATISTICS IO OFF
 GO
 
 DECLARE @BrandName VARCHAR(50), @Color VARCHAR(50);
@@ -77,8 +134,11 @@ DECLARE @sql NVARCHAR(MAX)=N'SELECT COUNT(*),Color
 FROM dbo.Car 
 WHERE BrandName=@BrandName
 GROUP BY Color;';
+SET STATISTICS IO ON
 EXEC sp_executesql @sql,N'@BrandName varchar(50)',@BrandName;
+SET STATISTICS IO OFF
 GO
+-- Let's start over, and run the Ferrari query first
 DBCC FREEPROCCACHE
 GO
 DECLARE @BrandName VARCHAR(50), @Color VARCHAR(50);
@@ -87,7 +147,9 @@ DECLARE @sql NVARCHAR(MAX)=N'SELECT COUNT(*),Color
 FROM dbo.Car 
 WHERE BrandName=@BrandName
 GROUP BY Color;';
+SET STATISTICS IO ON
 EXEC sp_executesql @sql,N'@BrandName varchar(50)',@BrandName;
+SET STATISTICS IO OFF
 GO
 
 DECLARE @BrandName VARCHAR(50), @Color VARCHAR(50);
@@ -96,7 +158,9 @@ DECLARE @sql NVARCHAR(MAX)=N'SELECT COUNT(*),Color
 FROM dbo.Car 
 WHERE BrandName=@BrandName
 GROUP BY Color;';
+SET STATISTICS IO ON
 EXEC sp_executesql @sql,N'@BrandName varchar(50)',@BrandName;
+SET STATISTICS IO OFF
 
 GO
 
@@ -119,6 +183,7 @@ DECLARE @BrandName VARCHAR(50), @Color VARCHAR(50);
 SET @BrandName = 'Volvo'
 DECLARE @sql NVARCHAR(MAX)=N'SELECT COUNT(*),Color 
 FROM dbo.Car 
+-- Here''s a comment
 WHERE BrandName=@BrandName
 GROUP BY Color;';
 EXEC sp_executesql @sql,N'@BrandName varchar(50)',@BrandName;
@@ -183,8 +248,20 @@ SET @BrandName = 'Ferrari';
 SET @Color = 'Blue';
 DECLARE @sql NVARCHAR(MAX)=N'SELECT BrandName, Color 
 FROM dbo.Car 
-WHERE BrandName=@BrandName AND Color=@Color;';
+WHERE BrandName=@BrandName AND Color=@Color OPTION(RECOMPILE);';
 EXEC sp_executesql @sql,N'@BrandName varchar(50),@Color varchar(50)',@BrandName,@Color;
+
+GO
+DECLARE @BrandName VARCHAR(50), @Color VARCHAR(50);
+SET @BrandName = 'Ferrari';
+SET @Color = 'Blue';
+DECLARE @sql NVARCHAR(MAX)=N'SELECT BrandName, Color 
+FROM dbo.Car 
+WHERE BrandName=@BrandName AND Color=@Color OPTION(RECOMPILE);';
+SET STATISTICS IO ON
+EXEC sp_executesql @sql,N'@BrandName varchar(50),@Color varchar(50)',@BrandName,@Color;
+SET STATISTICS IO OFF
+
 
 GO
 
@@ -223,7 +300,7 @@ SET @BrandName = 'Ferrari';
 SET @Color = 'Blue';
 DECLARE @sql NVARCHAR(MAX)=N'SELECT BrandName, Color 
 FROM dbo.Car 
-WHERE BrandName=@BrandName AND Color=@Color;'
+WHERE BrandName=@BrandName AND Color=@Color OPTION(RECOMPILE);'
 EXEC sp_executesql @sql,N'@BrandName varchar(50),@Color varchar(50)',@BrandName,@Color;
 GO
 
@@ -300,8 +377,26 @@ GO
 
 -- Ascending key
 SELECT MAX(carid) FROM dbo.Car
+DBCC FREEPROCCACHE
+ALTER TABLE dbo.car rebuild
+SELECT * FROM dbo.Car WHERE CarId>5049331 OPTION(RECOMPILE)
+-- Why 15.000 though?
+-- Not sure, but it's pretty close to 0,3% of the table cardinality..
+
+-- Let's go crazy!!!
+SELECT * FROM dbo.Car WHERE CarId>1115160398 OPTION(RECOMPILE)
+
+-- Ok, so asking for all rows higher than ANY number outside the histogram gives a 15k estimate
 
 SELECT * FROM dbo.Car WHERE CarId>=5160398 AND CarId<=5161398;
+
+-- Why 4.500 though?
+SELECT 0.3*15000;
+
+
+ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=110;
+SELECT * FROM dbo.Car WHERE CarId>=5160398 AND CarId<=5161398;
+
 
 
 -- Demo 6, get into the head of SQL Server!
@@ -324,3 +419,5 @@ OPTION(RECOMPILE);
 
 
 
+--Now start the feed
+SELECT * FROM dbo.Car WHERE CarId>10000000 OPTION(RECOMPILE)
