@@ -8,7 +8,7 @@ GO
 
 CREATE DATABASE [StatsDemo];
 GO
-ALTER DATABASE [StatsDemo] SET COMPATIBILITY_LEVEL = 100
+ALTER DATABASE [StatsDemo] SET COMPATIBILITY_LEVEL = 160
 ALTER DATABASE [StatsDemo] SET RECOVERY SIMPLE WITH NO_WAIT
 ALTER DATABASE [StatsDemo] MODIFY FILE ( NAME = N'StatsDemo', SIZE = 2097152KB , FILEGROWTH = 1048576KB )
 ALTER DATABASE [StatsDemo] MODIFY FILE ( NAME = N'StatsDemo_log', SIZE = 10485760KB , FILEGROWTH = 1048576KB )
@@ -25,182 +25,179 @@ reconfigure;
 exec sp_configure 'show advanced options',0;
 reconfigure;
 GO
-CREATE SCHEMA Production;
-GO
-CREATE SCHEMA Sales;
-GO
-CREATE SCHEMA Shipping;
-GO
-CREATE SCHEMA Demo;
-
-GO
-CREATE FUNCTION Demo.GetSameDate(@dt date)
-RETURNS TABLE
-AS RETURN SELECT @dt as dt;
-
-
-GO
-
-
-CREATE FUNCTION Demo.GetSameDateScalar(@dt DATE)
-RETURNS DATE
-AS
-BEGIN
-	RETURN @dt;
-END;
-GO
-CREATE TABLE Shipping.Locations(
-	LocationID int identity(1,1) CONSTRAINT PK_Shipping_Locations PRIMARY KEY CLUSTERED,
-	LocationName varchar(100),
-	PhysicalLocation GEOGRAPHY,
-	CountryRegionCode CHAR(2)
-);
-CREATE NONCLUSTERED INDEX ix_CountryRegionCode ON Shipping.Locations(CountryRegionCode);
-CREATE SPATIAL INDEX ix_PhysicalLocation ON Shipping.Locations(PhysicalLocation);
-CREATE TABLE Shipping.Warehouse(
-	WarehouseID int identity(1,1) CONSTRAINT PK_Shipping_Warehouse PRIMARY KEY CLUSTERED,
-	WarehouseName varchar(100),
-	LocationID int CONSTRAINT FK_Warehouse_Locations FOREIGN KEY REFERENCES Shipping.Locations(LocationID)
-);
-CREATE INDEX ix_LocationID ON Shipping.Warehouse(LocationID);
-
-CREATE TABLE Sales.Customer(
-	CustomerID int identity(1,1) CONSTRAINT PK_Sales_Customer PRIMARY KEY CLUSTERED,
-	CustomerName varchar(100)
+CREATE TABLE dbo.CarAggregate(
+	BrandName VARCHAR(50) NOT NULL,
+	CarCount INT NOT NULL
 );
 
-
-CREATE TABLE Sales.CustomerAddress(
-	CustomerAddressID int identity(1,1) CONSTRAINT PK_Sales_CustomerAddress PRIMARY KEY CLUSTERED,
-	CustomerID int CONSTRAINT FK_CustomerAddress_Customer FOREIGN KEY REFERENCES Sales.Customer(CustomerID),
-	LocationID int CONSTRAINT FK_CustomerAddress_Locations FOREIGN KEY REFERENCES Shipping.Locations(LocationID)
-);
-CREATE INDEX ix_CustomerID ON Sales.CustomerAddress(CustomerID);
-CREATE INDEX ix_LocationID ON Sales.CustomerAddress(LocationID);
-
-
-
-CREATE TABLE Sales.OrderHeader(
-	OrderHeaderID int identity(1,1) CONSTRAINT PK_Sales_OrderHeader PRIMARY KEY CLUSTERED,
-	OrderDate date CONSTRAINT DF_OrderHeader_OrderDate DEFAULT(CURRENT_TIMESTAMP),
-	CustomerID int CONSTRAINT FK_OrderHeader_Customer FOREIGN KEY REFERENCES Sales.Customer(CustomerID),
-	CustomerAddressID int CONSTRAINT FK_OrderHeader_CustomerAddress FOREIGN KEY REFERENCES Sales.CustomerAddress(CustomerAddressID),
-	IsOrderShipped bit CONSTRAINT DF_OrderHeader_IsOrderShipped DEFAULT(0),
-	OrderHeaderDiscount numeric(5,2),
-	InvoiceAmount money
-);
-CREATE INDEX ix_OrderDate ON Sales.OrderHeader(OrderDate,CustomerId) INCLUDE(OrderHeaderDiscount) ;
-CREATE INDEX ix_IsOrderShipped ON Sales.OrderHeader(IsOrderShipped);
-CREATE INDEX ix_InvoiceAmount ON Sales.OrderHeader(InvoiceAmount);
-CREATE INDEX ix_CustomerID ON Sales.OrderHeader(CustomerID);
-CREATE INDEX ix_CustomerAddressID ON Sales.OrderHeader(CustomerAddressID);
-
-GO
-CREATE FUNCTION Shipping.ClosestWarehouse(@TargetLocation as geography)
-RETURNS TABLE
-AS
-	RETURN
-		SELECT TOP(1) @TargetLocation.STDistance(wl.PhysicalLocation) as DistanceKM, w.WarehouseID
-		FROM Shipping.Warehouse w
-		INNER JOIN Shipping.Locations wl ON w.LocationID = wl.LocationID 
-		ORDER BY @TargetLocation.STDistance(wl.PhysicalLocation);
-GO
-
-
-INSERT Shipping.Locations(
-	LocationName,
-	PhysicalLocation,
-	CountryRegionCode)
-VALUES	('Berlin, Germany',geography::Point(52.52000659999999,13.404953999999975,4326),'DE'),
-		('Paris, France',geography::Point(48.85661400000001,2.3522219000000177,4326),'FR'),
-		('London, United Kingdom',geography::Point(51.5073509,-0.12775829999998223,4326),'GB'),
-		('Edsbyn, Sweden',geography::Point(61.37502739999999,15.8182726,4326),'SE'),
-		('Sandviken, Sweden',geography::Point(60.621607,16.775918000000047,4326),'SE'),
-		('Lidköping, Sweden',geography::Point(58.5035047,13.157076800000027,4326),'SE'),
-		('Bollnäs, Sweden',geography::Point(61.34837950000001,16.394268499999953,4326),'SE');
-
-INSERT shipping.locations(locationname,physicallocation,CountryRegionCode)
-  SELECT coalesce([AddressLine1],'') + ',' + coalesce([AddressLine2],'') + ',' + coalesce([City], '') + ',' + coalesce(r.CountryRegionName ,''),
-  a.SpatialLocation,
-  r.CountryRegionCode 
-  FROM [AdventureWorks2014].[Person].[Address] a
-  inner join AdventureWorks2014.person.vStateProvinceCountryRegion r ON a.StateProvinceID = r.StateProvinceID
-where r.StateProvinceID in (
-  select stateprovinceid from adventureworks2014.person.vStateProvinceCountryRegion where TerritoryID in (7,8,10)
-);
-  
-INSERT Sales.Customer (CustomerName)
-select top 5627 FirstName + ' ' + LastName from adventureworks2014.person.person
-order by newid();
-with cte1 as (
-	select customerid,
-	row_number() over(order by customerid) as rownum
-	from sales.customer 
-), cte2 as (
-	select locationid,
-	row_number() over(order by newid()) as rownum
-	from shipping.locations where locationid>7
-)
-INSERT Sales.CustomerAddress (CustomerID, LocationID)
-select cte1.CustomerID, cte2.LocationID
-FROM cte1 INNER JOIN CTE2 ON CTE1.rownum = CTE2.rownum;
-
-INSERT Shipping.Warehouse (WarehouseName, LocationID)
-VALUES	('Berlin',1),
-		('Paris',2),
-		('London',3);
-
-
-GO
-CREATE TABLE Demo.Today(dt date PRIMARY KEY CLUSTERED);
-INSERT Demo.Today (dt) SELECT CURRENT_TIMESTAMP;
-GO
-CREATE FUNCTION Demo.GetToday()
-RETURNS TABLE
-AS 
-	RETURN SELECT TOP 1 dt FROM Demo.Today ORDER BY dt DESC;
-GO
---Create orders
-
-
-CREATE OR ALTER PROC Demo.CreateOrdersForDay
+INSERT dbo.CarAggregate
 (
- @orderdate DATE,
- @numOrders INT = 12500
+    BrandName,
+    CarCount
 )
-AS
-BEGIN;
-	WITH CTE_Customers AS(
-		SELECT TOP(@numOrders) c.CustomerID FROM Sales.Customer c 
-		CROSS JOIN Sales.Customer c2
-		ORDER BY NEWID()
-	)INSERT Sales.OrderHeader (OrderDate,CustomerID,CustomerAddressID,IsorderShipped,OrderHeaderDiscount)
-	SELECT @orderdate,c.CustomerID,ca.CustomerAddressID,0,RAND(DATEPART(second,CURRENT_TIMESTAMP)*DATEPART(DAY,@orderdate))
-	FROM CTE_Customers c
-	INNER JOIN Sales.CustomerAddress ca ON c.CustomerID = ca.CustomerID
-	OPTION(RECOMPILE)
-	;
-END
+VALUES
+	('Ferrari',1916),
+	('Audi',294284),
+	('BMW',327706),
+	('Ford',387397),
+	('Kia',300941),
+	('Mercedes-Benz',369790),
+	('Peugot',244042),
+	('Renault',274733),
+	('Toyota',469989),
+	('Volkswagen',995292),
+	('Volvo',1381028),
+	('Abarth',1076),
+	('ABT',900),
+	('AC Cars',218),
+	('Acadian',19);
+
+
+CREATE TABLE dbo.Car(
+	CarId INT IDENTITY(1,1) CONSTRAINT PK_Car PRIMARY KEY CLUSTERED,
+	BrandName VARCHAR(50) NOT NULL,
+	Color VARCHAR(50) NOT NULL
+);
+
+INSERT dbo.Car(BrandName,Color)
+SELECT CA.BrandName, CHOOSE(CASE WHEN brandname='Ferrari' THEN 1 ELSE ROW_NUMBER() OVER(ORDER BY (SELECT NULL))%4+1 END,'Red','Blue','Grey','Green')
+FROM dbo.CarAggregate AS CA
+CROSS APPLY GENERATE_SERIES(1,CA.CarCount,1) gs;
+
+CREATE NONCLUSTERED INDEX ix_Car_BrandName ON dbo.Car(BrandName) WITH(DATA_COMPRESSION=PAGE);
+
+CREATE TABLE dbo.AfterMarketStuff(
+	AfterMarketStuffId INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_AfterMarketStuff PRIMARY KEY CLUSTERED,
+	Thing VARCHAR(50) NOT NULL,
+	YearsBetweenShift NUMERIC(4,1) NOT NULL,
+	Price NUMERIC(16,2) NOT NULL,
+	BrandName VARCHAR(50) NULL,
+	Color VARCHAR(50) NULL
+);
+
+CREATE INDEX ix_AfterMarketStuff_BrandName ON dbo.AfterMarketStuff(BrandName) WITH(DATA_COMPRESSION=PAGE);
+CREATE INDEX ix_AfterMarketStuff_Color ON dbo.AfterMarketStuff(Color) WITH(DATA_COMPRESSION=PAGE);
+
+WITH things AS(
+	SELECT t.thing,t.yearsbetween,t.listprice FROM (
+		VALUES
+			('GearBoxOil',3,100),
+			('MotorOil',1,70),
+			('Paint',15,1000),
+			('BrakePads',3,200),
+			('WipersFront',0.5,50),
+			('WipersBack',0.5,50),
+			('WindShield',10,500),
+			('Headlights',2,100),
+			('RearLights',2,100),
+			('IndicatorLights',2,100),
+			('CoolingMedia',5,500)
+		) t(thing,yearsbetween,listprice)
+) 
+INSERT dbo.AfterMarketStuff
+(
+    Thing,
+    BrandName,
+    Color,
+    Price,
+    YearsBetweenShift
+)
+SELECT 
+	things.thing,
+	CA.BrandName,
+	CASE WHEN things.thing='Paint' THEN CHOOSE(t.value,'Red','Blue','Grey','Green') ELSE NULL END AS Color,
+	(CUME_DIST() OVER(ORDER BY CA.CarCount)+1) * things.listprice AS BrandPrice,
+	(CUME_DIST() OVER(ORDER BY CA.CarCount)+0.1)*things.yearsbetween AS YearsBetweenShift
+FROM things CROSS JOIN dbo.CarAggregate AS CA
+CROSS APPLY(SELECT value FROM generate_series(1,CASE WHEN things.thing='Paint' THEN 4 ELSE 1 END,1) t) t(value)
+;
+INSERT dbo.AfterMarketStuff
+(
+    Thing,
+    YearsBetweenShift,
+    Price,
+    BrandName,
+    Color
+)
+VALUES
+(   'WasherFluid',   -- Thing - varchar(50)
+    0.25,    -- YearsBetweenShift - numeric(4, 1)
+    10,    -- Price - numeric(16, 2)
+    NULL, -- BrandName - varchar(50)
+    NULL  -- Color - varchar(50)
+);
+
+CREATE TABLE dbo.AfterMarketCar(
+	AfterMarketCarId INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_AfterMarketCar PRIMARY KEY CLUSTERED,
+	AfterMarketStuffId INT NOT NULL,
+	CarId INT NOT NULL,
+	DateOfOccurance DATE NOT NULL
+);
+GO
+INSERT dbo.AfterMarketCar(
+	AfterMarketStuffId,
+	CarId,
+	DateOfOccurance
+)
+SELECT
+	AMS.AfterMarketStuffId,
+	C.CarId,
+	DATEADD(DAY,-1*(CarId%997),CURRENT_TIMESTAMP)
+FROM dbo.AfterMarketStuff AS AMS
+INNER JOIN dbo.Car AS C ON c.BrandName = AMS.BrandName AND c.Color = AMS.Color
+WHERE C.CarId%7=0
+;
+INSERT dbo.AfterMarketCar(
+	AfterMarketStuffId,
+	CarId,
+	DateOfOccurance
+)
+SELECT
+	AMS.AfterMarketStuffId,
+	C.CarId,
+	DATEADD(DAY,-1*(CarId%1009),CURRENT_TIMESTAMP)
+FROM dbo.AfterMarketStuff AS AMS
+INNER JOIN dbo.Car AS C ON c.BrandName = AMS.BrandName AND AMS.Color IS NULL
+WHERE C.CarId%5=0
+;
+INSERT dbo.AfterMarketCar(
+	AfterMarketStuffId,
+	CarId,
+	DateOfOccurance
+)
+SELECT
+	AMS.AfterMarketStuffId,
+	C.CarId,
+	DATEADD(DAY,-1*(CarId%1013),CURRENT_TIMESTAMP)
+FROM dbo.AfterMarketStuff AS AMS
+INNER JOIN dbo.Car AS C ON AMS.BrandName IS NULL
+WHERE C.CarId%3=0
+;
+
+CREATE INDEX ix_AfterMarketCar_CarId ON dbo.AfterMarketCar(CarId) WITH(DATA_COMPRESSION=PAGE);
+CREATE INDEX ix_AfterMarketCar_DateOfOccurance ON dbo.AfterMarketCar(DateOfOccurance) WITH(DATA_COMPRESSION=PAGE);
+CREATE INDEX ix_AfterMarketCar_AfterMarketStuffId ON dbo.AfterMarketCar(AfterMarketStuffId) WITH(DATA_COMPRESSION=PAGE);
+
+
+
+
+
+ALTER DATABASE StatsDemo SET QUERY_STORE CLEAR;
+DBCC FREEPROCCACHE
 GO
 
-WITH CTE_Numbers AS(
-	SELECT n FROM (VALUES(1),(1),(1),(1),(1),(1),(1),(1),(1),(1)) t(n)
-),CTE_Numbers2 AS(
-	SELECT ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) as n
-	FROM CTE_Numbers n
-	CROSS JOIN CTE_Numbers n2
-	CROSS JOIN CTE_Numbers n3
-),CTE_Dates AS(
-	SELECT TOP(100) DATEADD(DAY,-1*n,cast('2016-08-25' AS date)) as OrderDate
-	FROM CTE_Numbers2 ORDER BY n 
-),CTE_Customers AS(
-		SELECT TOP(12500) c.CustomerID FROM Sales.Customer c 
-		CROSS JOIN Sales.Customer c2
-		ORDER BY NEWID()
-	)INSERT Sales.OrderHeader (OrderDate,CustomerID,CustomerAddressID,IsorderShipped,OrderHeaderDiscount)
-	SELECT OrderDate,c.CustomerID,ca.CustomerAddressID,0,RAND(DATEPART(second,CURRENT_TIMESTAMP)*DATEPART(DAY,OrderDate))
-	FROM CTE_Customers c
-	INNER JOIN Sales.CustomerAddress ca ON c.CustomerID = ca.CustomerID
-	CROSS JOIN CTE_Dates;
+CREATE EVENT SESSION [query_optimizer_estimate_cardinality] ON SERVER
+ADD EVENT sqlserver.query_optimizer_estimate_cardinality
+ (  
+ ACTION (sqlserver.sql_text)  
+  WHERE (  
+  sql_text LIKE '%dbo.Car%'
+  )  
+ )
+ALTER EVENT SESSION [query_optimizer_estimate_cardinality] ON SERVER  STATE=START;
 
+
+
+GO
+ALTER DATABASE [StatsDemo] SET COMPATIBILITY_LEVEL = 110
 GO
