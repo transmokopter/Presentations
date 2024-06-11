@@ -60,7 +60,9 @@ Start-PodeServer {
     Set-PodeOARequest -Parameters @(
         (New-PodeOAStringProperty -Name 'ServerName' | ConvertTo-PodeOAParameter -In Query),
         (New-PodeOAStringProperty -Name 'InstanceName' | ConvertTo-PodeOAParameter -In Query),
-        (New-PodeOAStringProperty -Name 'SqlVersion' | ConvertTo-PodeOAParameter -In Query)
+        (New-PodeOAStringProperty -Name 'SqlVersion' | ConvertTo-PodeOAParameter -In Query),
+        (New-PodeOAStringProperty -Name 'Tier' | ConvertTo-PodeOAParameter -In Query),
+        (New-PodeOAStringProperty -Name 'ConnectionName' | ConvertTo-PodeOAParameter -In Query)
     )
 
     Add-PodeRoute -Method Get -Path '/StartHelloJob' -ScriptBlock {
@@ -96,7 +98,7 @@ Start-PodeServer {
 
 
 
-    Enable-PodeOpenApi -Path '/docs/openapi' -Title 'Become a metadata driven DBA Api' -Version 1.0.0.0
+    Enable-PodeOpenApi -Path '/docs/openapi' -Title 'Become a metadata driven DBA Api' -Version "1.0.0-latest"
     Enable-PodeOpenApiViewer -Type Swagger -DarkMode
 }
 
