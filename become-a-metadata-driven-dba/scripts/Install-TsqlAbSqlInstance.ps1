@@ -35,6 +35,5 @@ Function Install-TsqlAbSqlInstance {
 
     Set-DbaTcpPort -SqlInstance $SqlInstance -Port 1433 -IpAddress ($SqlInstanceInfo.IP)
 
-    Restart-DbaService -SqlInstance $SqlInstance -Type Engine -Force 
-
+    Start-DbaService -SqlInstance $SqlInstance -Force 
 }
