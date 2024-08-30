@@ -1,10 +1,9 @@
 ALTER DATABASE SqlServerWorstPractices SET AUTO_SHRINK ON;
-
+USE SqlServerWorstPractices
 
 CREATE TABLE dbo.MyTransactionTable(
 	id INT NOT NULL CONSTRAINT PK_MyTransactionTable PRIMARY KEY CLUSTERED,
 	c1 VARCHAR(40));
-CREATE INDEX ix_MyTransactionTable_c1 ON dbo.MyTransactionTable(c1) WITH(DATA_COMPRESSION=PAGE);
 
 INSERT dbo.MyTransactionTable
 (
@@ -13,6 +12,9 @@ INSERT dbo.MyTransactionTable
 )
 SELECT value,CAST(NEWID() AS VARCHAR(40))
 FROM generate_series(1,10000000,1);
+
+CREATE INDEX ix_MyTransactionTable_c1 ON dbo.MyTransactionTable(c1) WITH(DATA_COMPRESSION=PAGE);
+
 
 EXEC sp_spaceused
 

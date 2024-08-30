@@ -97,11 +97,13 @@ million AS(
 	SELECT ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) rn 
 	FROM ten CROSS JOIN ten t2 CROSS JOIN ten t3 CROSS JOIN ten t4 CROSS JOIN ten t5 CROSS JOIN ten t6
 ),millionorders AS(
-SELECT DATEADD(DAY,RAND()*-3000,CURRENT_TIMESTAMP) AS OrderDate, c.CurrencyCode,RAND()*1000 AS OrderValue
+SELECT DATEADD(DAY,RAND(ROW_NUMBER() OVER(ORDER BY (SELECT NULL)))*-3000,CURRENT_TIMESTAMP) AS OrderDate, c.CurrencyCode,RAND()*1000 AS OrderValue
 FROM million 
 INNER JOIN currencies c ON million.rn%c.rn=0
 
-)INSERT dbo.SalesOrder
+)
+--SELECT * FROM millionorders;
+INSERT dbo.SalesOrder
 (
     OrderDate,
     OrderCurrency,

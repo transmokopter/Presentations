@@ -44,7 +44,7 @@ RESTORE VERIFYONLY FROM DISK='/var/opt/mssql/data/backups/dr.bak';
 
 
 
-
+USE master 
 -- Crash! Boom!! Bang!!!
 RESTORE HEADERONLY FROM DISK='/var/opt/mssql/data/backups/dr.bak'
 

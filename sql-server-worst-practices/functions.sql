@@ -68,7 +68,6 @@ FROM dbo.SalesOrder AS SO
 WHERE SO.OrderCurrency='SEK'
 	AND dbo.GetAmountInToCurrency('SEK','USD',CAST(so.OrderDate AS DATE),so.OrderValue)>1 
 ;
---14617799,6679
 SET STATISTICS IO,TIME OFF;
 GO
 --How to do it better?
