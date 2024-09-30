@@ -1,0 +1,10 @@
+c:\git\Presentations\migrate-onprem-dw-to-fabric-dw\AdventureWorksDW2022\bin\Debug\AdventureWorksDW2022.dacpac
+c:\git\Presentations\migrate-onprem-dw-to-fabric-dw\AdventureWorksDW2022\bin\Debug\AdventureWorksDW2022.dll
+c:\git\Presentations\migrate-onprem-dw-to-fabric-dw\AdventureWorksDW2022\bin\Debug\AdventureWorksDW2022.pdb
+c:\git\Presentations\migrate-onprem-dw-to-fabric-dw\AdventureWorksDW2022\obj\Debug\AdventureWorksDW2022.sqlproj.AssemblyReference.cache
+c:\git\Presentations\migrate-onprem-dw-to-fabric-dw\AdventureWorksDW2022\obj\Debug\Model.xml
+c:\git\Presentations\migrate-onprem-dw-to-fabric-dw\AdventureWorksDW2022\obj\Debug\refactor.xml
+c:\git\Presentations\migrate-onprem-dw-to-fabric-dw\AdventureWorksDW2022\obj\Debug\postdeploy.sql
+c:\git\Presentations\migrate-onprem-dw-to-fabric-dw\AdventureWorksDW2022\obj\Debug\predeploy.sql
+c:\git\Presentations\migrate-onprem-dw-to-fabric-dw\AdventureWorksDW2022\obj\Debug\AdventureWorksDW2022.dll
+c:\git\Presentations\migrate-onprem-dw-to-fabric-dw\AdventureWorksDW2022\obj\Debug\AdventureWorksDW2022.pdb

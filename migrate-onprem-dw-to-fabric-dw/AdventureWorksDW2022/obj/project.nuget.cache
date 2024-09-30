@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "xwhrB/N1CYa09aUqoipQympD+FCkwZAs8rHdlbrtBclb3mEMNwtkIlXwyWRAfO4b44JgOUJFRYZ3xxVw22WM5A==",
+  "success": true,
+  "projectFilePath": "c:\\git\\Presentations\\migrate-onprem-dw-to-fabric-dw\\AdventureWorksDW2022\\AdventureWorksDW2022.sqlproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\magnu\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.0\\microsoft.netframework.referenceassemblies.1.0.0.nupkg.sha512",
+    "C:\\Users\\magnu\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net46\\1.0.0\\microsoft.netframework.referenceassemblies.net46.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

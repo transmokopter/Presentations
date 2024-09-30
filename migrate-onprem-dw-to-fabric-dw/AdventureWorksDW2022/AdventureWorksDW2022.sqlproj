@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build">
+  <Sdk Name="Microsoft.Build.Sql" Version="0.1.12-preview" />
+  <PropertyGroup>
+    <Name>AdventureWorksDW2022</Name>
+    <ProjectGuid>{2DC355AF-F426-49F8-959F-3603AA4EE315}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlDwUnifiedDatabaseSchemaProvider</DSP>
+    <ModelCollation>1033, CI</ModelCollation>
+  </PropertyGroup>
+  <ItemGroup>
+    <Build Remove="dbo\Functions\udfBuildISO8601Date.sql" />
+    <Build Remove="dbo\Functions\udfMinimumDate.sql" />
+    <Build Remove="dbo\Functions\udfTwoDigitZeroFill.sql" />
+  </ItemGroup>
+  <Target Name="BeforeBuild">
+    <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
+  </Target>
+</Project>
