@@ -10,6 +10,7 @@ DECLARE cur CURSOR LOCAL FOR SELECT * FROM dbo.CurrencyRate AS CR;
 DECLARE @Currencycode CHAR(3),@CurrencyRate MONEY,@CurrencyDate DATE;
 OPEN cur;
 FETCH NEXT FROM cur INTO @Currencycode, @CurrencyDate, @CurrencyRate;
+BEGIN TRAN 
 WHILE @@FETCH_STATUS=0
 BEGIN
 	MERGE #t AS t
@@ -19,6 +20,7 @@ BEGIN
 	WHEN NOT MATCHED THEN INSERT(CurrencyCode,SumOfRates,RateCount) VALUES(s.code,s.rate,1);
 	FETCH NEXT FROM cur INTO @Currencycode, @CurrencyDate, @CurrencyRate;
 END
+COMMIT
 CLOSE cur;
 DEALLOCATE cur;
 SELECT CurrencyCode,sumofrates/ratecount 
@@ -55,6 +57,7 @@ CREATE TABLE dbo.dimDateRBAR(thedate DATE,WeekdayNumber TINYINT,WeekdayName VARC
 DECLARE @startDate DATE = '2000-01-01';
 DECLARE @endDate DATE = '2999-12-31';
 DECLARE @executionBeginTime DATETIME2=SYSDATETIME();
+
 WHILE @startDate<=@endDate
 BEGIN
 	INSERT dbo.dimDateRBAR
@@ -81,6 +84,7 @@ BEGIN
 	);
 	SET @startDate = DATEADD(DAY,1,@startDate);
 END
+
 DECLARE @executionEndTime DATETIME2=SYSDATETIME();
 SELECT DATEDIFF(MILLISECOND,@executionBeginTime,@executionEndTime);
 
