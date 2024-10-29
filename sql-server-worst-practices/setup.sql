@@ -1,5 +1,10 @@
 USE master 
 GO
+IF DB_ID('SqlServerWorstPractices') IS NOT NULL
+BEGIN
+	ALTER DATABASE SqlServerWorstPractices SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+END
+GO
 DROP DATABASE IF EXISTS SqlServerWorstPractices;
 GO
 CREATE DATABASE SqlServerWorstPractices;
