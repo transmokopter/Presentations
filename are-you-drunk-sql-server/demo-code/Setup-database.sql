@@ -142,7 +142,7 @@ INSERT dbo.AfterMarketCar(
 SELECT
 	AMS.AfterMarketStuffId,
 	C.CarId,
-	DATEADD(DAY,-1*(CarId%997),CURRENT_TIMESTAMP)
+	DATEADD(DAY,-1*(CarId%997),'2024-06-01')
 FROM dbo.AfterMarketStuff AS AMS
 INNER JOIN dbo.Car AS C ON c.BrandName = AMS.BrandName AND c.Color = AMS.Color
 WHERE C.CarId%7=0
@@ -155,7 +155,7 @@ INSERT dbo.AfterMarketCar(
 SELECT
 	AMS.AfterMarketStuffId,
 	C.CarId,
-	DATEADD(DAY,-1*(CarId%1009),CURRENT_TIMESTAMP)
+	DATEADD(DAY,-1*(CarId%1009),'2024-06-01')
 FROM dbo.AfterMarketStuff AS AMS
 INNER JOIN dbo.Car AS C ON c.BrandName = AMS.BrandName AND AMS.Color IS NULL
 WHERE C.CarId%5=0
@@ -168,7 +168,7 @@ INSERT dbo.AfterMarketCar(
 SELECT
 	AMS.AfterMarketStuffId,
 	C.CarId,
-	DATEADD(DAY,-1*(CarId%1013),CURRENT_TIMESTAMP)
+	DATEADD(DAY,-1*(CarId%1013),'2024-06-01')
 FROM dbo.AfterMarketStuff AS AMS
 INNER JOIN dbo.Car AS C ON AMS.BrandName IS NULL
 WHERE C.CarId%3=0
@@ -201,3 +201,4 @@ ALTER EVENT SESSION [query_optimizer_estimate_cardinality] ON SERVER  STATE=STAR
 GO
 ALTER DATABASE [StatsDemo] SET COMPATIBILITY_LEVEL = 110
 GO
+SELECT @@VERSION

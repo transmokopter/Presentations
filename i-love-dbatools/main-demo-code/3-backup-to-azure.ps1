@@ -6,7 +6,7 @@ $cred = New-Object pscredential("sa",$secpwd)
 $blobStorageURL="https://transmokopterpsdemo.blob.core.windows.net/backups"
 
 # the secret below won't work, you need to replace with your own
-$plaintextSecret="sp=racwdl&st=2021-06-12T17:56:01Z&se=2021-06-20T01:56:01Z&spr=https&sv=2020-02-10&sr=c&sig=M2rM%2B6OoJCGxbBgRoRqr%2BCEAXn7VTeEWkW0gzWQ%2BzG0%3D"
+$plaintextSecret="sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-10-07T18:55:31Z&st=2024-10-07T10:55:31Z&spr=https&sig=lmSfDFtYA1YqMYGUZMNo3%2BM43WqmW%2BCooN6kQOkMzlQ%3D"
 
 # We also need secure string for credential password for blob storage
 $blobstoragepassword = ConvertTo-SecureString -AsPlainText $plaintextSecret -Force
