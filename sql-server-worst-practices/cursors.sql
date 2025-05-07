@@ -194,6 +194,8 @@ CREATE TABLE dbo.dimDate
     MonthNumber TINYINT,
     MonthName VARCHAR(10)
 );
+
+
 DECLARE @startDate DATE = '2000-01-01';
 DECLARE @endDate DATE = '2999-12-31';
 DECLARE @executionBeginTime DATETIME2 = SYSDATETIME();
