@@ -183,7 +183,6 @@ DECLARE @BrandName VARCHAR(50), @Color VARCHAR(50);
 SET @BrandName = 'Volvo'
 DECLARE @sql NVARCHAR(MAX)=N'SELECT COUNT(*),Color 
 FROM dbo.Car 
--- Here''s a comment
 WHERE BrandName=@BrandName
 GROUP BY Color;';
 EXEC sp_executesql @sql,N'@BrandName varchar(50)',@BrandName;
@@ -216,7 +215,7 @@ GO
 -- Slides
 
 --Demo 3 - Combine predicates
-
+DROP INDEX ix_Car_BrandName_Color ON dbo.Car
 
 DECLARE @BrandName VARCHAR(50), @Color VARCHAR(50);
 SET @BrandName = 'Volvo';
@@ -228,7 +227,7 @@ EXEC sp_executesql @sql,N'@BrandName varchar(50),@Color varchar(50)',@BrandName,
 GO
 
 
--- 345078
+-- 345257
 DBCC SHOW_STATISTICS('dbo.Car','ix_Car_BrandName')
 -- Selectivity for BrandName = 'Volvo' = 1381028/5049331.0
 SELECT 1381028/5049331.0
@@ -248,7 +247,7 @@ SET @BrandName = 'Ferrari';
 SET @Color = 'Blue';
 DECLARE @sql NVARCHAR(MAX)=N'SELECT BrandName, Color 
 FROM dbo.Car 
-WHERE BrandName=@BrandName AND Color=@Color OPTION(RECOMPILE);';
+WHERE BrandName=@BrandName AND Color=@Color;';
 EXEC sp_executesql @sql,N'@BrandName varchar(50),@Color varchar(50)',@BrandName,@Color;
 
 GO
@@ -300,11 +299,22 @@ SET @BrandName = 'Ferrari';
 SET @Color = 'Blue';
 DECLARE @sql NVARCHAR(MAX)=N'SELECT BrandName, Color 
 FROM dbo.Car 
+WHERE BrandName=@BrandName AND Color=@Color;'
+EXEC sp_executesql @sql,N'@BrandName varchar(50),@Color varchar(50)',@BrandName,@Color;
+GO
+DECLARE @BrandName VARCHAR(50), @Color VARCHAR(50);
+SET @BrandName = 'Ferrari';
+SET @Color = 'Blue';
+DECLARE @sql NVARCHAR(MAX)=N'SELECT BrandName, Color 
+FROM dbo.Car 
 WHERE BrandName=@BrandName AND Color=@Color OPTION(RECOMPILE);'
 EXEC sp_executesql @sql,N'@BrandName varchar(50),@Color varchar(50)',@BrandName,@Color;
 GO
 
 --Slides
+ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=110;
+DBCC FREEPROCCACHE;
+ALTER DATABASE StatsDemo SET QUERY_STORE CLEAR;
 
 --Demo 4, more complexity: Joins
 SET STATISTICS IO ON;
@@ -318,17 +328,20 @@ GROUP BY C.BrandName, AMS.Thing, AMS.Color;
 SET STATISTICS IO OFF;
 
 -- SQL Server selects the density from the stats for AfterMarketStuffId in AfterMarketCar
--- And then multiplies 756110 with the selectivity of AfterMarketStuffId in that statistics object
+-- And then multiplies 756109 with the selectivity of AfterMarketStuffId in that statistics object
 SELECT * FROM sys.stats WHERE object_id=OBJECT_ID('AfterMarketCar')
+
 SELECT * FROM dbo.AfterMarketStuff AS AMS WHERE AMS.Thing='Washerfluid'
 -- 211
 DBCC SHOW_STATISTICS('AfterMarketCar','ix_AfterMarketCar_AfterMarketStuffId')
--- 1683110 rows in AfterMarketCar for WasherFluid
+-- 1489609 rows in AfterMarketCar for WasherFluid
+
 -- But SQL Server use density vector instead, because at this point, it can't know what ID will be returned.
 SELECT 0.004830918*12503103
 -- And so it thinks only 60401 rows are this specific AfterMarketStuffId
-
--- Let's look at other options the optimizer could have chosen later on.
+-- Within the date range we're selecting, the estimation is 3603 and the real count is 101362
+-- Because of this bad estimation, SQL Server decides to do a clustered index seek in Car, 
+-- leading to 101362 lookups instead of scanning the whole thing once.
 
 
 SET STATISTICS IO ON;
@@ -366,6 +379,7 @@ EXEC sp_executesql N'SELECT * FROM dbo.Car WHERE BrandName = @BrandName OPTION(O
 SET STATISTICS IO off
 
 ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=150;
+DBCC FREEPROCCACHE
 GO
 SELECT * FROM dbo.Car WHERE brandname='SAAB';
 DECLARE @BrandName VARCHAR(50)='SAAB';
@@ -378,8 +392,8 @@ GO
 -- Ascending key
 SELECT MAX(carid) FROM dbo.Car
 DBCC FREEPROCCACHE
-ALTER TABLE dbo.car rebuild
-SELECT * FROM dbo.Car WHERE CarId>5049331 OPTION(RECOMPILE)
+
+SELECT * FROM dbo.Car WHERE CarId>5149331 OPTION(RECOMPILE)
 -- Why 15.000 though?
 -- Not sure, but it's pretty close to 0,3% of the table cardinality..
 
