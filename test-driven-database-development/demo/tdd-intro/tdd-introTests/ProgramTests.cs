@@ -18,14 +18,14 @@ namespace tdd_intro.Tests
         }
 
 
-        [TestMethod("American Date Format is OK")]
-        public void IsValidDateTestPositiveAmericanDateFormat()
+        [TestMethod("American date format is absurd and we won't accept it")]
+        public void IsValidDateTestNegativeAmericanDateFormat()
         {
-            Assert.IsTrue(tdd_intro.Program.IsValidDate("08/30/2021"));
+            Assert.IsFalse(tdd_intro.Program.IsValidDate("08/30/2021"));
         }
 
         /*
-                [TestMethod("American Date Format is OK")]
+                [TestMethod("American date format is still absurd but we will accept it")]
                 public void IsValidDateTestPositiveAmericanDateFormat()
                 {
                     Assert.IsTrue(tdd_intro.Program.IsValidDate("08/30/2021"));
