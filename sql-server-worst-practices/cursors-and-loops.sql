@@ -127,6 +127,11 @@ SELECT COUNT(*)
 FROM dbo.dimDateRBAR;
 SELECT DATEDIFF(DAY, '2000-01-01', '2999-12-31');
 
+-- After 3 min 33 seconds, 35.813 from a total 
+-- of 365242 was written to the table.
+-- It would take an estimated 33 minutes to finish on my laptop.
+
+
 
 -- But if we're going to use RBAR methods, let's at least make it as quick as can be. Use explicit transaction.
 
@@ -179,10 +184,13 @@ SELECT DATEDIFF(MILLISECOND, @executionBeginTime, @executionEndTime);
 CREATE CLUSTERED COLUMNSTORE INDEX ix_ccsi_dimDateRBARTran
 ON dbo.dimDateRBARTran;
 GO
-
+-- This one completed in 6,3 seconds. Same code as the 33 minute one
+-- but running in a transaction.
+-- That is 311 times faster.
 
 -- How to make it fast, and without the need for an explicit transaction?
-
+drop table if exists dbo.dimDate;
+go
 CREATE TABLE dbo.dimDate
 (
     thedate DATE,
@@ -227,7 +235,7 @@ SELECT DATEDIFF(MILLISECOND, @executionBeginTime, @executionEndTime);
 
 CREATE CLUSTERED COLUMNSTORE INDEX ix_ccsi_dimDate ON dbo.dimDate;
 
-
+-- 1,8 seconds!
 GO
 
 --Alternative to GENERATE_SERIES:
