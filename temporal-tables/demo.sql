@@ -1,20 +1,28 @@
-USE master 
-go
-IF DB_ID('TemporalDb') IS NOT NULL
-BEGIN
-	ALTER DATABASE TemporalDb SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-	DROP DATABASE TemporalDb;
-END
-GO
-CREATE DATABASE TemporalDb;
-GO
+--USE master 
+--go
+--IF DB_ID('TemporalDb') IS NOT NULL
+--BEGIN
+--	ALTER DATABASE TemporalDb SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+--	DROP DATABASE TemporalDb;
+--END
+--GO
+--CREATE DATABASE TemporalDb;
+--GO
 USE TemporalDb;
 GO
 -- New table
 CREATE TABLE dbo.Pricelist(
 	ProductId INT NOT NULL CONSTRAINT PK_Pricelist PRIMARY KEY CLUSTERED,
-	ListPrice MONEY NOT NULL 
-);
+	ListPrice MONEY NOT NULL,
+	RowStart DATETIME2(7) GENERATED ALWAYS AS ROW START NOT NULL,
+	RowEnd DATETIME2(7) GENERATED ALWAYS AS ROW END NOT NULL,
+	PERIOD FOR SYSTEM_TIME(RowStart, RowEnd)
+)WITH(SYSTEM_VERSIONING=ON(HISTORY_TABLE=dbo.PricelistHistory));
+
+
+
+
+
 
 
 GO
@@ -30,9 +38,22 @@ CREATE TABLE dbo.Pricelist(
 	RowStart DATETIME2 GENERATED ALWAYS AS ROW START NOT NULL,
 	RowEnd DATETIME2 GENERATED ALWAYS AS ROW END NOT NULL,
 	PERIOD FOR SYSTEM_TIME(RowStart,RowEnd)
-)WITH(SYSTEM_VERSIONING = ON (HISTORY_TABLE=dbo.PricelistHistory));
+) 
+WITH
+( 
+	SYSTEM_VERSIONING = ON 
+	(
+		HISTORY_TABLE = dbo.PricelistHistory, 
+		HISTORY_RETENTION_PERIOD = 6 DAYS
+	)
+);
 
 GO
+
+
+
+
+
 
 -- Let's add some data
 INSERT dbo.Pricelist (ProductId, ListPrice)
@@ -52,11 +73,11 @@ UPDATE dbo.Pricelist SET ListPrice = ListPrice * 1.1 WHERE ProductId = 1;
 -- Check table again
 SELECT * FROM dbo.PriceList;
 
-
+SELECT * FROM dbo.PricelistHistory;
 
 
 -- Check prices at a certain time
-SELECT * FROM dbo.Pricelist FOR SYSTEM_TIME AS OF '2025-09-11 21:48:00';
+SELECT * FROM dbo.Pricelist FOR SYSTEM_TIME AS OF '2025-09-12 11:10:00';
 
 -- All occurances within a given time period 
 SELECT * FROM dbo.Pricelist FOR SYSTEM_TIME BETWEEN '2025-09-11 21:47:00' AND '2025-09-11 21:49:00';
@@ -161,7 +182,8 @@ SELECT * FROM dbo.Pricelist WHERE ValidTo IS NULL;
 
 -- System time AS OF equivalent in the old days
 DECLARE @asof DATETIME = '2025-09-11 22:10:27';
-SELECT * FROM dbo.Pricelist pl WHERE pl.ValidFrom <= @asof AND ISNULL(pl.ValidTo,@asof)>= @asof 
+SELECT * FROM dbo.Pricelist pl 
+	WHERE pl.ValidFrom <= @asof AND ISNULL(pl.ValidTo,@asof)>= @asof 
 GO 
 DECLARE @asof DATETIME = '2025-09-11 22:10:44';
 SELECT * FROM dbo.Pricelist pl WHERE pl.ValidFrom <= @asof AND ISNULL(pl.ValidTo,@asof)>= @asof 
