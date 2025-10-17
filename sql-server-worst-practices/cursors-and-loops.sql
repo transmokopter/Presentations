@@ -1,6 +1,7 @@
 USE SqlServerWorstPractices;
 GO
-SET NOCOUNT ON;
+SET NOCOUNT ON;B
+BEGIN --Cursor demo
 --Let's figure out the average rate for each currency.
 --The "logic should be in the backend not the database" way
 
@@ -50,8 +51,9 @@ DEALLOCATE cur;
 SELECT CurrencyCode,
        SumOfRates / RateCount
 FROM #t AS T;
+END --cursor demo
 GO
-DROP TABLE #t;
+DROP TABLE IF EXISTS #t;
 
 
 
@@ -60,13 +62,13 @@ DROP TABLE #t;
 
 
 
-
+BEGIN -- alternative to cursor demo
 -- _some_ logic in the database is OK
 SELECT CurrencyCode,
        AVG(CR.Rate)
 FROM dbo.CurrencyRate AS CR
 GROUP BY CR.CurrencyCode;
-
+END -- Alternative to cursors demo
 GO
 
 
@@ -77,11 +79,14 @@ GO
 
 
 
--- Ok, this was an obvious one. How about we generate a date-dimension?
+-- Ok, that was an obvious one. 
+-- How about we generate a date-dimension?
 DROP TABLE IF EXISTS dbo.dimDateRBAR;
 DROP TABLE IF EXISTS dbo.dimDateRBARTran;
 DROP TABLE IF EXISTS dbo.dimDate;
 GO
+
+
 SET NOCOUNT ON;
 CREATE TABLE dbo.dimDateRBAR
 (
@@ -132,6 +137,7 @@ SELECT DATEDIFF(DAY, '2000-01-01', '2999-12-31');
 -- It would take an estimated 33 minutes to finish on my laptop.
 
 
+GO
 
 -- But if we're going to use RBAR methods, let's at least make it as quick as can be. Use explicit transaction.
 
@@ -141,6 +147,7 @@ SELECT DATEDIFF(DAY, '2000-01-01', '2999-12-31');
 
 SET NOCOUNT ON;
 GO
+
 DROP TABLE IF EXISTS dbo.dimDateRBARTran;
 GO
 CREATE TABLE dbo.dimDateRBARTran
