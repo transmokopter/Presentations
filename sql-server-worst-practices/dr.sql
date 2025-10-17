@@ -1,12 +1,14 @@
-CREATE DATABASE DR
-ON
-PRIMARY ( -- or use FILEGROUP filegroup_name
-  NAME = DR_data,
-  FILENAME = '/var/opt/mssql/data/dr/DR.mdf'
-) --, and repeat as required
-LOG ON
-(
-  NAME = DR_log,
+drop database if exists dr
+go
+	CREATE DATABASE DR
+	ON
+	PRIMARY ( -- or use FILEGROUP filegroup_name
+	  NAME = DR_data,
+	  FILENAME = '/var/opt/mssql/data/dr/DR.mdf'
+	) --, and repeat as required
+	LOG ON
+	(
+	  NAME = DR_log,
   FILENAME = '/var/opt/mssql/data/dr/DR.ldf'
 )
 GO
