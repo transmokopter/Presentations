@@ -1,12 +1,20 @@
 USE SqlServerWorstPractices
+-- Split a string and make every character of the string its own row in a dataset
+SELECT SUBSTRING('Hi there rockstar',value,1) AS the_char
+FROM generate_series(1,LEN('Hi there rockstar'),1)
+
+-- Let's put that in a procedure.
+-- sp_help is an excellent name, right...?
 GO
 CREATE OR ALTER PROC dbo.sp_help @ObjectName NVARCHAR(100)
 AS
 SELECT SUBSTRING(@ObjectName,value,1) AS the_char
 FROM generate_series(1,LEN(@ObjectName),1)
 GO
+
+
 -- Let's try our amazing procedure
-EXEC sp_help 'hi there rockstar'
+EXEC dbo.sp_help 'hi there rockstar';
 
 
 

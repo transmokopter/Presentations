@@ -1,7 +1,7 @@
 USE SqlServerWorstPractices;
 GO
 SET NOCOUNT ON;B
-BEGIN --Cursor demo
+BEGIN --<Cursor demo>
 --Let's figure out the average rate for each currency.
 --The "logic should be in the backend not the database" way
 
@@ -51,24 +51,18 @@ DEALLOCATE cur;
 SELECT CurrencyCode,
        SumOfRates / RateCount
 FROM #t AS T;
-END --cursor demo
+END --</cursor demo>
 GO
 DROP TABLE IF EXISTS #t;
 
 
-
-
-
-
-
-
-BEGIN -- alternative to cursor demo
+BEGIN -- <Alternative to cursor demo>
 -- _some_ logic in the database is OK
 SELECT CurrencyCode,
        AVG(CR.Rate)
 FROM dbo.CurrencyRate AS CR
 GROUP BY CR.CurrencyCode;
-END -- Alternative to cursors demo
+END -- </Alternative to cursors demo>
 GO
 
 
@@ -81,6 +75,10 @@ GO
 
 -- Ok, that was an obvious one. 
 -- How about we generate a date-dimension?
+--------------------------------------------------------------------
+-- MAGNUS!!!!! Don't run this code. It is slooooooooow            --
+--------------------------------------------------------------------
+
 DROP TABLE IF EXISTS dbo.dimDateRBAR;
 DROP TABLE IF EXISTS dbo.dimDateRBARTran;
 DROP TABLE IF EXISTS dbo.dimDate;
@@ -135,6 +133,16 @@ SELECT DATEDIFF(DAY, '2000-01-01', '2999-12-31');
 -- After 3 min 33 seconds, 35.813 from a total 
 -- of 365242 was written to the table.
 -- It would take an estimated 33 minutes to finish on my laptop.
+
+
+
+
+
+
+
+
+
+
 
 
 GO
@@ -242,7 +250,8 @@ SELECT DATEDIFF(MILLISECOND, @executionBeginTime, @executionEndTime);
 
 CREATE CLUSTERED COLUMNSTORE INDEX ix_ccsi_dimDate ON dbo.dimDate;
 
--- 1,8 seconds!
+-- 1,8 seconds! That's 3,5 times faster than the previous method
+-- and 1.089 times faster than the original method. 
 GO
 
 --Alternative to GENERATE_SERIES:
@@ -250,33 +259,33 @@ DECLARE @startDate DATE = '2000-01-01';
 DECLARE @endDate DATE = '2999-12-31';
 
 WITH ten
-AS (SELECT 1 AS n
-    UNION ALL
-    SELECT 1
-    UNION ALL
-    SELECT 1
-    UNION ALL
-    SELECT 1
-    UNION ALL
-    SELECT 1
-    UNION ALL
-    SELECT 1
-    UNION ALL
-    SELECT 1
-    UNION ALL
-    SELECT 1
-    UNION ALL
-    SELECT 1
-    UNION ALL
-    SELECT 1),
+    AS (SELECT 1 AS n
+        UNION ALL
+        SELECT 1
+        UNION ALL
+        SELECT 1
+        UNION ALL
+        SELECT 1
+        UNION ALL
+        SELECT 1
+        UNION ALL
+        SELECT 1
+        UNION ALL
+        SELECT 1
+        UNION ALL
+        SELECT 1
+        UNION ALL
+        SELECT 1
+        UNION ALL
+        SELECT 1),
      million
-AS (SELECT ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS rn
-    FROM ten
-        CROSS JOIN ten t2
-        CROSS JOIN ten t3
-        CROSS JOIN ten t4
-        CROSS JOIN ten t5
-        CROSS JOIN ten t6)
+        AS (SELECT ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS rn
+            FROM ten
+                CROSS JOIN ten t2
+                CROSS JOIN ten t3
+                CROSS JOIN ten t4
+                CROSS JOIN ten t5
+                CROSS JOIN ten t6)
 SELECT TOP (DATEDIFF(DAY, @startDate, @endDate))
        DATEADD(DAY, rn - 1, @startDate)
 FROM million
