@@ -195,10 +195,29 @@ ADD EVENT sqlserver.query_optimizer_estimate_cardinality
   )  
  )
 ALTER EVENT SESSION [query_optimizer_estimate_cardinality] ON SERVER  STATE=START;
+GO
+CREATE TABLE dbo.DeckOfCards(
+	CardValue TINYINT NOT NULL CONSTRAINT ck_DeckOfCardsValue2to14 CHECK(CardValue BETWEEN 2 AND 14),
+	Suit CHAR(1) NOT NULL CONSTRAINT ck_DeckOfCardsValidSuit CHECK(Suit IN ('c','d','h','s')),
+	Color CHAR(1) NOT NULL CONSTRAINT ck_DeckOfCardsValidColor CHECK(Color IN ('b','r')),
+	CONSTRAINT PK_DeckOfCards PRIMARY KEY CLUSTERED (CardValue,Suit)
+);
 
+INSERT INTO dbo.DeckOfCards
+(
+    CardValue,
+    Suit,
+    Color
+)
+SELECT fv.value,CASE s.value WHEN 1 THEN 'h' WHEN 2 THEN 'd' WHEN 3 THEN 'c' WHEN 4 THEN 's' end,CASE WHEN s.value IN (1,2) THEN 'r' ELSE 'b' END
+FROM GENERATE_SERIES(2,14) fv
+CROSS JOIN GENERATE_SERIES(1,4) s
 
 
 GO
 ALTER DATABASE [StatsDemo] SET COMPATIBILITY_LEVEL = 110
 GO
 SELECT @@VERSION
+
+GO
+

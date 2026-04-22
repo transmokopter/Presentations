@@ -1,8 +1,46 @@
 USE Statsdemo;
 SET NOCOUNT ON;
 SELECT D.name, D.compatibility_level FROM sys.databases AS D
+UPDATE STATISTICS dbo.Car WITH FULLSCAN;
+GO
+-- How many cards have value 3?
+SELECT COUNT(*) FROM dbo.DeckOfCards WHERE CardValue=3;
+
+-- How many cards are hearts?
+SELECT COUNT(*) FROM dbo.DeckOfCards WHERE Suit='h';
+
+-- How many cards have value 3 and Suit hearts?
+SELECT COUNT(*) FROM dbo.DeckOfCards WHERE Suit='h' AND CardValue=3;
+
+SELECT COUNT(*) FROM dbo.DeckOfCards WHERE color='b' AND CardValue='2'
+
+-- How many spades are red?
+SELECT COUNT(*) FROM dbo.DeckOfCards WHERE color='r' AND suit='s'
+
+ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=150
+-- How many cards have value 3?
+SELECT COUNT(*) FROM dbo.DeckOfCards WHERE CardValue=3;
+
+-- How many cards are hearts?
+SELECT COUNT(*) FROM dbo.DeckOfCards WHERE Suit='h';
+
+-- How many cards have value 3 and Suit hearts?
+SELECT COUNT(*) FROM dbo.DeckOfCards WHERE Suit='h' AND CardValue=3;
+
+SELECT COUNT(*) FROM dbo.DeckOfCards WHERE color='b' AND CardValue='2'
+
+-- How many spades are red?
+SELECT COUNT(*) FROM dbo.DeckOfCards WHERE color='r' AND suit='s'
+
+-- Let's try the same, but with a positive test
+SELECT COUNT(*) FROM dbo.DeckOfCards WHERE color='b' AND suit='s'
+
+--revert to Old SQL version
+ALTER DATABASE StatsDemo SET COMPATIBILITY_LEVEL=110
 
 
+
+GO
 -- Let's start by examining our data:
 SELECT COUNT(*) AS CountCars, Color, BrandName FROM dbo.Car 
 GROUP BY Color, BrandName 
@@ -16,7 +54,7 @@ SELECT
 FROM dbo.Car AS C
 	INNER JOIN dbo.AfterMarketStuff AS AMS ON (AMS.BrandName = C.BrandName OR AMS.BrandName IS NULL) AND (AMS.Color = C.Color OR AMS.Color IS NULL)
 	INNER JOIN dbo.AfterMarketCar AS AMC ON AMC.AfterMarketStuffId = AMS.AfterMarketStuffId AND AMC.CarId = C.CarId
-WHERE AMC.DateOfOccurance > DATEADD(YEAR,-1,CURRENT_TIMESTAMP)
+--WHERE AMC.DateOfOccurance > DATEADD(YEAR,-1,'2024-06-01')
 GROUP BY C.BrandName, C.Color, AMS.Thing
 ORDER BY C.BrandName, C.Color, AMS.Thing
 
@@ -69,10 +107,10 @@ DBCC SHOW_STATISTICS(Car,_WA_Sys_00000003_36B12243) WITH DENSITY_VECTOR
 -- All density = Count of distinct values / total number of rows
 
 --Let's create a multi-column index
-CREATE INDEX ix_Car_BrandName_ColorON dbo.Car (BrandName, Color)WITH (DATA_COMPRESSION=PAGE);
+CREATE INDEX ix_Car_BrandName_Color ON dbo.Car (BrandName, Color)WITH (DATA_COMPRESSION=PAGE);
 GO
 
-SELECT * FROM dbo.car WHERE brandname='Toyota' AND color='Blue' OPTION(RECOMPILE);
+SELECT * FROM dbo.car WHERE brandname='Ferrari' AND color='Blue' OPTION(RECOMPILE);
 -- Estimation: 88548,8 rows
 -- 
 DBCC SHOW_STATISTICS(Car,ix_Car_BrandName_Color)
@@ -88,7 +126,7 @@ SET STATISTICS IO ON;
 SELECT COUNT(*) AS CarCount,Color 
 FROM dbo.Car 
 WHERE BrandName='Ferrari'
-GROUP BY Color;
+GROUP BY Color OPTION(RECOMPILE);
 SET STATISTICS IO OFF;
 
 -- Why estimate four rows out of the aggreage, when there are only Red Ferraris?
@@ -234,8 +272,8 @@ SELECT 1381028/5049331.0
 
 SELECT * FROM sys.stats s WHERE s.object_id=OBJECT_ID('dbo.Car');
 DBCC SHOW_STATISTICS('dbo.Car','_WA_Sys_00000003_36B12243')
---Selectivity for predicate Color='Blue' is 1265478/5049331.0
-SELECT 1261677/5049331.0
+--Selectivity for predicate Color='Blue' is 1261854/5049331.0
+SELECT 1261854/5049331.0
 
 -- Exponential backoff came in SQL Server 2014 and we run in 2012 mode, so we're doing it the old-school way
 -- Selectivity predicate1 * selectivity predicate2
@@ -285,7 +323,7 @@ DBCC SHOW_STATISTICS('dbo.Car','ix_Car_BrandName')
 SELECT 1381028/5049331.0
 
 SELECT * FROM sys.stats s WHERE s.object_id=OBJECT_ID('dbo.Car');
-DBCC SHOW_STATISTICS('dbo.Car','_WA_Sys_00000003_36B12243')
+DBCC SHOW_STATISTICS('dbo.Car','_WA_Sys_00000003_49C3F6B7')
 --Selectivity for predicate Color='Blue' is 1265478/5049331.0
 SELECT 1261677/5049331.0
 
